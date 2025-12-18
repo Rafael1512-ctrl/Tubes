@@ -9,13 +9,13 @@ class JadwalController extends Controller
 {
     public function index()
     {
-        $jadwal = DB::table('Jadwal')
-            ->join('Pegawai', 'Jadwal.IdDokter', '=', 'Pegawai.PegawaiID')
-            ->where('Jadwal.Status', 'Available')
-            ->where('Jadwal.Tanggal', '>=', now()->format('Y-m-d'))
-            ->select('Jadwal.*', 'Pegawai.Nama as nama_dokter')
-            ->orderBy('Jadwal.Tanggal')
-            ->orderBy('Jadwal.JamMulai')
+        $jadwal = DB::table('jadwals')
+            ->join('pegawais', 'jadwals.IdDokter', '=', 'pegawais.PegawaiID')
+            ->where('jadwals.Status', 'Available')
+            ->where('jadwals.Tanggal', '>=', now()->format('Y-m-d'))
+            ->select('jadwals.*', 'pegawais.Nama as nama_dokter')
+            ->orderBy('jadwals.Tanggal')
+            ->orderBy('jadwals.JamMulai')
             ->paginate(10);
         
         return view('jadwal.index', compact('jadwal'));

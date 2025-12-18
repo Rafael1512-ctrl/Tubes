@@ -26,14 +26,13 @@ class PasienController extends Controller
             'TanggalLahir' => 'required|date',
             'Alamat' => 'required',
             'NoTelp' => 'required',
-            'email' => 'required|email|unique:Pasien,email',
+            'email' => 'required|email|unique:pasiens,email', // Correct table name
             'JenisKelamin' => 'required|in:L,P',
         ]);
 
         // Generate PasienID
         $tahun = date('Y');
-        $lastPasien = DB::table('Pasien')
-            ->where('PasienID', 'like', "P-{$tahun}-%")
+        $lastPasien = Pasien::where('PasienID', 'like', "P-{$tahun}-%")
             ->orderBy('PasienID', 'desc')
             ->first();
 
@@ -81,7 +80,7 @@ class PasienController extends Controller
             'TanggalLahir' => 'required|date',
             'Alamat' => 'required',
             'NoTelp' => 'required',
-            'email' => 'required|email|unique:Pasien,email,' . $id . ',PasienID',
+            'email' => 'required|email|unique:pasiens,email,' . $id . ',PasienID',
             'JenisKelamin' => 'required|in:L,P',
         ]);
         

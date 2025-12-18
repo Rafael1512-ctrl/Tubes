@@ -6,30 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
-    protected $table = 'Booking';
+    protected $table = 'bookings';
     protected $primaryKey = 'IdBooking';
-    public $timestamps = true;
     public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'IdBooking',
-        'IdJadwal',
         'PasienID',
-        'Keluhan',
+        'IdJadwal',
         'TanggalBooking',
         'Status',
-        'created_at',
     ];
 
     // Relasi ke Jadwal
     public function jadwal()
     {
-        return $this->belongsTo(Jadwal::class, 'IdJadwal', 'IdJadwal');
+        return $this->belongsTo(Jadwal::class, 'IdJadwal');
     }
 
     // Relasi ke Pasien
     public function pasien()
     {
-        return $this->belongsTo(Pasien::class, 'PasienID', 'PasienID');
+        return $this->belongsTo(Pasien::class, 'PasienID');
     }
 }

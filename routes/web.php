@@ -7,8 +7,14 @@ use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\LandingController;
+
 // Public routes
-Route::get('/', function () {
+Route::get('/', [LandingController::class, 'index'])->name('landing.home');
+Route::get('/booking-online', [LandingController::class, 'booking'])->name('landing.booking');
+Route::post('/booking-online', [LandingController::class, 'storeBooking'])->name('landing.booking.store');
+
+Route::get('/welcome', function () {
     return view('welcome');
 });
 

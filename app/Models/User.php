@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
-    protected $table = 'Users';
+    protected $table = 'users';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
     protected $fillable = [
+        'name',
         'username',
         'email',
         'password',
         'role',
-        'pegawai_id',
-        'pasien_id',
         'remember_token',
     ];
 
@@ -28,13 +28,13 @@ class User extends Model
     // Relasi ke Pegawai
     public function pegawai()
     {
-        return $this->belongsTo(Pegawai::class, 'pegawai_id', 'PegawaiID');
+        return $this->hasOne(Pegawai::class, 'user_id');
     }
 
     // Relasi ke Pasien
     public function pasien()
     {
-        return $this->belongsTo(Pasien::class, 'pasien_id', 'PasienID');
+        return $this->hasOne(Pasien::class, 'user_id');
     }
 
     // Helper method untuk cek role

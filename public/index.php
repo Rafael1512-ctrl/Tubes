@@ -1,106 +1,55 @@
 <?php
-// Koneksi ke Database
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$database = 'klinikgigi';
 
-try {
-    $conn = new mysqli($host, $user, $password, $database);
-    
-    if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
-    }
-    
-    $conn->set_charset("utf8mb4");
-} catch (Exception $e) {
-    die("Error: " . $e->getMessage());
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
+
+define('LARAVEL_START', microtime(true));
+
+/*
+|--------------------------------------------------------------------------
+| Check If The Application Is Under Maintenance
+|--------------------------------------------------------------------------
+|
+| If the application is in maintenance / demo mode via the "down" command
+| we will load this file so that any pre-rendered content can be shown
+| instead of starting the framework, which could cause an exception.
+|
+*/
+
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
 }
 
-// Tentukan halaman yang aktif
-$page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader for
+| this application. We just need to utilize it! We'll simply require it
+| into the script here so we don't need to manually load our classes.
+|
+*/
 
-// Header HTML
-?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi Klinik Gigi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .sidebar {
-            background-color: #343a40;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-        .sidebar a:hover {
-            background-color: #495057;
-        }
-        .content {
-            padding: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2 sidebar">
-                <h4 class="text-white">Klinik Gigi</h4>
-                <hr class="bg-secondary">
-                <a href="?page=dashboard">Dashboard</a>
-                <a href="?page=pasien">Data Pasien</a>
-                <a href="?page=pegawai">Data Pegawai</a>
-                <a href="?page=jadwal">Data Jadwal</a>
-                <a href="?page=booking">Data Booking</a>
-                <a href="?page=obat">Data Obat</a>
-            </div>
-            
-            <!-- Content -->
-            <div class="col-md-10 content">
-                <h2>Selamat Datang di Sistem Klinik Gigi</h2>
-                <?php
-                    switch($page) {
-                        case 'pasien':
-                            include 'C:\xampp\htdocs\KlinikGigiLaravel\app\Http\Pages\pasien.php';
-                            break;
-                        case 'pegawai':
-                            include 'C:\xampp\htdocs\KlinikGigiLaravel\app\Http\Pages\pegawai.php';
-                            break;
-                        case 'jadwal':
-                            include 'C:\xampp\htdocs\KlinikGigiLaravel\app\Http\Pages\jadwal.php';
-                            break;
-                        case 'booking':
-                            include 'C:\xampp\htdocs\KlinikGigiLaravel\app\Http\Pages\booking.php';
-                            break;
-                        case 'obat':
-                            include 'C:\xampp\htdocs\KlinikGigiLaravel\app\Http\Pages\obat.php';
-                            break;
-                        default:
-                            include 'C:\xampp\htdocs\KlinikGigiLaravel\app\Http\Pages\dashboard.php';
-                    }
-                ?>
-            </div>
-        </div>
-    </div>
+require __DIR__.'/../vendor/autoload.php';
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request using
+| the application's HTTP kernel. Then, we will send the response back
+| to this client's browser, allowing them to enjoy our application.
+|
+*/
 
-<?php
-$conn->close();
-?>
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+$kernel = $app->make(Kernel::class);
+
+$response = $kernel->handle(
+    $request = Request::capture()
+)->send();
+
+$kernel->terminate($request, $response);

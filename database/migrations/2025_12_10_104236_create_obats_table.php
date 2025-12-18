@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('obats', function (Blueprint $table) {
-            $table->id();
+            $table->string('IdObat', 7)->primary();
+            $table->foreignId('IdJenisObat')->constrained('jenis_obats', 'JenisObatID');
+            $table->string('NamaObat', 100);
+            $table->string('Satuan', 20)->nullable();
+            $table->decimal('Harga', 12, 2);
+            $table->integer('Stok');
             $table->timestamps();
         });
     }

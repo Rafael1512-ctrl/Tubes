@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pegawais', function (Blueprint $table) {
-            $table->id();
+            $table->string('PegawaiID', 5)->primary();
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade'); // Nullable for non-login employees
+            $table->string('Nama', 100);
+            $table->string('Jabatan', 50)->nullable();
+            $table->date('TanggalMasuk')->nullable();
+            $table->string('NoTelp', 20)->nullable();
             $table->timestamps();
         });
     }

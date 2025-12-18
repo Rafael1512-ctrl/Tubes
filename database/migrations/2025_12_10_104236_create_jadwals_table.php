@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwals', function (Blueprint $table) {
-            $table->id();
+            $table->string('IdJadwal', 11)->primary();
+            $table->string('IdDokter', 5);
+            $table->foreign('IdDokter')->references('PegawaiID')->on('pegawais')->onDelete('cascade');
+            $table->date('Tanggal');
+            $table->time('JamMulai');
+            $table->time('JamAkhir');
+            $table->string('Status', 20)->default('Available');
+            $table->integer('Kapasitas');
             $table->timestamps();
         });
     }

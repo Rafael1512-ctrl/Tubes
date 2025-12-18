@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RekamMedis extends Model
 {
-    protected $table = 'RekamMedis';
+    protected $table = 'rekam_medis';
     protected $primaryKey = 'IdRekamMedis';
     public $timestamps = true;
     public $incrementing = false;

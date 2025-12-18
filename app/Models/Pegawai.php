@@ -6,30 +6,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pegawai extends Model
 {
-    protected $table = 'Pegawai';
+    protected $table = 'pegawais';
     protected $primaryKey = 'PegawaiID';
-    public $timestamps = true;
     public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'PegawaiID',
+        'user_id',
         'Nama',
         'Jabatan',
         'TanggalMasuk',
         'NoTelp',
-        'email',
-        'created_at',
     ];
 
     // Relasi ke User
     public function user()
     {
-        return $this->hasOne(User::class, 'pegawai_id', 'PegawaiID');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // Relasi ke Jadwal
     public function jadwals()
     {
-        return $this->hasMany(Jadwal::class, 'IdDokter', 'PegawaiID');
+        return $this->hasMany(Jadwal::class, 'IdDokter');
     }
 }

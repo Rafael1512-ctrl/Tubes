@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Jadwal extends Model
 {
-    protected $table = 'Jadwal';
+    protected $table = 'jadwals';
     protected $primaryKey = 'IdJadwal';
-    public $timestamps = true;
     public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'IdJadwal',
@@ -19,18 +19,17 @@ class Jadwal extends Model
         'JamAkhir',
         'Status',
         'Kapasitas',
-        'created_at',
     ];
 
     // Relasi ke Dokter
     public function dokter()
     {
-        return $this->belongsTo(Pegawai::class, 'IdDokter', 'PegawaiID');
+        return $this->belongsTo(Pegawai::class, 'IdDokter');
     }
 
     // Relasi ke Booking
     public function bookings()
     {
-        return $this->hasMany(Booking::class, 'IdJadwal', 'IdJadwal');
+        return $this->hasMany(Booking::class, 'IdJadwal');
     }
 }
