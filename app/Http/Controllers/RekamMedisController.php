@@ -29,7 +29,8 @@ class RekamMedisController extends Controller
             ->with(['pasien', 'jadwal.dokter'])
             ->get();
         
-        $obat = Obat::all();
+        // Hanya tampilkan obat yang belum expired
+        $obat = Obat::unexpired()->get();
         $tindakan = Tindakan::all();
         
         return view('rekam_medis.create', compact('bookings', 'obat', 'tindakan'));
@@ -83,6 +84,12 @@ class RekamMedisController extends Controller
                 foreach ($request->obat as $index => $idObat) {
                     if (!empty($idObat)) {
                         $obat = Obat::find($idObat);
+                        
+                        // Validasi exp_date - obat tidak boleh expired
+                        if ($obat->isExpired()) {
+                            throw new \Exception("Obat {$obat->NamaObat} sudah melewati tanggal kadaluarsa!");
+                        }
+                        
                         $rekamMedis->obat()->attach($idObat, [
                             'Dosis' => $request->dosis[$index],
                             'Frekuensi' => $request->frekuensi[$index],
@@ -123,7 +130,7 @@ class RekamMedisController extends Controller
     // Menampilkan detail rekam medis
     public function show($id)
     {
-        $rekamMedis = RekamMedis::with(['pasien', 'dokter', 'obat', 'tindakan'])->findOrFail($id);
+        $rekamMedis = RekamMedis::with(['pasien', 'dokter', 'obat', 'tindakan', 'tindakanSpesialis'])->findOrFail($id);
         return view('rekam_medis.show', compact('rekamMedis'));
     }
 }

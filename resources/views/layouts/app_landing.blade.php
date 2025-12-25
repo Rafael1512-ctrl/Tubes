@@ -35,6 +35,38 @@
                     <li class="nav-item"><a class="nav-link fw-medium" href="#services">Layanan</a></li>
                     <li class="nav-item"><a class="nav-link fw-medium" href="#team">Dokter</a></li>
                     <li class="nav-item"><a class="nav-link fw-medium" href="#blog">Artikel</a></li>
+                    
+                    @auth
+                        <!-- User sudah login - tampilkan nama & dashboard -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle fw-medium" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i> {{ auth()->user()->name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
+                        <!-- User belum login - tampilkan Login & Register -->
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="nav-link fw-medium">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="btn btn-outline-light rounded-pill px-4 fw-bold">
+                                <i class="fas fa-user-plus me-1"></i> Daftar
+                            </a>
+                        </li>
+                    @endauth
+                    
                     <li class="nav-item">
                         <a href="{{ route('landing.booking') }}" class="btn btn-light text-primary rounded-pill px-4 fw-bold shadow-sm">Booking Online</a>
                     </li>

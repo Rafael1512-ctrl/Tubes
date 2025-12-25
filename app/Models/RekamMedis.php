@@ -37,14 +37,20 @@ class RekamMedis extends Model
     // Relasi ke Obat
     public function obat()
     {
-        return $this->belongsToMany(Obat::class, 'RekamMedis_Obat', 'IdRekamMedis', 'IdObat')
+        return $this->belongsToMany(Obat::class, 'rekam_medis_obats', 'IdRekamMedis', 'IdObat')
             ->withPivot('Dosis', 'Frekuensi', 'LamaHari', 'Jumlah', 'HargaSatuan');
     }
     
     // Relasi ke Tindakan
     public function tindakan()
     {
-        return $this->belongsToMany(Tindakan::class, 'RekamMedis_Tindakan', 'IdRekamMedis', 'IdTindakan')
+        return $this->belongsToMany(Tindakan::class, 'rekam_medis_tindakans', 'IdRekamMedis', 'IdTindakan')
             ->withPivot('Jumlah', 'Harga');
+    }
+
+    // Relasi ke TindakanSpesialis
+    public function tindakanSpesialis()
+    {
+        return $this->hasMany(TindakanSpesialis::class, 'IdRekamMedis', 'IdRekamMedis');
     }
 }
