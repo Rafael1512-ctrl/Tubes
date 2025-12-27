@@ -3,13 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use App\Models\Booking;
+use App\Models\User;
+use App\Models\Pasien;
 
 class DashboardController extends Controller
 {
     public function admin()
     {
         $this->authorizeRole('admin');
-        return view('dashboards.admin');
+        
+        // Get recent bookings (PRESENT status, ordered by newest)
+        $recentBookings = Booking::with(['jadwal.dokter', 'pasien'])
+            ->where('Status', 'PRESENT')
+            ->orderBy('TanggalBooking', 'desc')
+            ->limit(10)
+            ->get();
+        
+        // Get statistics
+        $totalPasien = Pasien::count();
+        $totalBookingToday = Booking::whereDate('TanggalBooking', today())
+            ->where('Status', 'PRESENT')
+            ->count();
+        $totalDokter = User::where('role', 'dokter')->count();
+        
+        return view('dashboards.admin', compact('recentBookings', 'totalPasien', 'totalBookingToday', 'totalDokter'));
     }
 
     public function dokter()

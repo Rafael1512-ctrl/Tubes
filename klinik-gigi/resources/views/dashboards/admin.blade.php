@@ -7,7 +7,7 @@
 
 @section('sidebar-menu')
 <a href="#" class="nav-link active"><i class="fa-solid fa-gauge"></i> Overview</a>
-<a href="#" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
+<a href="{{ route('admin.booking') }}" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
 <a href="{{ route('admin.users') }}" class="nav-link"><i class="fa-solid fa-users"></i> Manajemen User</a>
 <a href="#" class="nav-link"><i class="fa-solid fa-file-medical"></i> Rekam Medis</a>
 <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Laporan</a>
@@ -22,7 +22,7 @@
         <div class="card-custom bg-primary text-white p-4">
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                    <h2 class="fw-bold mb-0">1,240</h2>
+                    <h2 class="fw-bold mb-0">{{ $totalPasien }}</h2>
                     <small class="opacity-75">Total Pasien</small>
                 </div>
                 <div class="bg-white bg-opacity-25 p-2 rounded">
@@ -38,7 +38,7 @@
         <div class="card-custom bg-success text-white p-4">
              <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                    <h2 class="fw-bold mb-0">85</h2>
+                    <h2 class="fw-bold mb-0">{{ $totalBookingToday }}</h2>
                     <small class="opacity-75">Booking Hari Ini</small>
                 </div>
                 <div class="bg-white bg-opacity-25 p-2 rounded">
@@ -70,7 +70,7 @@
         <div class="card-custom bg-info text-white p-4">
              <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                    <h2 class="fw-bold mb-0">12</h2>
+                    <h2 class="fw-bold mb-0">{{ $totalDokter }}</h2>
                     <small class="opacity-75">Dokter Aktif</small>
                 </div>
                 <div class="bg-white bg-opacity-25 p-2 rounded">
@@ -90,7 +90,7 @@
         <div class="card-custom mb-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="fw-bold m-0">Permintaan Booking Terbaru</h5>
-                <button class="btn btn-sm btn-outline-primary">Lihat Semua</button>
+                <a href="{{ route('admin.booking') }}" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
             </div>
             
             <div class="table-responsive">
@@ -105,50 +105,63 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @forelse($recentBookings as $booking)
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <img src="https://ui-avatars.com/api/?name=Ahmad&background=random" class="rounded-circle" width="32">
-                                    <span class="fw-bold">Ahmad Dahlan</span>
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($booking->pasien->Nama ?? 'User') }}&background=random" class="rounded-circle" width="32">
+                                    <div>
+                                        <span class="fw-bold d-block">{{ $booking->pasien->Nama ?? '-' }}</span>
+                                        <small class="text-muted">{{ $booking->pasien->NoTelp ?? '-' }}</small>
+                                    </div>
                                 </div>
                             </td>
-                            <td>drg. Budi Santoso</td>
-                            <td>27 Des 2025, 09:00</td>
-                            <td><span class="badge bg-warning text-dark">Menunggu</span></td>
                             <td>
-                                <button class="btn btn-sm btn-success rounded-circle"><i class="fa-solid fa-check"></i></button>
-                                <button class="btn btn-sm btn-danger rounded-circle"><i class="fa-solid fa-xmark"></i></button>
+                                <div class="fw-bold">{{ $booking->jadwal->dokter->Nama ?? '-' }}</div>
+                                <small class="text-muted">{{ ucfirst($booking->jadwal->dokter->Jabatan ?? '-') }}</small>
                             </td>
-                        </tr>
-                         <tr>
                             <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <img src="https://ui-avatars.com/api/?name=Dewi&background=random" class="rounded-circle" width="32">
-                                    <span class="fw-bold">Dewi Sartika</span>
+                                <div class="fw-bold">{{ $booking->jadwal->formatted_tanggal ?? '-' }}</div>
+                                <small class="text-muted">{{ $booking->jadwal->formatted_jam ?? '-' }} ({{ $booking->jadwal->sesi ?? '-' }})</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $booking->Status == 'PRESENT' ? 'success' : 'danger' }}">
+                                    {{ $booking->Status }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    @if($booking->Status == 'PRESENT')
+                                    <!-- Keep as PRESENT (already approved) -->
+                                    <span class="badge bg-success">
+                                        <i class="fa-solid fa-check"></i> Aktif
+                                    </span>
+                                    
+                                    <!-- Cancel Button -->
+                                    <form action="{{ route('admin.booking.destroy', $booking->IdBooking) }}" 
+                                          method="POST" 
+                                          onsubmit="return confirm('Yakin ingin membatalkan booking ini?')"
+                                          style="display:inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger rounded-circle" title="Batalkan">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    </form>
+                                    @else
+                                    <span class="badge bg-secondary">Cancelled</span>
+                                    @endif
                                 </div>
                             </td>
-                            <td>drg. Sari Mawar</td>
-                            <td>27 Des 2025, 10:30</td>
-                            <td><span class="badge bg-warning text-dark">Menunggu</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-success rounded-circle"><i class="fa-solid fa-check"></i></button>
-                                <button class="btn btn-sm btn-danger rounded-circle"><i class="fa-solid fa-xmark"></i></button>
-                            </td>
                         </tr>
+                        @empty
                         <tr>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <img src="https://ui-avatars.com/api/?name=Joko&background=random" class="rounded-circle" width="32">
-                                    <span class="fw-bold">Joko Widodo</span>
-                                </div>
-                            </td>
-                            <td>drg. Andi Wijaya</td>
-                            <td>28 Des 2025, 14:00</td>
-                            <td><span class="badge bg-success">Disetujui</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-light border" disabled>Done</button>
+                            <td colspan="5" class="text-center py-4">
+                                <i class="fa-solid fa-inbox fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-0">Tidak ada booking terbaru</p>
                             </td>
                         </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

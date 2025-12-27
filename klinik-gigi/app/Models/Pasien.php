@@ -9,35 +9,36 @@ class Pasien extends Model
 {
     use HasFactory;
 
-    protected $table = 'pasien';          // nama tabel di database
-    protected $primaryKey = 'PasienID';   // primary key tabel
-    public $timestamps = false;           // tabel pasien tidak punya created_at/updated_at
+    protected $table = 'pasien';
+    protected $primaryKey = 'PasienID'; // HARUS 'PasienID' bukan 'pasienid'
+    public $incrementing = false;
+    public $timestamps = false;
 
+    // SESUAIKAN DENGAN DATABASE (huruf kapital)
     protected $fillable = [
-        'PasienID',
-        'Nama',
-        'TanggalLahir',
-        'Alamat',
-        'NoTelp',
-        'JenisKelamin',
-        'user_id', // kalau kamu hubungkan ke tabel users
+        'user_id',
+        'Nama',           // Database: Nama (huruf kapital)
+        'TanggalLahir',   // Database: TanggalLahir (camelCase)
+        'Alamat',         // Database: Alamat
+        'NoTelp',         // Database: NoTelp (bukan notelp)
+        'JenisKelamin',   // Database: JenisKelamin
     ];
 
-    // Relasi ke tabel users (opsional, kalau pasien bisa login)
+    // Relasi ke user
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    // Relasi ke rekam medis (kalau ada tabel rekammedis)
+    // Relasi ke rekam medis
     public function rekamMedis()
     {
-        return $this->hasMany(RekamMedis::class, 'PasienID');
+        return $this->hasMany(RekamMedis::class, 'PasienID', 'PasienID');
     }
 
-    // Relasi ke booking/jadwal (kalau ada tabel booking)
+    // Relasi ke booking/jadwal
     public function bookings()
     {
-        return $this->hasMany(Booking::class, 'PasienID');
+        return $this->hasMany(Booking::class, 'PasienID', 'PasienID');
     }
 }
