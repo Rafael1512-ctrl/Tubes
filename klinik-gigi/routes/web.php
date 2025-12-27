@@ -5,13 +5,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\HomeController;
 
-// Default route ke login
-// Tampilkan form login
+// Landing page
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Authentication routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::redirect('/', '/login');
 
 // Dashboard per role
 // Dashboard per role
