@@ -174,9 +174,40 @@
             margin: 0;
             opacity: 0.9;
         }
+        .btn-back-home {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .btn-back-home:hover {
+            transform: translateX(-5px);
+            background: white;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            color: var(--primary-hover);
+        }
     </style>
 </head>
 <body>
+
+    <a href="/" class="btn-back-home">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+    </a>
 
     <div class="login-wrapper">
         <div class="login-card">

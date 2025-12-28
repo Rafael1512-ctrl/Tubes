@@ -18,9 +18,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Dashboard per role
 // Dashboard per role
 Route::middleware('auth')->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'admin']);
-    Route::get('/dokter/dashboard', [DashboardController::class, 'dokter']);
-    Route::get('/pasien/dashboard', [DashboardController::class, 'pasien']);
+    Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
+    Route::get('/dokter/dashboard', [DashboardController::class, 'dokter'])->name('dokter.dashboard');
+    Route::get('/pasien/dashboard', [DashboardController::class, 'pasien'])->name('pasien.dashboard');
 
     // Tambahan fitur khusus admin
     Route::prefix('admin')->group(function () {
@@ -48,6 +48,43 @@ Route::middleware('auth')->group(function () {
         Route::get('/booking/{id}/edit', [BookingController::class, 'edit'])->name('admin.booking.edit');
         Route::put('/booking/{id}', [BookingController::class, 'update'])->name('admin.booking.update');
         Route::delete('/booking/{id}', [BookingController::class, 'destroy'])->name('admin.booking.destroy');
+
+        // Pembayaran Management (New)
+        Route::get('/pembayaran', [App\Http\Controllers\PembayaranController::class, 'index'])->name('admin.pembayaran');
+        Route::get('/pembayaran/create/{id}', [App\Http\Controllers\PembayaranController::class, 'create'])->name('admin.pembayaran.create');
+        Route::post('/pembayaran', [App\Http\Controllers\PembayaranController::class, 'store'])->name('admin.pembayaran.store');
+
+        // Patient Data (New)
+        Route::get('/pasien', [AdminController::class, 'pasien'])->name('admin.pasien');
+        Route::get('/pasien/{id}/history', [AdminController::class, 'history'])->name('admin.pasien.history');
+
+        // Obat Management (New)
+        Route::get('/obat', [App\Http\Controllers\ObatController::class, 'index'])->name('admin.obat');
+        Route::get('/obat/create', [App\Http\Controllers\ObatController::class, 'create'])->name('admin.obat.create');
+        Route::post('/obat', [App\Http\Controllers\ObatController::class, 'store'])->name('admin.obat.store');
+        Route::get('/obat/{id}/edit', [App\Http\Controllers\ObatController::class, 'edit'])->name('admin.obat.edit');
+        Route::put('/obat/{id}', [App\Http\Controllers\ObatController::class, 'update'])->name('admin.obat.update');
+        Route::delete('/obat/{id}', [App\Http\Controllers\ObatController::class, 'destroy'])->name('admin.obat.destroy');
+
+        // Laporan (New)
+        Route::get('/laporan', [App\Http\Controllers\LaporanController::class, 'index'])->name('admin.laporan');
+        Route::get('/laporan/download', [App\Http\Controllers\LaporanController::class, 'downloadPDF'])->name('admin.laporan.pdf');
+    });
+
+    // Fitur khusus Dokter
+    Route::prefix('dokter')->group(function () {
+        Route::get('/rekam-medis/create/{idBooking}', [App\Http\Controllers\RekamMedisController::class, 'create'])->name('dokter.rekam-medis.create');
+        Route::post('/rekam-medis', [App\Http\Controllers\RekamMedisController::class, 'store'])->name('dokter.rekam-medis.store');
+        
+        // Jadwal Saya
+        Route::get('/jadwal', [App\Http\Controllers\DokterController::class, 'jadwal'])->name('dokter.jadwal');
+
+        // Data Pasien & History
+        Route::get('/pasien', [App\Http\Controllers\DokterController::class, 'pasien'])->name('dokter.pasien');
+        Route::get('/pasien/{id}/history', [App\Http\Controllers\DokterController::class, 'history'])->name('dokter.pasien.history');
+
+        // Riwayat Praktek
+        Route::get('/riwayat', [App\Http\Controllers\DokterController::class, 'riwayat'])->name('dokter.riwayat');
     });
 });
 

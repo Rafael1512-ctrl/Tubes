@@ -8,7 +8,6 @@
 @section('sidebar-menu')
     <a href="/admin/dashboard" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
     <a href="{{ route('admin.booking') }}" class="nav-link active"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
-    <a href="{{ route('admin.users') }}" class="nav-link"><i class="fa-solid fa-users"></i> Manajemen User</a>
 @endsection
 
 @section('content')
@@ -65,28 +64,16 @@
                         <input class="form-check-input" type="radio" name="Sesi" id="sesi_pagi" 
                                value="pagi" {{ old('Sesi') == 'pagi' ? 'checked' : '' }} required>
                         <label class="form-check-label" for="sesi_pagi">
-                            <i class="fa-solid fa-sun text-warning"></i> Pagi (09:00 - 12:00)
+                            Pagi (09:00 - 12:00)
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="Sesi" id="sesi_sore" 
                                value="sore" {{ old('Sesi') == 'sore' ? 'checked' : '' }} required>
                         <label class="form-check-label" for="sesi_sore">
-                            <i class="fa-solid fa-moon text-primary"></i> Sore (17:00 - 20:00)
+                            Sore (17:00 - 20:00)
                         </label>
                     </div>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label fw-bold">Kapasitas (Otomatis)</label>
-                <div class="alert alert-info" id="kapasitas-info">
-                    <i class="fa-solid fa-info-circle"></i>
-                    Kapasitas akan ditentukan otomatis berdasarkan jabatan dokter:
-                    <ul class="mb-0 mt-2">
-                        <li><strong>Dokter Gigi:</strong> 15 pasien</li>
-                        <li><strong>Dokter Spesialis:</strong> 4 pasien</li>
-                    </ul>
                 </div>
             </div>
 
@@ -96,6 +83,15 @@
                     <option value="Available" {{ old('Status') == 'Available' ? 'selected' : '' }}>Available</option>
                     <option value="Cancelled" {{ old('Status') == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                 </select>
+            </div>
+
+            <div class="alert alert-info">
+                <i class="fa-solid fa-info-circle"></i>
+                <strong>Informasi Kapasitas:</strong>
+                <ul class="mb-0 mt-2">
+                    <li><strong>Dokter Gigi:</strong> 15 pasien</li>
+                    <li><strong>Dokter Spesialis:</strong> 4 pasien</li>
+                </ul>
             </div>
 
             <div class="d-flex gap-2">
@@ -109,5 +105,59 @@
         </form>
     </div>
 </div>
+
+<style>
+    /* Styling optional jika user menginginkan sedikit touch-up tapi tetap simple */
+    .form-label {
+        color: #495057;
+    }
+</style>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tanggalInput = document.getElementById('Tanggal');
+    const pagiRadio = document.getElementById('sesi_pagi');
+    const soreRadio = document.getElementById('sesi_sore');
+
+    function checkSessions() {
+        const today = new Date().toISOString().split('T')[0];
+        const selectedDate = tanggalInput.value;
+        const now = new Date();
+        const currentHour = now.getHours();
+
+        if (selectedDate === today) {
+            // Pagi: berakhir 12:00, batas 11:00
+            if (currentHour >= 11) {
+                pagiRadio.disabled = true;
+                if (pagiRadio.checked) {
+                    pagiRadio.checked = false;
+                    soreRadio.checked = true;
+                }
+            } else {
+                pagiRadio.disabled = false;
+            }
+
+            // Sore: berakhir 20:00, batas 19:00
+            if (currentHour >= 19) {
+                soreRadio.disabled = true;
+                if (soreRadio.checked) {
+                    soreRadio.checked = false;
+                    alert('Semua sesi untuk hari ini sudah mencapai batas waktu booking (1 jam sebelum berakhir). Silakan pilih tanggal lain.');
+                }
+            } else {
+                soreRadio.disabled = false;
+            }
+        } else {
+            pagiRadio.disabled = false;
+            soreRadio.disabled = false;
+        }
+    }
+
+    tanggalInput.addEventListener('change', checkSessions);
+    checkSessions(); // Run on load
+});
+</script>
+@endpush
 
 @endsection

@@ -8,7 +8,6 @@
 @section('sidebar-menu')
     <a href="/admin/dashboard" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
     <a href="{{ route('admin.booking') }}" class="nav-link active"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
-    <a href="{{ route('admin.users') }}" class="nav-link"><i class="fa-solid fa-users"></i> Manajemen User</a>
 @endsection
 
 @section('content')
@@ -89,22 +88,23 @@
             </div>
             @endif
 
-            <div class="d-flex gap-2">
+            <div class="d-flex gap-2 mt-4">
                 <button type="submit" class="btn btn-primary">
                     <i class="fa-solid fa-save"></i> Update Jadwal
                 </button>
                 <a href="{{ route('admin.jadwal') }}" class="btn btn-secondary">
                     <i class="fa-solid fa-arrow-left"></i> Kembali
                 </a>
-                <form action="{{ route('admin.jadwal.destroy', $jadwal->IdJadwal) }}" method="POST" 
-                      onsubmit="return confirm('Yakin ingin membatalkan jadwal ini?')" class="ms-auto">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fa-solid fa-ban"></i> Batalkan Jadwal
-                    </button>
-                </form>
             </div>
+        </form>
+
+        <form action="{{ route('admin.jadwal.destroy', $jadwal->IdJadwal) }}" method="POST" 
+              onsubmit="return confirm('Yakin ingin membatalkan jadwal ini?')" class="mt-3 text-end">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">
+                <i class="fa-solid fa-ban"></i> Batalkan Jadwal
+            </button>
         </form>
     </div>
 </div>

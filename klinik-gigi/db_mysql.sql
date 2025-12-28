@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 27, 2025 at 10:47 AM
+-- Generation Time: Dec 28, 2025 at 11:26 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -526,7 +526,31 @@ CREATE TABLE `booking` (
 --
 
 INSERT INTO `booking` (`IdBooking`, `IdJadwal`, `PasienID`, `TanggalBooking`, `Status`) VALUES
-('B-2512-0001', 'J-2512-0001', 'P-2025-00001', '2025-12-27 09:43:27', 'PRESENT');
+('B-2505-0001', 'J-2505-0001', 'P-2025-00001', '2025-04-28 10:00:00', 'COMPLETED'),
+('B-2505-0002', 'J-2505-0003', 'P-2025-00002', '2025-04-30 14:30:00', 'COMPLETED'),
+('B-2505-0003', 'J-2505-0005', 'P-2025-00003', '2025-05-01 09:15:00', 'CANCELLED'),
+('B-2505-0004', 'J-2505-0007', 'P-2025-00004', '2025-05-02 11:00:00', 'COMPLETED'),
+('B-2506-0001', 'J-2506-0001', 'P-2025-00005', '2025-05-25 13:20:00', 'COMPLETED'),
+('B-2506-0002', 'J-2506-0003', 'P-2025-00001', '2025-05-28 15:45:00', 'COMPLETED'),
+('B-2506-0003', 'J-2506-0005', 'P-2025-00003', '2025-06-01 10:30:00', 'PRESENT'),
+('B-2506-0004', 'J-2506-0007', 'P-2025-00002', '2025-06-02 16:20:00', 'COMPLETED'),
+('B-2507-0001', 'J-2507-0001', 'P-2025-00004', '2025-06-25 14:00:00', 'COMPLETED'),
+('B-2507-0002', 'J-2507-0003', 'P-2025-00005', '2025-06-28 09:30:00', 'CANCELLED'),
+('B-2507-0003', 'J-2507-0005', 'P-2025-00001', '2025-07-01 11:45:00', 'COMPLETED'),
+('B-2507-0004', 'J-2507-0007', 'P-2025-00003', '2025-07-03 13:15:00', 'PRESENT'),
+('B-2512-0001', 'J-2512-0001', 'P-2025-00001', '2025-12-27 09:43:27', 'CANCELLED'),
+('B-2512-0002', 'J-2512-0001', 'P-2025-00001', '2025-12-28 07:01:23', 'CANCELLED'),
+('B-2512-0003', 'J-2512-0001', 'P-2025-00002', '2025-12-28 07:01:35', 'CANCELLED'),
+('B-2512-0004', 'J-2512-0002', 'P-2025-00002', '2025-12-28 07:14:07', 'COMPLETED'),
+('B-2512-0005', 'J-2512-0004', 'P-2025-00001', '2025-12-28 07:14:16', 'CANCELLED'),
+('B-2512-0006', 'J-2512-0003', 'P-2025-00002', '2025-12-28 07:17:09', 'COMPLETED'),
+('B-2512-0007', 'J-2512-0003', 'P-2025-00001', '2025-12-28 07:17:18', 'COMPLETED'),
+('B-2512-0008', 'J-2512-0006', 'P-2025-00005', '2025-12-28 09:03:10', 'PRESENT'),
+('B-2512-0009', 'J-2512-0009', 'P-2025-00004', '2025-12-28 09:03:19', 'PRESENT'),
+('B-2512-0010', 'J-2601-0002', 'P-2025-00005', '2025-12-28 09:03:31', 'PRESENT'),
+('B-2512-0011', 'J-2601-0003', 'P-2025-00001', '2025-12-28 14:00:00', 'PRESENT'),
+('B-2512-0012', 'J-2601-0004', 'P-2025-00002', '2025-12-28 14:30:00', 'PRESENT'),
+('B-2512-0013', 'J-2512-0011', 'P-2025-00005', '2025-12-28 17:20:38', 'COMPLETED');
 
 -- --------------------------------------------------------
 
@@ -589,7 +613,46 @@ CREATE TABLE `jadwal` (
 --
 
 INSERT INTO `jadwal` (`IdJadwal`, `IdDokter`, `Tanggal`, `JamMulai`, `JamAkhir`, `Status`, `Kapasitas`) VALUES
-('J-2512-0001', 'D-001', '2025-12-28', '09:00:00', '12:00:00', 'Available', 15);
+('J-2505-0001', 'D-001', '2025-05-05', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2505-0002', 'D-001', '2025-05-12', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2505-0003', 'D-002', '2025-05-19', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2505-0004', 'D-002', '2025-05-26', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2505-0005', 'D-003', '2025-05-06', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2505-0006', 'D-003', '2025-05-20', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2505-0007', 'D-004', '2025-05-13', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2505-0008', 'D-004', '2025-05-27', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2506-0001', 'D-001', '2025-06-02', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2506-0002', 'D-001', '2025-06-09', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2506-0003', 'D-002', '2025-06-16', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2506-0004', 'D-002', '2025-06-23', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2506-0005', 'D-003', '2025-06-03', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2506-0006', 'D-003', '2025-06-17', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2506-0007', 'D-004', '2025-06-10', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2506-0008', 'D-004', '2025-06-24', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2507-0001', 'D-001', '2025-07-07', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2507-0002', 'D-001', '2025-07-14', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2507-0003', 'D-002', '2025-07-21', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2507-0004', 'D-002', '2025-07-28', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2507-0005', 'D-003', '2025-07-08', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2507-0006', 'D-003', '2025-07-22', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2507-0007', 'D-004', '2025-07-15', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2507-0008', 'D-004', '2025-07-29', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2512-0001', 'D-001', '2025-12-28', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2512-0002', 'D-001', '2025-12-28', '17:00:00', '20:00:00', 'Available', 15),
+('J-2512-0003', 'D-002', '2025-12-30', '09:00:00', '12:00:00', 'Available', 4),
+('J-2512-0004', 'D-002', '2025-12-29', '17:00:00', '20:00:00', 'Available', 4),
+('J-2512-0005', 'D-001', '2025-12-28', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2512-0006', 'D-003', '2025-12-29', '09:00:00', '12:00:00', 'Available', 4),
+('J-2512-0007', 'D-003', '2025-12-30', '17:00:00', '20:00:00', 'Available', 4),
+('J-2512-0008', 'D-004', '2025-12-29', '09:00:00', '12:00:00', 'Available', 4),
+('J-2512-0009', 'D-004', '2025-12-31', '17:00:00', '20:00:00', 'Available', 4),
+('J-2512-0010', 'D-002', '2025-12-30', '17:00:00', '20:00:00', 'Available', 4),
+('J-2512-0011', 'D-002', '2025-12-28', '17:00:00', '20:00:00', 'Available', 4),
+('J-2601-0001', 'D-001', '2026-01-02', '09:00:00', '12:00:00', 'Available', 15),
+('J-2601-0002', 'D-002', '2026-01-03', '09:00:00', '12:00:00', 'Available', 4),
+('J-2601-0003', 'D-003', '2026-01-05', '09:00:00', '12:00:00', 'Available', 4),
+('J-2601-0004', 'D-004', '2026-01-06', '17:00:00', '20:00:00', 'Available', 4),
+('J-2601-0005', 'D-001', '2026-01-04', '09:00:00', '12:00:00', 'Available', 15);
 
 -- --------------------------------------------------------
 
@@ -611,7 +674,9 @@ INSERT INTO `jenisobat` (`JenisObatID`, `NamaJenis`) VALUES
 (5, 'Anestesi Lokal'),
 (2, 'Antibiotik'),
 (4, 'Antiinflamasi'),
-(3, 'Antiseptik');
+(3, 'Antiseptik'),
+(6, 'Obat Kumur Khusus'),
+(7, 'Obat Orthodonti');
 
 -- --------------------------------------------------------
 
@@ -690,16 +755,19 @@ CREATE TABLE `obat` (
 --
 
 INSERT INTO `obat` (`IdObat`, `IdJenisObat`, `NamaObat`, `Satuan`, `Harga`, `Stok`) VALUES
-('O-00001', 1, 'Paracetamol 500mg', 'Tablet', 2000.00, 100),
-('O-00002', 1, 'Ibuprofen 400mg', 'Tablet', 3000.00, 80),
-('O-00003', 2, 'Amoxicillin 500mg', 'Kapsul', 5000.00, 50),
+('O-00001', 1, 'Paracetamol 500mg', 'Tablet', 2000.00, 190),
+('O-00002', 1, 'Ibuprofen 400mg', 'Tablet', 3000.00, 74),
+('O-00003', 2, 'Amoxicillin 500mg', 'Kapsul', 5000.00, 21),
 ('O-00004', 2, 'Clindamycin 300mg', 'Kapsul', 8000.00, 40),
-('O-00005', 3, 'Chlorhexidine 0.2%', 'Botol 100ml', 25000.00, 30),
+('O-00005', 3, 'Chlorhexidine 0.2%', 'Botol 100ml', 25000.00, 28),
 ('O-00006', 3, 'Povidone Iodine', 'Botol 50ml', 15000.00, 25),
-('O-00007', 4, 'Dexamethasone', 'Tablet', 3500.00, 60),
-('O-00008', 5, 'Lidocaine 2%', 'Ampul', 12000.00, 45),
-('O-00009', 5, 'Mepivacaine 3%', 'Ampul', 15000.00, 35),
-('O-00010', 1, 'Ketorolac 10mg', 'Tablet', 4500.00, 55);
+('O-00007', 4, 'Dexamethasone', 'Tablet', 3500.00, 50),
+('O-00008', 5, 'Lidocaine 2%', 'Ampul', 12000.00, 93),
+('O-00009', 5, 'Mepivacaine 3%', 'Ampul', 15000.00, 64),
+('O-00010', 1, 'Ketorolac 10mg', 'Tablet', 4500.00, 55),
+('O-00011', 6, 'Fluoride Gel 1.23%', 'Tube 50g', 75000.00, 30),
+('O-00012', 7, 'Wax Orthodonti', 'Pack 10 strips', 25000.00, 50),
+('O-00013', 3, 'Antiseptik Rongga Mulut', 'Botol 200ml', 45000.00, 24);
 
 -- --------------------------------------------------------
 
@@ -718,6 +786,24 @@ CREATE TABLE `obat_log` (
   `IdRekamMedis` varchar(15) DEFAULT NULL,
   `CreatedBy` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `obat_log`
+--
+
+INSERT INTO `obat_log` (`LogID`, `IdObat`, `Tanggal`, `Aksi`, `Jumlah`, `StokSebelum`, `StokSesudah`, `IdRekamMedis`, `CreatedBy`) VALUES
+(1, 'O-00001', '2025-12-28 16:05:32', 'MASUK', 100.00, 99.00, 199.00, NULL, 'admin'),
+(2, 'O-00008', '2025-12-28 16:05:32', 'MASUK', 50.00, 45.00, 95.00, NULL, 'admin'),
+(3, 'O-00009', '2025-12-28 16:05:32', 'MASUK', 30.00, 34.00, 64.00, NULL, 'admin'),
+(4, 'O-00001', '2025-05-05 13:00:00', 'KELUAR', 9.00, 199.00, 190.00, NULL, 'dokter'),
+(5, 'O-00005', '2025-05-05 13:00:00', 'KELUAR', 1.00, 30.00, 29.00, NULL, 'dokter'),
+(6, 'O-00003', '2025-05-19 11:00:00', 'KELUAR', 14.00, 50.00, 36.00, NULL, 'dokter'),
+(7, 'O-00002', '2025-05-13 14:00:00', 'KELUAR', 6.00, 80.00, 74.00, NULL, 'dokter'),
+(8, 'O-00005', '2025-06-16 10:00:00', 'KELUAR', 1.00, 29.00, 28.00, NULL, 'dokter'),
+(9, 'O-00007', '2025-07-07 12:30:00', 'KELUAR', 10.00, 60.00, 50.00, NULL, 'dokter'),
+(10, 'O-00013', '2025-07-07 12:30:00', 'KELUAR', 1.00, 25.00, 24.00, NULL, 'dokter'),
+(11, 'O-00003', '2025-07-08 16:00:00', 'KELUAR', 15.00, 36.00, 21.00, NULL, 'dokter'),
+(12, 'O-00008', '2025-07-08 16:00:00', 'KELUAR', 2.00, 95.00, 93.00, NULL, 'dokter');
 
 -- --------------------------------------------------------
 
@@ -740,8 +826,11 @@ CREATE TABLE `pasien` (
 --
 
 INSERT INTO `pasien` (`PasienID`, `user_id`, `Nama`, `TanggalLahir`, `Alamat`, `NoTelp`, `JenisKelamin`) VALUES
-('P-2025-00001', 3, 'Errvin Junius', NULL, 'ajl gatau', '089723547869', 'L'),
-('P-2025-00002', 6, 'aryanto budi', '2025-12-18', 'jl sukakarya', '087634568721', 'L');
+('P-2025-00001', 3, 'Errvin Junius', '2005-12-29', 'ajl gatau', '089723547869', 'L'),
+('P-2025-00002', 6, 'aryanto budi', '2005-12-09', 'jl sukakarya', '087634568721', 'L'),
+('P-2025-00003', 11, 'Anita Rahma', '2018-05-15', 'Jl. Merdeka No. 12, Bandung', '08111222333', 'P'),
+('P-2025-00004', 12, 'Rudi Hartono', '1985-08-20', 'Jl. Sudirman No. 45, Jakarta', '08222333444', 'L'),
+('P-2025-00005', 13, 'Siti Nurhaliza', '1990-11-30', 'Jl. Gatot Subroto No. 78, Surabaya', '08333444555', 'P');
 
 -- --------------------------------------------------------
 
@@ -778,7 +867,9 @@ INSERT INTO `pegawai` (`PegawaiID`, `user_id`, `Nama`, `Jabatan`, `TanggalMasuk`
 ('A-001', 1, 'Hans Maulana Budiputra', 'admin', '2025-12-26', '081234567890'),
 ('A-002', 5, 'Bryant supadmo', 'admin', '2025-12-27', '087634568721'),
 ('D-001', 2, 'Rafael', 'dokter gigi', '2025-12-26', '089878982343'),
-('D-002', 7, 'Budi Santoso', 'dokter spesialis', '2025-12-27', '09876234567');
+('D-002', 7, 'Budi Santoso', 'dokter spesialis', '2025-12-27', '09876234567'),
+('D-003', 9, 'Sari Mawar', 'Dokter Spesialis', '2025-01-15', '081234567891'),
+('D-004', 10, 'Andi Wijaya', 'Dokter Spesialis', '2025-01-15', '081234567892');
 
 -- --------------------------------------------------------
 
@@ -796,6 +887,24 @@ CREATE TABLE `pembayaran` (
   `Status` varchar(20) DEFAULT 'UNPAID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `pembayaran`
+--
+
+INSERT INTO `pembayaran` (`IdPembayaran`, `IdRekamMedis`, `PasienID`, `TanggalPembayaran`, `Metode`, `TotalBayar`, `Status`) VALUES
+('PAY-2505-0001', 'RM-2025-0004', 'P-2025-00001', '2025-05-05 13:30:00', 'Transfer', 667000.00, 'PAID'),
+('PAY-2505-0002', 'RM-2025-0005', 'P-2025-00002', '2025-05-19 11:45:00', 'Asuransi', 1070000.00, 'PAID'),
+('PAY-2505-0003', 'RM-2025-0006', 'P-2025-00004', '2025-05-13 14:20:00', 'Tunai', 1553000.00, 'PAID'),
+('PAY-2506-0001', 'RM-2025-0007', 'P-2025-00005', '2025-06-02 12:15:00', 'Transfer', 312000.00, 'PAID'),
+('PAY-2506-0002', 'RM-2025-0008', 'P-2025-00001', '2025-06-16 10:30:00', 'Asuransi', 275000.00, 'PAID'),
+('PAY-2506-0003', 'RM-2025-0009', 'P-2025-00002', '2025-06-10 15:45:00', 'Tunai', 406000.00, 'PAID'),
+('PAY-2507-0001', 'RM-2025-0010', 'P-2025-00004', '2025-07-07 13:00:00', 'Transfer', 85000.00, 'PAID'),
+('PAY-2507-0002', 'RM-2025-0011', 'P-2025-00001', '2025-07-08 16:30:00', 'Asuransi', 2840000.00, 'PAID'),
+('PAY-2512-0001', 'RM-2025-0001', 'P-2025-00002', '2025-12-28 08:12:53', 'Asuransi', 817000.00, 'PAID'),
+('PAY-2512-0002', 'RM-2025-0002', 'P-2025-00002', '2025-12-28 09:19:18', 'Tunai', 15339000.00, 'PAID'),
+('PAY-2512-0003', 'RM-2025-0003', 'P-2025-00001', '2025-12-28 09:19:21', 'Transfer', 5616000.00, 'PAID'),
+('PAY-2512-0012', 'RM-2025-0012', 'P-2025-00005', '2025-12-28 17:23:22', 'Tunai', 50000.00, 'PAID');
+
 -- --------------------------------------------------------
 
 --
@@ -811,6 +920,24 @@ CREATE TABLE `rekammedis` (
   `Diagnosa` varchar(200) NOT NULL,
   `Catatan` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rekammedis`
+--
+
+INSERT INTO `rekammedis` (`IdRekamMedis`, `IdBooking`, `PasienID`, `DokterID`, `Tanggal`, `Diagnosa`, `Catatan`) VALUES
+('RM-2025-0001', 'B-2512-0004', 'P-2025-00002', 'D-001', '2025-12-28', 'tumbuh gigi bungsu', 'alergi niripidin'),
+('RM-2025-0002', 'B-2512-0006', 'P-2025-00002', 'D-002', '2025-12-30', 'Maloklusi Angle Class I dengan spacing pada gigi anterior rahang atas', 'Pasien dewasa usia 20 tahun ingin memperbaiki estetik gigi depan. Rencana perawatan dengan clear aligner'),
+('RM-2025-0003', 'B-2512-0007', 'P-2025-00001', 'D-002', '2025-12-30', 'Deep bite dengan crowding moderate pada rahang bawah', 'Pasien muda usia 20 tahun dengan keluhan gigi berjejal dan overbite. Rencana perawatan 2 tahap'),
+('RM-2025-0004', 'B-2505-0001', 'P-2025-00001', 'D-001', '2025-05-05', 'Karies gigi molar pertama', 'Tambalan komposit, kontrol 6 bulan'),
+('RM-2025-0005', 'B-2505-0002', 'P-2025-00002', 'D-002', '2025-05-19', 'Periodontitis kronis derajat sedang', 'Scaling dan root planing, edukasi perawatan mulut'),
+('RM-2025-0006', 'B-2505-0004', 'P-2025-00004', 'D-004', '2025-05-13', 'Gigi tiruan lepasan perlu penyesuaian', 'Relining gigi tiruan atas, kontrol 1 minggu'),
+('RM-2025-0007', 'B-2506-0001', 'P-2025-00005', 'D-001', '2025-06-02', 'Pulpitis reversibel gigi premolar', 'Proteksi pulpa dengan bahan sedatif, kontrol 1 bulan'),
+('RM-2025-0008', 'B-2506-0002', 'P-2025-00001', 'D-002', '2025-06-16', 'Kalkulus supragingiva berat', 'Scaling ultrasonik, kontrol 3 bulan'),
+('RM-2025-0009', 'B-2506-0004', 'P-2025-00002', 'D-004', '2025-06-10', 'Trauma gigi anterior dengan fraktur enamel', 'Pemolesan tepi fraktur, observasi vitalitas pulpa'),
+('RM-2025-0010', 'B-2507-0001', 'P-2025-00004', 'D-001', '2025-07-07', 'Ulkus aftosa rekuren', 'Aplikasi topikal, saran diet, kontrol jika tidak membaik'),
+('RM-2025-0011', 'B-2507-0003', 'P-2025-00001', 'D-003', '2025-07-08', 'Gigi molar ketiga impaksi mesioangular', 'Konsultasi bedah pencabutan, rencana operasi'),
+('RM-2025-0012', 'B-2512-0013', 'P-2025-00005', 'D-002', '2025-12-28', 'konsultasi pemasangan behel', 'Minta ronthen gigi keseluruhan');
 
 -- --------------------------------------------------------
 
@@ -829,6 +956,29 @@ CREATE TABLE `rekammedis_obat` (
   `SubTotal` decimal(12,2) GENERATED ALWAYS AS (`Jumlah` * `HargaSatuan`) STORED
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `rekammedis_obat`
+--
+
+INSERT INTO `rekammedis_obat` (`IdRekamMedis`, `IdObat`, `Dosis`, `Frekuensi`, `LamaHari`, `Jumlah`, `HargaSatuan`) VALUES
+('RM-2025-0001', 'O-00001', '-', '-', 1, 1.00, 2000.00),
+('RM-2025-0001', 'O-00009', '-', '-', 1, 1.00, 15000.00),
+('RM-2025-0002', 'O-00001', '500mg', '2x1 jika nyeri', 3, 6.00, 2000.00),
+('RM-2025-0002', 'O-00010', '10mg', '2x1 jika nyeri hebat', 3, 6.00, 4500.00),
+('RM-2025-0003', 'O-00001', '500mg', '3x1 jika nyeri', 5, 15.00, 2000.00),
+('RM-2025-0003', 'O-00006', '10ml', 'kumur 2x sehari', 1, 1.00, 15000.00),
+('RM-2025-0003', 'O-00007', '0.5mg', '2x1', 3, 6.00, 3500.00),
+('RM-2025-0004', 'O-00001', '500mg', '3x1 jika nyeri', 3, 9.00, 2000.00),
+('RM-2025-0004', 'O-00005', '10ml', 'kumur 2x sehari', 7, 1.00, 25000.00),
+('RM-2025-0005', 'O-00003', '500mg', '2x1', 7, 14.00, 5000.00),
+('RM-2025-0006', 'O-00002', '400mg', '2x1 jika nyeri', 3, 6.00, 3000.00),
+('RM-2025-0007', 'O-00001', '500mg', '3x1 jika nyeri', 2, 6.00, 2000.00),
+('RM-2025-0008', 'O-00005', '15ml', 'kumur 2x sehari', 5, 1.00, 25000.00),
+('RM-2025-0010', 'O-00007', '0.5mg', '2x1', 5, 10.00, 3500.00),
+('RM-2025-0010', 'O-00013', '10ml', 'kumur 3x sehari', 7, 1.00, 45000.00),
+('RM-2025-0011', 'O-00003', '500mg', '3x1', 5, 15.00, 5000.00),
+('RM-2025-0011', 'O-00008', '1.8ml', 'suntik lokal', 1, 2.00, 12000.00);
+
 -- --------------------------------------------------------
 
 --
@@ -842,6 +992,31 @@ CREATE TABLE `rekammedis_tindakan` (
   `Harga` decimal(12,2) NOT NULL,
   `SubTotal` decimal(12,2) GENERATED ALWAYS AS (`Jumlah` * `Harga`) STORED
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rekammedis_tindakan`
+--
+
+INSERT INTO `rekammedis_tindakan` (`IdRekamMedis`, `IdTindakan`, `Jumlah`, `Harga`) VALUES
+('RM-2025-0001', 'T-006', 1, 800000.00),
+('RM-2025-0002', 'T-019', 1, 300000.00),
+('RM-2025-0002', 'T-021', 1, 15000000.00),
+('RM-2025-0003', 'T-002', 1, 250000.00),
+('RM-2025-0003', 'T-009', 1, 5000000.00),
+('RM-2025-0003', 'T-019', 1, 300000.00),
+('RM-2025-0004', 'T-002', 1, 250000.00),
+('RM-2025-0004', 'T-004', 1, 400000.00),
+('RM-2025-0005', 'T-002', 2, 250000.00),
+('RM-2025-0005', 'T-019', 1, 300000.00),
+('RM-2025-0006', 'T-001', 1, 50000.00),
+('RM-2025-0006', 'T-008', 1, 1500000.00),
+('RM-2025-0007', 'T-003', 1, 300000.00),
+('RM-2025-0008', 'T-002', 1, 250000.00),
+('RM-2025-0009', 'T-004', 1, 400000.00),
+('RM-2025-0010', 'T-001', 1, 50000.00),
+('RM-2025-0011', 'T-015', 1, 2500000.00),
+('RM-2025-0011', 'T-019', 1, 300000.00),
+('RM-2025-0012', 'T-001', 1, 50000.00);
 
 -- --------------------------------------------------------
 
@@ -885,7 +1060,19 @@ INSERT INTO `tindakan` (`IdTindakan`, `NamaTindakan`, `Harga`, `Durasi`) VALUES
 ('T-007', 'Perawatan Saluran Akar', 1200000.00, '02:00:00'),
 ('T-008', 'Pemasangan Crown', 1500000.00, '01:30:00'),
 ('T-009', 'Pemasangan Behel (Orthodonti)', 5000000.00, '02:00:00'),
-('T-010', 'Pemutihan Gigi (Bleaching)', 1200000.00, '01:15:00');
+('T-010', 'Pemutihan Gigi (Bleaching)', 1200000.00, '01:15:00'),
+('T-011', 'Perawatan Gigi Susu', 300000.00, '00:45:00'),
+('T-012', 'Aplikasi Fluoride Anak', 200000.00, '00:30:00'),
+('T-013', 'Pencabutan Gigi Susu', 250000.00, '00:40:00'),
+('T-014', 'Space Maintainer', 1500000.00, '01:00:00'),
+('T-015', 'Operasi Impaksi Gigi Bungsu', 2500000.00, '02:00:00'),
+('T-016', 'Biopsi Jaringan Mulut', 1500000.00, '01:30:00'),
+('T-017', 'Operasi Kista Dental', 3500000.00, '02:30:00'),
+('T-018', 'Reimplantasi Gigi', 1800000.00, '01:45:00'),
+('T-019', 'Konsultasi Orthodonti', 300000.00, '01:00:00'),
+('T-020', 'Pemasangan Braces Metal', 7500000.00, '02:30:00'),
+('T-021', 'Pemasangan Invisalign', 15000000.00, '02:00:00'),
+('T-022', 'Perawatan Retainer', 500000.00, '00:30:00');
 
 -- --------------------------------------------------------
 
@@ -915,7 +1102,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 (3, 'Errvin junius', 'errvin@klinik.pasien', NULL, '$2y$12$EPjOiy2SMrWHbeNvmDWe2urqEDx.RTxrvR80YB6bctw6Fk7QeJOL6', NULL, '2025-12-27 14:49:18', '2025-12-27 14:49:18', 'pasien'),
 (5, 'Bryant supadmo', 'bray@klinik.admin', NULL, '$2y$12$rDybcEollkyPKJ8iYfxsSul3qs6D7mZ/2QGbnHvq24ioJJ6cui8he', NULL, '2025-12-27 09:02:10', '2025-12-27 09:02:10', 'admin'),
 (6, 'aryanto budi', 'budi@klinik.pasien', NULL, '$2y$12$m09kSIzwRQ79nZkQ7dArd.e17.jtRKit8aouLOuCcPhywdfh0NIIi', NULL, '2025-12-27 09:10:41', '2025-12-27 09:10:41', 'pasien'),
-(7, 'Budi Santoso', 'santoso@gmail.dokter', NULL, '$2y$12$alar5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-27 09:16:28', '2025-12-27 09:16:28', 'dokter');
+(7, 'Budi Santoso', 'santoso@klinik.dokter', NULL, '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-27 09:16:28', '2025-12-28 16:10:05', 'dokter'),
+(9, 'Sari Mawar', 'sari.mawar@klinik.dokter', NULL, '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-28 15:48:45', '2025-12-28 16:09:39', 'dokter'),
+(10, 'Andi Wijaya', 'andi.wijaya@klinik.dokter', NULL, '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-28 15:48:45', '2025-12-28 16:10:13', 'dokter'),
+(11, 'Anita Rahma', 'anita@klinik.pasien', NULL, '$2y$12$clat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien'),
+(12, 'Rudi Hartono', 'rudi@klinik.pasien', NULL, '$2y$12$dlat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien'),
+(13, 'Siti Nurhaliza', 'siti@klinik.pasien', NULL, '$2y$12$elat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien');
 
 -- --------------------------------------------------------
 
@@ -959,7 +1151,7 @@ CREATE TABLE `view_jadwalpasien` (
 --
 DROP TABLE IF EXISTS `view_jadwaldokter`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_jadwaldokter`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `b`.`IdBooking` AS `IdBooking`, `p`.`Nama` AS `Nama Pasien`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `pg`.`Nama` AS `Nama Dokter`, `b`.`Status` AS `Status` FROM (((`jadwal` `j` join `booking` `b` on(`j`.`IdJadwal` = `b`.`IdJadwal`)) join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) join `pegawai` `pg` on(`j`.`IdDokter` = `pg`.`PegawaiID`)) ;
+CREATE VIEW `view_jadwaldokter`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `b`.`IdBooking` AS `IdBooking`, `p`.`Nama` AS `Nama Pasien`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `pg`.`Nama` AS `Nama Dokter`, `b`.`Status` AS `Status` FROM (((`jadwal` `j` join `booking` `b` on(`j`.`IdJadwal` = `b`.`IdJadwal`)) join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) join `pegawai` `pg` on(`j`.`IdDokter` = `pg`.`PegawaiID`)) ;
 
 -- --------------------------------------------------------
 
@@ -968,7 +1160,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `view_jadwalpasien`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_jadwalpasien`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `p`.`Nama` AS `NamaDokter`, `p`.`Jabatan` AS `Jabatan` FROM (`jadwal` `j` join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
+CREATE VIEW `view_jadwalpasien`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `p`.`Nama` AS `NamaDokter`, `p`.`Jabatan` AS `Jabatan` FROM (`jadwal` `j` join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
 
 --
 -- Indexes for dumped tables
@@ -1131,7 +1323,7 @@ ALTER TABLE `failedjobs`
 -- AUTO_INCREMENT for table `jenisobat`
 --
 ALTER TABLE `jenisobat`
-  MODIFY `JenisObatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `JenisObatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -1149,13 +1341,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `obat_log`
 --
 ALTER TABLE `obat_log`
-  MODIFY `LogID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `LogID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables

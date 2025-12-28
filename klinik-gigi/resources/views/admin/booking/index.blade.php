@@ -6,9 +6,13 @@
 @section('header-subtitle','Kelola booking pasien dengan mudah')
 
 @section('sidebar-menu')
-    <a href="/admin/dashboard" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
+    <a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
     <a href="{{ route('admin.booking') }}" class="nav-link active"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
+    <a href="{{ route('admin.pasien') }}" class="nav-link"><i class="fa-solid fa-hospital-user"></i> Data Pasien</a>
+    <a href="{{ route('admin.obat') }}" class="nav-link"><i class="fa-solid fa-pills"></i> Data Obat</a>
     <a href="{{ route('admin.users') }}" class="nav-link"><i class="fa-solid fa-users"></i> Manajemen User</a>
+    <a href="{{ route('admin.pembayaran') }}" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Pembayaran</a>
+    <a href="{{ route('admin.laporan') }}" class="nav-link"><i class="fa-solid fa-chart-line"></i> Laporan</a>
 @endsection
 
 @section('styles')
@@ -278,11 +282,9 @@
     </div>
 
     {{-- Pagination --}}
-    @if($bookings->hasPages())
-    <div class="mt-3">
+    <div class="d-flex justify-content-center mt-4">
         {{ $bookings->links() }}
     </div>
-    @endif
 </div>
 
 <script>

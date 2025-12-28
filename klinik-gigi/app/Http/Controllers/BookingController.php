@@ -52,6 +52,9 @@ class BookingController extends Controller
 
     public function create()
     {
+        // Auto Update status jadwals yang sudah lewat
+        \App\Models\Jadwal::autoUpdateStatus();
+
         // Get all pasien
         $pasiens = Pasien::orderBy('Nama')->get();
 
@@ -74,6 +77,18 @@ class BookingController extends Controller
         ]);
 
         try {
+            // Check if Jadwal is still available and not in the past
+            $jadwal = Jadwal::available()->find($request->IdJadwal);
+            
+            if (!$jadwal) {
+                return redirect()->back()->withInput()->with('error', 'Jadwal yang dipilih sudah tidak tersedia atau sudah terlewati.');
+            }
+
+            // Check if Jadwal is full
+            if ($jadwal->is_full) {
+                return redirect()->back()->withInput()->with('error', 'Maaf, kapasitas jadwal ini sudah penuh.');
+            }
+
             $tanggalBooking = now();
 
             // Call stored procedure Sp_InsertBooking

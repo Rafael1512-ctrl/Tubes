@@ -11,8 +11,19 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
-    public function index() {
-        $users = User::with(['pegawai', 'pasien'])->get();
+    public function index(Request $request) {
+        $query = User::with(['pegawai', 'pasien']);
+        
+        if ($request->has('role') && $request->role != '') {
+            if ($request->role == 'pegawai') {
+                // "Pegawai" filter should include all staff roles
+                $query->whereIn('role', ['admin', 'dokter', 'pegawai']);
+            } else {
+                $query->where('role', $request->role);
+            }
+        }
+        
+        $users = $query->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -252,5 +263,24 @@ class AdminController extends Controller
             DB::rollback();
             return redirect()->back()->with('error', 'Gagal menghapus user: ' . $e->getMessage());
         }
+    }
+
+    public function pasien(Request $request)
+    {
+        $search = $request->query('search');
+
+        $pasiens = Pasien::when($search, function($query, $search) {
+            return $query->where('Nama', 'LIKE', "%{$search}%")
+                         ->orWhere('PasienID', 'LIKE', "%{$search}%");
+        })->paginate(15);
+
+        return view('admin.pasien.index', compact('pasiens'));
+    }
+
+    public function history($id)
+    {
+        $pasien = Pasien::with(['rekamMedis.dokter', 'rekamMedis.tindakan', 'rekamMedis.obat'])->findOrFail($id);
+        
+        return view('admin.pasien.history', compact('pasien'));
     }
 }

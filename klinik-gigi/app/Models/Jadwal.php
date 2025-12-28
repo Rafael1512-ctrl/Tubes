@@ -128,11 +128,36 @@ class Jadwal extends Model
     }
 
     /**
-     * Scope: Only available jadwal
+     * Scope: Only available jadwal (future or ongoing today)
      */
     public function scopeAvailable($query)
     {
         return $query->where('Status', 'Available')
-                     ->where('Tanggal', '>=', now()->toDateString());
+                     ->where(function($q) {
+                         $q->where('Tanggal', '>', now()->toDateString())
+                           ->orWhere(function($sq) {
+                               $sq->where('Tanggal', now()->toDateString())
+                                  ->whereRaw('TIMESTAMPDIFF(MINUTE, NOW(), CONCAT(Tanggal, " ", JamAkhir)) >= 60');
+                           });
+                     });
+    }
+
+    /**
+     * Static Method: Auto Update Status for Expired Schedules
+     * Marks 'Available' schedules as 'Not Available' if less than 1 hour remains before JamAkhir
+     */
+    public static function autoUpdateStatus()
+    {
+        return self::where('Status', 'Available')
+            ->where(function($q) {
+                // Tanggal sudah lewat
+                $q->where('Tanggal', '<', now()->toDateString())
+                  // Atau hari ini dan sisa waktu kurang dari 60 menit dari JamAkhir
+                  ->orWhere(function($sq) {
+                      $sq->where('Tanggal', now()->toDateString())
+                         ->whereRaw('TIMESTAMPDIFF(MINUTE, NOW(), CONCAT(Tanggal, " ", JamAkhir)) < 60');
+                  });
+            })
+            ->update(['Status' => 'Not Available']);
     }
 }
