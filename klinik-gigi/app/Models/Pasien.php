@@ -16,6 +16,7 @@ class Pasien extends Model
 
     // SESUAIKAN DENGAN DATABASE (huruf kapital)
     protected $fillable = [
+        'PasienID',
         'user_id',
         'Nama',           // Database: Nama (huruf kapital)
         'TanggalLahir',   // Database: TanggalLahir (camelCase)

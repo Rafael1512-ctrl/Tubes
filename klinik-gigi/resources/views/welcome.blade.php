@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klinik Gigi Sehat - Senyum Sempurna Dimulai Di Sini</title>
+    <title>Klinik Gigi Zenith - Senyum Sempurna Dimulai Di Sini</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -478,8 +478,8 @@
                     <li class="nav-item"><a class="nav-link" href="#dokter">Dokter</a></li>
                 </ul>
                 <div class="d-flex gap-3">
-                    <a href="{{ route('login') }}" class="btn btn-outline-primary rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center">Masuk</a>
-                    <a href="{{ route('login') }}" class="btn btn-primary-gradient">Daftar</a>
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#loginModal">Masuk</button>
+                    <button type="button" class="btn btn-primary-gradient" data-bs-toggle="modal" data-bs-target="#loginModal">Daftar</button>
                 </div>
             </div>
         </div>
@@ -496,9 +496,9 @@
                     <h1 class="hero-title">Senyum Sempurna <br> <span style="color: var(--primary);">Masa Depan Cerah</span></h1>
                     <p class="hero-subtitle">Nikmati perawatan gigi berkualitas premium dengan teknologi terkini dan tim dokter spesialis yang siap mewujudkan senyum impian Anda.</p>
                     <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                        <a href="{{ route('login') }}" class="btn btn-primary-gradient btn-lg shadow-lg">
+                        <button type="button" class="btn btn-primary-gradient btn-lg shadow-lg" data-bs-toggle="modal" data-bs-target="#loginModal">
                             <i class="fas fa-calendar-check me-2"></i>Buat Janji Sekarang
-                        </a>
+                        </button>
                         <a href="#layanan" class="btn btn-light btn-lg rounded-pill px-4 text-dark border shadow-sm">
                             <i class="fas fa-play-circle me-2 text-primary"></i>Lihat Layanan
                         </a>
@@ -653,7 +653,7 @@
                         </div>
                         <h4>Pemeriksaan Rutin</h4>
                         <p class="text-muted mb-4">Pencegahan lebih baik daripada pengobatan. Jaga kesehatan gigi dengan check-up rutin.</p>
-                        <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></a>
+                        <button type="button" class="btn btn-link text-primary fw-bold text-decoration-none p-0 border-0" data-bs-toggle="modal" data-bs-target="#loginModal">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></button>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
@@ -663,7 +663,7 @@
                         </div>
                         <h4>Whitening & Estetika</h4>
                         <p class="text-muted mb-4">Kembalikan kepercayaan diri Anda dengan senyum yang lebih cerah dan menawan.</p>
-                        <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></a>
+                        <button type="button" class="btn btn-link text-primary fw-bold text-decoration-none p-0 border-0" data-bs-toggle="modal" data-bs-target="#loginModal">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></button>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
@@ -673,7 +673,7 @@
                         </div>
                         <h4>Ortodonti</h4>
                         <p class="text-muted mb-4">Solusi kawat gigi dan aligner untuk merapikan susunan gigi Anda dengan nyaman.</p>
-                        <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></a>
+                        <button type="button" class="btn btn-link text-primary fw-bold text-decoration-none p-0 border-0" data-bs-toggle="modal" data-bs-target="#loginModal">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></button>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
@@ -683,7 +683,7 @@
                         </div>
                         <h4>Gigi Anak</h4>
                         <p class="text-muted mb-4">Perawatan khusus untuk buah hati dengan pendekatan yang ramah dan menyenangkan.</p>
-                        <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></a>
+                        <button type="button" class="btn btn-link text-primary fw-bold text-decoration-none p-0 border-0" data-bs-toggle="modal" data-bs-target="#loginModal">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></button>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
@@ -693,7 +693,7 @@
                         </div>
                         <h4>Implan Gigi</h4>
                         <p class="text-muted mb-4">Solusi permanen untuk menggantikan gigi yang hilang dengan rasa dan tampilan natural.</p>
-                        <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></a>
+                        <button type="button" class="btn btn-link text-primary fw-bold text-decoration-none p-0 border-0" data-bs-toggle="modal" data-bs-target="#loginModal">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></button>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
@@ -703,7 +703,7 @@
                         </div>
                         <h4>Bedah Mulut</h4>
                         <p class="text-muted mb-4">Penanganan tindakan bedah dengan prosedur aman dan pemulihan cepat.</p>
-                        <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></a>
+                        <button type="button" class="btn btn-link text-primary fw-bold text-decoration-none p-0 border-0" data-bs-toggle="modal" data-bs-target="#loginModal">Booking Jadwal <i class="fas fa-arrow-right ms-1"></i></button>
                     </div>
                 </div>
             </div>
@@ -734,11 +734,148 @@
         <div class="container position-relative z-2">
             <h2 class="display-4 fw-bold mb-4 text-primary">Wujudkan Senyum Impian Anda Hari Ini</h2>
             <p class="lead mb-5 text-light opacity-75 mx-auto" style="max-width: 700px;">Jangan tunda kesehatan gigi Anda. Tim profesional kami siap memberikan layanan terbaik dengan hasil yang memuaskan.</p>
-            <a href="{{ route('login') }}" class="btn btn-primary-gradient btn-lg px-5 py-3 fs-5 shadow-lg">
+            <button type="button" class="btn btn-primary-gradient btn-lg px-5 py-3 fs-5 shadow-lg" data-bs-toggle="modal" data-bs-target="#loginModal">
                 <i class="fas fa-calendar-alt me-2"></i> Reservasi Sekarang
-            </a>
+            </button>
         </div>
     </section>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; overflow: hidden;">
+                <div class="modal-header border-0 pb-0 pt-4 px-4 justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 pt-0">
+                    <!-- Session Feedback -->
+                    @if (session('success'))
+                        <div class="alert alert-success border-0 rounded-4 small mb-3">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger border-0 rounded-4 small mb-3">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger border-0 rounded-4 small mb-3">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <!-- Tabs for Login/Register -->
+                    <ul class="nav nav-pills nav-fill mb-4 bg-light rounded-pill p-1" id="authTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link {{ !old('name') ? 'active' : '' }} rounded-pill fw-bold" id="login-tab" data-bs-toggle="pill" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="{{ !old('name') ? 'true' : 'false' }}">Masuk</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link {{ old('name') ? 'active' : '' }} rounded-pill fw-bold" id="register-tab" data-bs-toggle="pill" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="{{ old('name') ? 'true' : 'false' }}">Daftar</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="authTabContent">
+                        <!-- Login Form -->
+                        <div class="tab-pane fade {{ !old('name') ? 'show active' : '' }}" id="login" role="tabpanel" aria-labelledby="login-tab">
+                            <div class="text-center mb-4">
+                                <h4 class="fw-bold">Selamat Datang</h4>
+                                <p class="text-muted small">Silakan masuk ke akun Anda</p>
+                            </div>
+
+                            <form method="POST" action="{{ route('login.post') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label fw-600 small">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="fas fa-envelope text-muted"></i></span>
+                                        <input type="email" name="email" class="form-control bg-light border-0" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-600 small">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="fas fa-lock text-muted"></i></span>
+                                        <input type="password" name="password" class="form-control bg-light border-0" placeholder="••••••••" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary-gradient w-100 py-3 rounded-pill fw-bold shadow-glow mb-3">
+                                    Masuk ke Dashboard
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Register Form -->
+                        <div class="tab-pane fade {{ old('name') ? 'show active' : '' }}" id="register" role="tabpanel" aria-labelledby="register-tab">
+                            <div class="text-center mb-4">
+                                <h4 class="fw-bold">Buat Akun Baru</h4>
+                                <p class="text-muted small">Daftar sebagai pasien baru klinik</p>
+                            </div>
+
+                            <form method="POST" action="{{ route('register') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label fw-600 small">Nama Lengkap</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="fas fa-user text-muted"></i></span>
+                                        <input type="text" name="name" class="form-control bg-light border-0" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-7">
+                                        <label class="form-label fw-600 small">Email Address</label>
+                                        <input type="email" name="email" class="form-control bg-light border-0" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label fw-600 small">Jenis Kelamin</label>
+                                        <select name="jenis_kelamin" class="form-select bg-light border-0" required>
+                                            <option value="">Pilih</option>
+                                            <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                            <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-600 small">Nomor Telepon</label>
+                                        <input type="text" name="no_telp" class="form-control bg-light border-0" placeholder="08xxxxxxxxxx" value="{{ old('no_telp') }}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-600 small">Tanggal Lahir</label>
+                                        <input type="date" name="tanggal_lahir" class="form-control bg-light border-0" value="{{ old('tanggal_lahir') }}" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-600 small">Alamat Tinggal</label>
+                                    <textarea name="alamat" class="form-control bg-light border-0" rows="2" placeholder="Masukkan alamat lengkap" required>{{ old('alamat') }}</textarea>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-600 small">Password</label>
+                                        <input type="password" name="password" class="form-control bg-light border-0" placeholder="••••••••" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-600 small">Konfirmasi</label>
+                                        <input type="password" name="password_confirmation" class="form-control bg-light border-0" placeholder="••••••••" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary-gradient w-100 py-3 rounded-pill fw-bold shadow-glow mb-3">
+                                    Daftar Sekarang
+                                </button>
+                                <p class="text-center text-muted x-small">
+                                    Dengan mendaftar, Anda menyetujui syarat & ketentuan kami.
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -746,7 +883,7 @@
             <div class="row gy-5 mb-5">
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-4">
-                        <h4 class="mb-0 text-primary fw-bold">Klinik Gigi Sehat</h4>
+                        <h4 class="mb-0 text-primary fw-bold">Klinik Gigi Zenith</h4>
                     </div>
                     <p class="text-muted mb-4">Memberikan layanan kesehatan gigi terbaik dengan teknologi modern dan dokter berpengalaman untuk senyum sehat keluarga Indonesia.</p>
                     <div class="d-flex gap-2">
@@ -787,7 +924,7 @@
                 </div>
             </div>
             <div class="border-top py-4 text-center text-muted small">
-                &copy; {{ date('Y') }} Klinik Gigi Sehat. All rights reserved.
+                &copy; {{ date('Y') }} Klinik Gigi Zenith. All rights reserved.
             </div>
         </div>
     </footer>
@@ -811,6 +948,12 @@
                 navbar.classList.remove('scrolled');
             }
         });
+
+        // Auto open login modal if there are errors (Back from failed attempt)
+        @if($errors->any() || session('error') || session('success'))
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        @endif
     </script>
 </body>
 </html>

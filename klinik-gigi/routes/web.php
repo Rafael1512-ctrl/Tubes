@@ -6,6 +6,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 // Landing page
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -13,11 +15,30 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/register', function() { return redirect('/'); });
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Email Verification Routes
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    // Setelah verifikasi, arahkan ke dashboard yang sesuai
+    $role = auth()->user()->role;
+    return redirect($role . '/dashboard')->with('success', 'Email berhasil diverifikasi!');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Link verifikasi baru telah dikirim!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Dashboard per role
 // Dashboard per role
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
     Route::get('/dokter/dashboard', [DashboardController::class, 'dokter'])->name('dokter.dashboard');
     Route::get('/pasien/dashboard', [DashboardController::class, 'pasien'])->name('pasien.dashboard');
