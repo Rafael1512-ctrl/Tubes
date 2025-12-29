@@ -12,7 +12,7 @@ class Tindakan extends Model
     protected $keyType = 'string';
     public $timestamps = false;
 
-    protected $fillable = ['IdTindakan', 'NamaTindakan', 'Harga'];
+    protected $fillable = ['IdTindakan', 'NamaTindakan', 'Kategori', 'Harga'];
 
     protected $casts = [
         'Harga' => 'decimal:2'

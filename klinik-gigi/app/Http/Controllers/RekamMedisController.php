@@ -22,10 +22,20 @@ class RekamMedisController extends Controller
             return redirect()->back()->with('error', 'Anda tidak memiliki akses ke booking ini.');
         }
 
-        $tindakans = Tindakan::all();
+        // Logic grouping and filtering treatments
+        $query = Tindakan::query();
+        
+        // If doctor is regular dentist, only show 'Gigi Umum' category
+        // Special case: compare lowercase for robustness
+        $jabatan = strtolower($dokter->Jabatan ?? '');
+        if ($jabatan === 'dokter gigi') {
+            $query->where('Kategori', 'Gigi Umum');
+        }
+        
+        $tindakans = $query->get()->groupBy('Kategori');
         $obats = Obat::where('Stok', '>', 0)->get();
 
-        return view('dokter.rekam_medis.create', compact('booking', 'tindakans', 'obats'));
+        return view('dokter.rekam_medis.create', compact('booking', 'tindakans', 'obats', 'dokter'));
     }
 
     public function store(Request $request)

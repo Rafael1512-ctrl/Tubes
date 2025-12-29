@@ -172,8 +172,12 @@
         <td>
             <select name="tindakan[]" class="form-select action-select" onchange="updatePrice(this)" required>
                 <option value="">-- Pilih Tindakan --</option>
-                @foreach($tindakans as $t)
-                    <option value="{{ $t->IdTindakan }}" data-price="{{ $t->Harga }}">{{ $t->NamaTindakan }}</option>
+                @foreach($tindakans as $kategori => $items)
+                    <optgroup label="{{ $kategori ?: 'Umum' }}">
+                        @foreach($items as $t)
+                            <option value="{{ $t->IdTindakan }}" data-price="{{ $t->Harga }}">{{ $t->NamaTindakan }}</option>
+                        @endforeach
+                    </optgroup>
                 @endforeach
             </select>
         </td>
@@ -230,30 +234,9 @@
         const template = document.getElementById('obatRowTemplate');
         let html = template.innerHTML.replace(/INDEX/g, obatIndex++);
         
-        // Convert string back to node to append
-        const tr = document.createElement('tr');
-        tr.innerHTML = html;
-        
-        // Copy the content of the tr, not the tr itself if template has tr
-        // Actually template content has tr. 
-        // Let's manually reconstruct because innerHTML replace on template content is tricky.
-        
         const container = document.getElementById('obatContainer');
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>
-                <select name="obat[${obatIndex}][id]" class="form-select" required>
-                    <option value="">-- Pilih Obat --</option>
-                    @foreach($obats as $o)
-                        <option value="{{ $o->IdObat }}">{{ $o->NamaObat }} (Stok: {{ $o->Stok }})</option>
-                    @endforeach
-                </select>
-            </td>
-            <td><input type="number" name="obat[${obatIndex}][qty]" class="form-control" value="1" min="1"></td>
-            <td><input type="text" name="obat[${obatIndex}][dosis]" class="form-control" placeholder="3x1"></td>
-            <td><input type="text" name="obat[${obatIndex}][frekuensi]" class="form-control" placeholder="Sesudah makan"></td>
-            <td class="text-end"><button type="button" class="btn btn-sm text-danger" onclick="removeRow(this)"><i class="fa-solid fa-trash"></i></button></td>
-        `;
+        row.innerHTML = html;
         container.appendChild(row);
     }
 

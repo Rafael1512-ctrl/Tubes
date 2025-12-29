@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2025 at 08:05 AM
+-- Generation Time: Dec 29, 2025 at 08:26 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -550,7 +550,9 @@ INSERT INTO `booking` (`IdBooking`, `IdJadwal`, `PasienID`, `TanggalBooking`, `S
 ('B-2512-0010', 'J-2601-0002', 'P-2025-00005', '2025-12-28 09:03:31', 'PRESENT'),
 ('B-2512-0011', 'J-2601-0003', 'P-2025-00001', '2025-12-28 14:00:00', 'PRESENT'),
 ('B-2512-0012', 'J-2601-0004', 'P-2025-00002', '2025-12-28 14:30:00', 'CANCELLED'),
-('B-2512-0013', 'J-2512-0011', 'P-2025-00005', '2025-12-28 17:20:38', 'COMPLETED');
+('B-2512-0013', 'J-2512-0011', 'P-2025-00005', '2025-12-28 17:20:38', 'COMPLETED'),
+('B-2512-0014', 'J-2512-0013', 'P-2025-00001', '2025-12-29 14:20:11', 'PRESENT'),
+('B-2512-0015', 'J-2512-0012', 'P-2025-00001', '2025-12-29 14:20:29', 'PRESENT');
 
 -- --------------------------------------------------------
 
@@ -572,7 +574,9 @@ INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
 ('klinik-gigi-zenith-cache-0ade7c2cf97f75d009975f4d720d1fa6c19f4897', 'i:1;', 1766991721),
 ('klinik-gigi-zenith-cache-0ade7c2cf97f75d009975f4d720d1fa6c19f4897:timer', 'i:1766991721;', 1766991721),
 ('klinik-gigi-zenith-cache-356a192b7913b04c54574d18c28d46e6395428ab', 'i:1;', 1766982229),
-('klinik-gigi-zenith-cache-356a192b7913b04c54574d18c28d46e6395428ab:timer', 'i:1766982229;', 1766982229);
+('klinik-gigi-zenith-cache-356a192b7913b04c54574d18c28d46e6395428ab:timer', 'i:1766982229;', 1766982229),
+('klinik-gigi-zenith-cache-77de68daecd823babbb58edb1c8e14d7106e83bb', 'i:1;', 1766993104),
+('klinik-gigi-zenith-cache-77de68daecd823babbb58edb1c8e14d7106e83bb:timer', 'i:1766993104;', 1766993104);
 
 -- --------------------------------------------------------
 
@@ -658,6 +662,8 @@ INSERT INTO `jadwal` (`IdJadwal`, `IdDokter`, `Tanggal`, `JamMulai`, `JamAkhir`,
 ('J-2512-0009', 'D-004', '2025-12-31', '17:00:00', '20:00:00', 'Available', 4),
 ('J-2512-0010', 'D-002', '2025-12-30', '17:00:00', '20:00:00', 'Available', 4),
 ('J-2512-0011', 'D-002', '2025-12-28', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2512-0012', 'D-001', '2025-12-29', '17:00:00', '20:00:00', 'Available', 15),
+('J-2512-0013', 'D-003', '2025-12-29', '17:00:00', '20:00:00', 'Available', 4),
 ('J-2601-0001', 'D-001', '2026-01-02', '09:00:00', '12:00:00', 'Available', 15),
 ('J-2601-0002', 'D-002', '2026-01-03', '09:00:00', '12:00:00', 'Available', 4),
 ('J-2601-0003', 'D-003', '2026-01-05', '09:00:00', '12:00:00', 'Available', 4),
@@ -743,7 +749,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '0001_01_01_000000_create_users_table', 1),
 (2, '0001_01_01_000001_create_cache_table', 1),
 (3, '0001_01_01_000002_create_jobs_table', 1),
-(4, '2025_12_26_155609_add_user_id_to_pegawai_table', 2);
+(4, '2025_12_26_155609_add_user_id_to_pegawai_table', 2),
+(5, '2025_12_29_141644_add_kategori_to_tindakan_table', 3);
 
 -- --------------------------------------------------------
 
@@ -1057,6 +1064,7 @@ CREATE TABLE `sessions` (
 CREATE TABLE `tindakan` (
   `IdTindakan` varchar(10) NOT NULL,
   `NamaTindakan` varchar(100) NOT NULL,
+  `Kategori` varchar(50) DEFAULT NULL,
   `Harga` decimal(12,2) NOT NULL,
   `Durasi` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -1065,29 +1073,29 @@ CREATE TABLE `tindakan` (
 -- Dumping data for table `tindakan`
 --
 
-INSERT INTO `tindakan` (`IdTindakan`, `NamaTindakan`, `Harga`, `Durasi`) VALUES
-('T-001', 'Konsultasi Gigi', 50000.00, '00:30:00'),
-('T-002', 'Pembersihan Karang Gigi (Scaling)', 250000.00, '01:00:00'),
-('T-003', 'Tambal Gigi (Amalgam)', 300000.00, '01:00:00'),
-('T-004', 'Tambal Gigi (Komposit)', 400000.00, '01:15:00'),
-('T-005', 'Cabut Gigi Biasa', 350000.00, '00:45:00'),
-('T-006', 'Cabut Gigi Bungsu', 800000.00, '01:30:00'),
-('T-007', 'Perawatan Saluran Akar', 1200000.00, '02:00:00'),
-('T-008', 'Pemasangan Crown', 1500000.00, '01:30:00'),
-('T-009', 'Pemasangan Behel (Orthodonti)', 5000000.00, '02:00:00'),
-('T-010', 'Pemutihan Gigi (Bleaching)', 1200000.00, '01:15:00'),
-('T-011', 'Perawatan Gigi Susu', 300000.00, '00:45:00'),
-('T-012', 'Aplikasi Fluoride Anak', 200000.00, '00:30:00'),
-('T-013', 'Pencabutan Gigi Susu', 250000.00, '00:40:00'),
-('T-014', 'Space Maintainer', 1500000.00, '01:00:00'),
-('T-015', 'Operasi Impaksi Gigi Bungsu', 2500000.00, '02:00:00'),
-('T-016', 'Biopsi Jaringan Mulut', 1500000.00, '01:30:00'),
-('T-017', 'Operasi Kista Dental', 3500000.00, '02:30:00'),
-('T-018', 'Reimplantasi Gigi', 1800000.00, '01:45:00'),
-('T-019', 'Konsultasi Orthodonti', 300000.00, '01:00:00'),
-('T-020', 'Pemasangan Braces Metal', 7500000.00, '02:30:00'),
-('T-021', 'Pemasangan Invisalign', 15000000.00, '02:00:00'),
-('T-022', 'Perawatan Retainer', 500000.00, '00:30:00');
+INSERT INTO `tindakan` (`IdTindakan`, `NamaTindakan`, `Kategori`, `Harga`, `Durasi`) VALUES
+('T-001', 'Konsultasi Gigi', 'Gigi Umum', 50000.00, '00:30:00'),
+('T-002', 'Pembersihan Karang Gigi (Scaling)', 'Gigi Umum', 250000.00, '01:00:00'),
+('T-003', 'Tambal Gigi (Amalgam)', 'Gigi Umum', 300000.00, '01:00:00'),
+('T-004', 'Tambal Gigi (Komposit)', 'Gigi Umum', 400000.00, '01:15:00'),
+('T-005', 'Cabut Gigi Biasa', 'Gigi Umum', 350000.00, '00:45:00'),
+('T-006', 'Cabut Gigi Bungsu', 'Bedah Mulut', 800000.00, '01:30:00'),
+('T-007', 'Perawatan Saluran Akar', 'Konservasi Gigi', 1200000.00, '02:00:00'),
+('T-008', 'Pemasangan Crown', 'Prostodonti', 1500000.00, '01:30:00'),
+('T-009', 'Pemasangan Behel (Orthodonti)', 'Orthodonti', 5000000.00, '02:00:00'),
+('T-010', 'Pemutihan Gigi (Bleaching)', 'Gigi Umum', 1200000.00, '01:15:00'),
+('T-011', 'Perawatan Gigi Susu', 'Pedodonti', 300000.00, '00:45:00'),
+('T-012', 'Aplikasi Fluoride Anak', 'Pedodonti', 200000.00, '00:30:00'),
+('T-013', 'Pencabutan Gigi Susu', 'Pedodonti', 250000.00, '00:40:00'),
+('T-014', 'Space Maintainer', 'Pedodonti', 1500000.00, '01:00:00'),
+('T-015', 'Operasi Impaksi Gigi Bungsu', 'Bedah Mulut', 2500000.00, '02:00:00'),
+('T-016', 'Biopsi Jaringan Mulut', 'Bedah Mulut', 1500000.00, '01:30:00'),
+('T-017', 'Operasi Kista Dental', 'Bedah Mulut', 3500000.00, '02:30:00'),
+('T-018', 'Reimplantasi Gigi', 'Bedah Mulut', 1800000.00, '01:45:00'),
+('T-019', 'Konsultasi Orthodonti', 'Orthodonti', 300000.00, '01:00:00'),
+('T-020', 'Pemasangan Braces Metal', 'Orthodonti', 7500000.00, '02:30:00'),
+('T-021', 'Pemasangan Invisalign', 'Orthodonti', 15000000.00, '02:00:00'),
+('T-022', 'Perawatan Retainer', 'Orthodonti', 500000.00, '00:30:00');
 
 -- --------------------------------------------------------
 
@@ -1114,7 +1122,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`) VALUES
 (1, 'Hans Maulana Budiputra', 'hansenmaulana10@gmail.com', '2025-12-29 11:23:07', '$2y$12$ElQFh1jzDEFSBtb9Lyo6Eui8ChX7fou5Zd/pP8wbT.85TE9aUmjFy', NULL, '2025-12-27 14:49:18', '2025-12-29 11:23:07', 'admin'),
 (2, 'Rafael', 'rafael@klinik.dokter', NULL, '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-27 14:49:18', '2025-12-27 14:49:18', 'dokter'),
-(3, 'Errvin junius', 'errvin@klinik.pasien', NULL, '$2y$12$EPjOiy2SMrWHbeNvmDWe2urqEDx.RTxrvR80YB6bctw6Fk7QeJOL6', NULL, '2025-12-27 14:49:18', '2025-12-27 14:49:18', 'pasien'),
+(3, 'Errvin junius', '2472052@maranatha.ac.id', '2025-12-29 14:24:11', '$2y$12$EPjOiy2SMrWHbeNvmDWe2urqEDx.RTxrvR80YB6bctw6Fk7QeJOL6', NULL, '2025-12-27 14:49:18', '2025-12-29 14:24:11', 'pasien'),
 (5, 'Bryant supadmo', 'bray@klinik.admin', NULL, '$2y$12$rDybcEollkyPKJ8iYfxsSul3qs6D7mZ/2QGbnHvq24ioJJ6cui8he', NULL, '2025-12-27 09:02:10', '2025-12-27 09:02:10', 'admin'),
 (6, 'aryanto budi', 'budi@klinik.pasien', NULL, '$2y$12$m09kSIzwRQ79nZkQ7dArd.e17.jtRKit8aouLOuCcPhywdfh0NIIi', NULL, '2025-12-27 09:10:41', '2025-12-27 09:10:41', 'pasien'),
 (7, 'Budi Santoso', 'santoso@klinik.dokter', NULL, '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-27 09:16:28', '2025-12-28 16:10:05', 'dokter'),
@@ -1350,7 +1358,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `obat_log`
