@@ -3,7 +3,7 @@
 @section('theme','admin')
 @section('title','Manajemen User')
 @section('header-title','Manajemen User')
-@section('header-subtitle','Kelola akun dokter & pasien')
+@section('header-subtitle','Kelola akun dokter, staf, dan pasien')
 
 @section('sidebar-menu')
     <a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
@@ -17,152 +17,196 @@
 
 @section('styles')
 <style>
-    /* Animasi untuk alert */
+    /* Table Styles */
+    .table-container {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    }
+
+    .table { margin-bottom: 0; }
+    
+    .table thead th {
+        background: #f8f9fa;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+        padding: 1rem;
+        white-space: nowrap;
+        color: #495057;
+    }
+
+    .table tbody tr { transition: all 0.2s; }
+    .table tbody tr:hover {
+        background: #f8f9fa;
+        transform: scale(1.002);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        color: #6c757d;
+    }
+    
+    .table tbody td .fw-bold {
+        color: #343a40;
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Badge Styling */
+    .badge-role {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Animations */
     @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-
-    .animate-slide-down {
-        animation: slideDown 0.4s ease-out;
-    }
-
-    /* Styling tambahan untuk alert */
-    .alert {
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border-left: 5px solid;
-    }
-
-    .alert-success {
-        border-left-color: #28a745;
-        background-color: #d4edda;
-        color: #155724;
-    }
-
-    .alert-danger {
-        border-left-color: #dc3545;
-        background-color: #f8d7da;
-        color: #721c24;
-    }
-
-    .alert-warning {
-        border-left-color: #ffc107;
-        background-color: #fff3cd;
-        color: #856404;
-    }
-
-    .alert i {
-        opacity: 0.8;
-    }
+    .animate-slide-down { animation: slideDown 0.4s ease-out; }
 </style>
 @endsection
 
 @section('content')
 
-{{-- Alert untuk pesan sukses --}}
+{{-- Alerts --}}
 @if(session('success'))
-<div class="alert alert-success alert-dismissible fade show animate-slide-down" role="alert" id="success-alert">
+<div class="alert alert-success alert-dismissible fade show animate-slide-down shadow-sm border-0 mb-4" role="alert" id="success-alert">
     <div class="d-flex align-items-center">
-        <i class="fa-solid fa-circle-check me-3" style="font-size: 1.5rem;"></i>
-        <div>
-            <strong>Berhasil!</strong>
-            <p class="mb-0">{{ session('success') }}</p>
-        </div>
+        <div class="bg-success text-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;"><i class="fa-solid fa-check"></i></div>
+        <div><strong>Berhasil!</strong> {{ session('success') }}</div>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
 
-{{-- Alert untuk pesan error --}}
 @if(session('error'))
-<div class="alert alert-danger alert-dismissible fade show animate-slide-down" role="alert" id="error-alert">
+<div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert" id="error-alert">
     <div class="d-flex align-items-center">
-        <i class="fa-solid fa-circle-exclamation me-3" style="font-size: 1.5rem;"></i>
-        <div>
-            <strong>Gagal!</strong>
-            <p class="mb-0">{{ session('error') }}</p>
-        </div>
+         <div class="bg-danger text-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;"><i class="fa-solid fa-xmark"></i></div>
+        <div><strong>Gagal!</strong> {{ session('error') }}</div>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
 
-<div class="card-custom mb-4">
+<div class="filter-section">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="m-0">Daftar User</h4>
-        <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
-            <i class="fa-solid fa-plus me-2"></i>Tambah User
+        <h5 class="m-0 fw-bold text-dark"><i class="fa-solid fa-sliders me-2 text-primary"></i> Filter & Aksi</h5>
+        <a href="{{ route('admin.users.create') }}" class="btn btn-success">
+            <i class="fa-solid fa-plus me-2"></i>Tambah User Baru
         </a>
     </div>
 
     <form method="GET" action="{{ route('admin.users') }}" class="row g-3 align-items-end">
-        <div class="col-md-3">
-            <label class="form-label fw-bold">Filter Role</label>
-            <select name="role" class="form-select" onchange="this.form.submit()">
-                <option value="">Semua Role</option>
-                <option value="pegawai" {{ request('role') == 'pegawai' ? 'selected' : '' }}>Pegawai</option>
-                <option value="pasien" {{ request('role') == 'pasien' ? 'selected' : '' }}>Pasien</option>
-            </select>
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Filter berdasarkan Role</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-user-tag text-muted"></i></span>
+                <select name="role" class="form-select border-start-0" onchange="this.form.submit()">
+                    <option value="">Semua Role</option>
+                    <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="dokter" {{ request('role') == 'dokter' ? 'selected' : '' }}>Dokter</option>
+                    <option value="pasien" {{ request('role') == 'pasien' ? 'selected' : '' }}>Pasien</option>
+                    <option value="pegawai" {{ request('role') == 'pegawai' ? 'selected' : '' }}>Pegawai</option>
+                </select>
+            </div>
         </div>
         <div class="col-md-2">
             @if(request('role'))
-                <a href="{{ route('admin.users') }}" class="btn btn-outline-secondary">Reset</a>
+                <a href="{{ route('admin.users') }}" class="btn btn-outline-secondary w-100">
+                    <i class="fa-solid fa-rotate-right me-2"></i>Reset
+                </a>
             @endif
         </div>
     </form>
 </div>
 
-<div class="card-custom">
+<div class="table-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0 fw-bold text-dark">
+            <i class="fa-solid fa-users-gear me-2 text-primary"></i>
+            Daftar Pengguna Sistem
+        </h4>
+        <div class="text-muted small">
+            Menampilkan semua akun terdaftar
+        </div>
+    </div>
 
     <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
+        <table class="table table-hover">
+            <thead>
                 <tr>
-                    <th class="py-3">Nama</th>
-                    <th class="py-3">Email</th>
-                    <th class="py-3">Role</th>
-                    <th class="py-3">Aksi</th>
+                    <th class="ps-4">Nama Pengguna</th>
+                    <th>Email</th>
+                    <th>Hak Akses / Role</th>
+                    <th class="text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($users as $user)
                 <tr>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <img src="https://ui-avatars.com/api/?name={{ $user->name }}&background=random&size=32" class="rounded-circle" width="32" height="32">
-                            <span class="fw-bold">{{ $user->name }}</span>
+                    <td class="ps-4">
+                        <div class="d-flex align-items-center">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random&size=40&color=fff&bold=true" 
+                                 class="rounded-circle me-3 border shadow-sm" width="40" height="40">
+                            <div>
+                                <div class="fw-bold text-dark">{{ $user->name }}</div>
+                                <small class="text-muted">UID: #{{ $user->id }}</small>
+                            </div>
                         </div>
                     </td>
-                    <td>{{ $user->email }}</td>
                     <td>
-                        @php
-                            $badgeClass = match($user->role) {
-                                'admin' => 'bg-dark',
-                                'dokter' => 'bg-info text-dark',
-                                'pasien' => 'bg-success',
-                                default => 'bg-secondary'
-                            };
-                        @endphp
-                        <span class="badge {{ $badgeClass }} rounded-pill px-3">{{ ucfirst($user->role) }}</span>
+                        <div class="d-flex align-items-center">
+                            <i class="fa-regular fa-envelope me-2 text-primary opacity-50"></i>
+                            <span>{{ $user->email }}</span>
+                        </div>
                     </td>
                     <td>
-                        <div class="d-flex gap-1">
-                            <a href="{{ route('admin.users.edit',$user->id) }}" class="btn btn-sm btn-outline-warning">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                        @php
+                            $roleData = match($user->role) {
+                                'admin' => ['class' => 'dark', 'icon' => 'fa-user-shield'],
+                                'dokter' => ['class' => 'info', 'icon' => 'fa-user-md'],
+                                'pasien' => ['class' => 'success', 'icon' => 'fa-hospital-user'],
+                                'pegawai' => ['class' => 'warning', 'icon' => 'fa-id-badge'],
+                                default => ['class' => 'secondary', 'icon' => 'fa-user']
+                            };
+                        @endphp
+                        <span class="badge-role bg-{{ $roleData['class'] }} bg-opacity-10 text-{{ $roleData['class'] }} border border-{{ $roleData['class'] }} border-opacity-25">
+                            <i class="fa-solid {{ $roleData['icon'] }} me-1"></i>{{ ucfirst($user->role) }}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{{ route('admin.users.edit',$user->id) }}" 
+                               class="btn btn-primary btn-sm rounded-circle" title="Edit User"
+                               style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-pen"></i>
                             </a>
-                            <form action="{{ route('admin.users.destroy',$user->id) }}" method="POST" style="display:inline-block" onsubmit="return confirm('Apakah anda yakin ingin menghapus user ini?')">
+                            
+                            @if(auth()->id() !== $user->id)
+                            <form action="{{ route('admin.users.destroy',$user->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus user ini?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-outline-danger">
+                                <button class="btn btn-danger btn-sm rounded-circle" title="Hapus User"
+                                        style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </form>
+                            @endif
                         </div>
                     </td>
                 </tr>
@@ -173,7 +217,7 @@
 </div>
 
 <script>
-    // Auto-dismiss alerts after 5 seconds
+    // Auto-dismiss alerts
     const successAlert = document.getElementById('success-alert');
     const errorAlert = document.getElementById('error-alert');
     
