@@ -121,7 +121,41 @@ class DashboardController extends Controller
     public function pasien()
     {
         $this->authorizeRole('pasien');
-        return view('dashboards.pasien');
+        $user = Auth::user();
+        $pasien = $user->pasien;
+
+        if (!$pasien) {
+            return view('dashboards.pasien', [
+                'upcomingBookings' => collect([]),
+                'medicalHistory' => collect([]),
+                'notifications' => $user->notifications()->limit(5)->get(),
+                'broadcasts' => \App\Models\Broadcast::whereIn('TargetRole', ['all', 'pasien'])->latest()->limit(3)->get()
+            ]);
+        }
+
+        $upcomingBookings = Booking::with(['jadwal.dokter'])
+            ->where('PasienID', $pasien->PasienID)
+            ->where('Status', 'PRESENT')
+            ->whereHas('jadwal', function($q) {
+                $q->where('Tanggal', '>=', today());
+            })
+            ->orderBy('TanggalBooking', 'asc')
+            ->get();
+
+        $medicalHistory = \App\Models\RekamMedis::with(['dokter', 'tindakan'])
+            ->where('PasienID', $pasien->PasienID)
+            ->orderBy('Tanggal', 'desc')
+            ->limit(5)
+            ->get();
+
+        $notifications = $user->unreadNotifications;
+        
+        $broadcasts = \App\Models\Broadcast::whereIn('TargetRole', ['all', 'pasien'])
+            ->latest()
+            ->limit(3)
+            ->get();
+
+        return view('dashboards.pasien', compact('upcomingBookings', 'medicalHistory', 'notifications', 'broadcasts', 'pasien'));
     }
 
     private function authorizeRole(string $role)

@@ -55,7 +55,8 @@
                     <th>Nama Obat</th>
                     <th>Jenis</th>
                     <th>Satuan</th>
-                    <th>Harga</th>
+                    <th>Harga Beli</th>
+                    <th>Harga Jual</th>
                     <th class="text-center">Stok</th>
                     <th class="text-center">Aksi</th>
                 </tr>
@@ -67,7 +68,8 @@
                     <td><div class="fw-bold">{{ $obat->NamaObat }}</div></td>
                     <td><span class="badge bg-info-subtle text-info">{{ $obat->jenisObat->NamaJenis ?? '-' }}</span></td>
                     <td>{{ $obat->Satuan }}</td>
-                    <td>Rp {{ number_format($obat->Harga, 0, ',', '.') }}</td>
+                    <td class="text-muted small">Rp {{ number_format($obat->HargaBeli ?? 0, 0, ',', '.') }}</td>
+                    <td class="fw-bold text-primary">Rp {{ number_format($obat->HargaJual ?? $obat->Harga, 0, ',', '.') }}</td>
                     <td class="text-center">
                         @php
                             $stokClass = 'success';

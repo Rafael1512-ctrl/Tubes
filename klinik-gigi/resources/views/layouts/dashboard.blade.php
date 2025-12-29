@@ -193,8 +193,40 @@
                 <small class="text-muted">@yield('header-subtitle', 'Welcome back!')</small>
             </div>
             <div class="d-flex align-items-center gap-3">
-                <div class="bg-white p-2 rounded-circle shadow-sm">
-                    <i class="fa-solid fa-bell text-primary"></i>
+                <!-- Notifications Dropdown -->
+                <div class="dropdown">
+                    <button class="bg-white p-2 rounded-circle shadow-sm border-0 position-relative" type="button" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-bell text-primary"></i>
+                        @if(Auth::user()->unreadNotifications->count() > 0)
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                {{ Auth::user()->unreadNotifications->count() }}
+                            </span>
+                        @endif
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width: 320px; border-radius: 15px; overflow: hidden;">
+                        <div class="p-3 bg-primary text-white">
+                            <h6 class="m-0">Notifikasi</h6>
+                        </div>
+                        <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                            @forelse(Auth::user()->notifications()->limit(5)->get() as $notification)
+                                <a href="{{ $notification->data['link'] ?? '#' }}" class="list-group-item list-group-item-action p-3 @if(!$notification->read_at) bg-light @endif">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h6 class="mb-1 fw-bold small">{{ $notification->data['title'] ?? 'Notifikasi' }}</h6>
+                                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                    </div>
+                                    <p class="mb-0 small text-muted">{{ Str::limit($notification->data['message'] ?? '', 80) }}</p>
+                                </a>
+                            @empty
+                                <div class="p-4 text-center">
+                                    <i class="fa-solid fa-bell-slash text-muted mb-2"></i>
+                                    <p class="mb-0 small text-muted">Tidak ada notifikasi</p>
+                                </div>
+                            @endforelse
+                        </div>
+                        <a href="{{ route(Auth::user()->role . '.notifications' ?? 'home') }}" class="p-2 text-center d-block small text-primary text-decoration-none border-top">
+                            Lihat Semua
+                        </a>
+                    </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random" class="rounded-circle" width="40">
@@ -207,6 +239,22 @@
         </div>
 
         <!-- Content -->
+        @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
+            <i class="fa-solid fa-circle-check me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
+            <i class="fa-solid fa-circle-xmark me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
         @yield('content')
 
     </main>

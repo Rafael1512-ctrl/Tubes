@@ -66,6 +66,26 @@
         </tbody>
     </table>
 
+    <h4 style="margin-top: 30px;">Analisis Laba/Rugi (Estimasi)</h4>
+    <table class="table">
+        <tr>
+            <th width="70%">Keterangan</th>
+            <th class="text-right">Nilai (Rp)</th>
+        </tr>
+        <tr>
+            <td>Total Pendapatan (Gross Revenue)</td>
+            <td class="text-right">Rp {{ number_format($totalRevenueYear, 0, ',', '.') }}</td>
+        </tr>
+        <tr>
+            <td>Total Modal Obat (COGS)</td>
+            <td class="text-right" style="color: red;">(Rp {{ number_format($medicineCost, 0, ',', '.') }})</td>
+        </tr>
+        <tr style="font-weight: bold; background: #e9ecef;">
+            <td>Estimasi Laba Kotor</td>
+            <td class="text-right">Rp {{ number_format($estimatedProfit, 0, ',', '.') }}</td>
+        </tr>
+    </table>
+
     <h4 style="margin-top: 30px;">Top 10 Layanan Terpopuler</h4>
     <table class="table">
         <thead>

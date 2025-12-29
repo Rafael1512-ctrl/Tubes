@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('tindakan', 'Kategori')) {
-            Schema::table('tindakan', function (Blueprint $table) {
-                $table->string('Kategori', 50)->nullable()->after('NamaTindakan');
-            });
-        }
+        Schema::table('obat', function (Blueprint $table) {
+            $table->decimal('HargaBeli', 15, 2)->after('Satuan')->default(0);
+            $table->decimal('HargaJual', 15, 2)->after('HargaBeli')->default(0);
+        });
     }
 
     /**
@@ -23,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tindakan', function (Blueprint $table) {
-            $table->dropColumn('Kategori');
+        Schema::table('obat', function (Blueprint $table) {
+            $table->dropColumn(['HargaBeli', 'HargaJual']);
         });
     }
 };

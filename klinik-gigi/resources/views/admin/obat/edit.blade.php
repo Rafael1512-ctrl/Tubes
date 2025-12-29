@@ -71,11 +71,22 @@
                     </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label fw-bold small text-muted text-uppercase">Harga Satuan (Rp) <span class="text-danger">*</span></label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light">Rp</span>
-                        <input type="number" name="Harga" class="form-control rounded-end-3 p-2" placeholder="0" value="{{ old('Harga', (int)$obat->Harga) }}" min="0" required>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Harga Beli (Rp) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">Rp</span>
+                            <input type="number" name="HargaBeli" class="form-control rounded-end-3 p-2" placeholder="0" value="{{ old('HargaBeli', (int)$obat->HargaBeli) }}" min="0" required>
+                        </div>
+                        <small class="text-muted" style="font-size: 0.7rem;">Harga saat kulakan</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Harga Jual (Rp) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">Rp</span>
+                            <input type="number" name="HargaJual" class="form-control rounded-end-3 p-2" placeholder="0" value="{{ old('HargaJual', (int)($obat->HargaJual ?? $obat->Harga)) }}" min="0" required>
+                        </div>
+                        <small class="text-muted" style="font-size: 0.7rem;">Harga yang dibayar pasien</small>
                     </div>
                 </div>
 

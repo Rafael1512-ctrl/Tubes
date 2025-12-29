@@ -43,7 +43,9 @@ class ObatController extends Controller
             'IdJenisObat' => 'required|exists:jenisobat,JenisObatID',
             'NamaObat' => 'required|string|max:100',
             'Satuan' => 'required|string|max:20',
-            'Harga' => 'required|numeric|min:0',
+            'HargaBeli' => 'required|numeric|min:0',
+            'HargaJual' => 'required|numeric|min:0',
+            'Harga' => 'nullable|numeric|min:0',
             'Stok' => 'required|integer|min:0',
         ]);
 
@@ -71,7 +73,9 @@ class ObatController extends Controller
                 'IdJenisObat' => $request->IdJenisObat,
                 'NamaObat' => $request->NamaObat,
                 'Satuan' => $request->Satuan,
-                'Harga' => $request->Harga,
+                'HargaBeli' => $request->HargaBeli,
+                'HargaJual' => $request->HargaJual,
+                'Harga' => $request->Harga ?? $request->HargaJual,
                 'Stok' => $request->Stok,
             ]);
 
@@ -96,13 +100,19 @@ class ObatController extends Controller
             'IdJenisObat' => 'required|exists:jenisobat,JenisObatID',
             'NamaObat' => 'required|string|max:100',
             'Satuan' => 'required|string|max:20',
-            'Harga' => 'required|numeric|min:0',
+            'HargaBeli' => 'required|numeric|min:0',
+            'HargaJual' => 'required|numeric|min:0',
+            'Harga' => 'nullable|numeric|min:0',
             'Stok' => 'required|integer|min:0',
         ]);
 
         try {
             $obat = Obat::findOrFail($id);
-            $obat->update($request->all());
+            $data = $request->all();
+            if (!isset($data['Harga']) || empty($data['Harga'])) {
+                $data['Harga'] = $request->HargaJual;
+            }
+            $obat->update($data);
 
             return redirect()->route('admin.obat')->with('success', 'Obat berhasil diperbarui');
         } catch (\Exception $e) {

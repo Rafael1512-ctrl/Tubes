@@ -10,6 +10,7 @@
 <a href="{{ route('dokter.jadwal') }}" class="nav-link"><i class="fa-solid fa-calendar-week"></i> Jadwal Saya</a>
 <a href="{{ route('dokter.pasien') }}" class="nav-link"><i class="fa-solid fa-user-injured"></i> Data Pasien</a>
 <a href="{{ route('dokter.riwayat') }}" class="nav-link"><i class="fa-solid fa-history"></i> Riwayat Praktek</a>
+<a href="{{ route('dokter.notifications') }}" class="nav-link"><i class="fa-solid fa-bell"></i> Notifikasi</a>
 @endsection
 
 @section('content')

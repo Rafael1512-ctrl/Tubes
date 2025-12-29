@@ -52,12 +52,25 @@ class LaporanController extends Controller
             ->limit(5)
             ->get();
 
+        // 4. Medicine Cost Calculation (COGS)
+        $medicineCost = DB::table('rekammedis_obat')
+            ->join('rekammedis', 'rekammedis_obat.IdRekamMedis', '=', 'rekammedis.IdRekamMedis')
+            ->join('obat', 'rekammedis_obat.IdObat', '=', 'obat.IdObat')
+            ->whereYear('rekammedis.Tanggal', $year)
+            ->select(DB::raw('SUM(rekammedis_obat.Jumlah * obat.HargaBeli) as total_cost'))
+            ->first()
+            ->total_cost ?? 0;
+
+        $estimatedProfit = $totalRevenueYear - $medicineCost;
+
         return view('admin.laporan.index', compact(
             'monthlyRevenue', 
             'totalRevenueYear', 
             'totalPasienNew', 
             'totalPemeriksaan',
             'popularTindakan',
+            'medicineCost',
+            'estimatedProfit',
             'year'
         ));
     }
@@ -91,12 +104,25 @@ class LaporanController extends Controller
             ->limit(10)
             ->get();
 
+        // Medicine Cost
+        $medicineCost = DB::table('rekammedis_obat')
+            ->join('rekammedis', 'rekammedis_obat.IdRekamMedis', '=', 'rekammedis.IdRekamMedis')
+            ->join('obat', 'rekammedis_obat.IdObat', '=', 'obat.IdObat')
+            ->whereYear('rekammedis.Tanggal', $year)
+            ->select(DB::raw('SUM(rekammedis_obat.Jumlah * obat.HargaBeli) as total_cost'))
+            ->first()
+            ->total_cost ?? 0;
+
+        $estimatedProfit = $totalRevenueYear - $medicineCost;
+
         $pdf = Pdf::loadView('admin.laporan.pdf', compact(
             'revenueData', 
             'totalRevenueYear', 
             'totalPasienNew', 
             'totalPemeriksaan',
             'popularTindakan',
+            'medicineCost',
+            'estimatedProfit',
             'year'
         ));
 

@@ -12,9 +12,11 @@ class Obat extends Model
     protected $keyType = 'string';
     public $timestamps = false;
 
-    protected $fillable = ['IdObat', 'IdJenisObat', 'NamaObat', 'Satuan', 'Harga', 'Stok'];
+    protected $fillable = ['IdObat', 'IdJenisObat', 'NamaObat', 'Satuan', 'HargaBeli', 'HargaJual', 'Harga', 'Stok'];
 
     protected $casts = [
+        'HargaBeli' => 'decimal:2',
+        'HargaJual' => 'decimal:2',
         'Harga' => 'decimal:2',
         'Stok' => 'integer'
     ];

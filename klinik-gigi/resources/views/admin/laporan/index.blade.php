@@ -114,6 +114,36 @@
             </div>
         </div>
     </div>
+<!-- Summary Row 2: Finance Detail -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card report-card p-4 bg-white border-start border-danger border-4">
+            <div class="d-flex justify-content-between mb-2">
+                <div>
+                    <small class="text-muted d-block">Modal Obat (COGS)</small>
+                    <h4 class="fw-bold mb-0 text-danger">Rp {{ number_format($medicineCost, 0, ',', '.') }}</h4>
+                </div>
+                <div class="stat-icon bg-danger-subtle text-danger">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+            </div>
+            <p class="small text-muted mb-0">Total nilai beli obat yang terpakai selama tahun {{ $year }}</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card report-card p-4 bg-white border-start border-success border-4">
+            <div class="d-flex justify-content-between mb-2">
+                <div>
+                    <small class="text-muted d-block">Laba Kotor Estimasi</small>
+                    <h4 class="fw-bold mb-0 text-success">Rp {{ number_format($estimatedProfit, 0, ',', '.') }}</h4>
+                </div>
+                <div class="stat-icon bg-success-subtle text-success">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                </div>
+            </div>
+            <p class="small text-muted mb-0">Pendapatan dikurangi modal obat (belum termasuk operasional lainnya)</p>
+        </div>
+    </div>
 </div>
 
 <div class="row g-4">

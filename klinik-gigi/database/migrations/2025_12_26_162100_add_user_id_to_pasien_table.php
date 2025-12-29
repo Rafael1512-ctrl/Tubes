@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('pasien', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->nullable()->after('PasienID');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
+        if (!Schema::hasColumn('pasien', 'user_id')) {
+            Schema::table('pasien', function (Blueprint $table) {
+                $table->unsignedBigInteger('user_id')->nullable()->after('PasienID');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            });
+        }
     }
 
     public function down()

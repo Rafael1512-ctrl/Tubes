@@ -6,13 +6,15 @@
 @section('header-subtitle', 'Kelola operasional klinik secara efisien')
 
 @section('sidebar-menu')
-<a href="{{ route('admin.dashboard') }}" class="nav-link active"><i class="fa-solid fa-home"></i> Dashboard</a>
-<a href="{{ route('admin.booking') }}" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
-<a href="{{ route('admin.pasien') }}" class="nav-link"><i class="fa-solid fa-hospital-user"></i> Data Pasien</a>
-<a href="{{ route('admin.obat') }}" class="nav-link"><i class="fa-solid fa-pills"></i> Data Obat</a>
-<a href="{{ route('admin.users') }}" class="nav-link"><i class="fa-solid fa-users"></i> Manajemen User</a>
-<a href="{{ route('admin.pembayaran') }}" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Pembayaran</a>
-<a href="{{ route('admin.laporan') }}" class="nav-link"><i class="fa-solid fa-chart-line"></i> Laporan</a>
+<a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fa-solid fa-home"></i> Dashboard</a>
+<a href="{{ route('admin.booking') }}" class="nav-link {{ request()->routeIs('admin.booking*') ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
+<a href="{{ route('admin.pasien') }}" class="nav-link {{ request()->routeIs('admin.pasien*') ? 'active' : '' }}"><i class="fa-solid fa-hospital-user"></i> Data Pasien</a>
+<a href="{{ route('admin.obat') }}" class="nav-link {{ request()->routeIs('admin.obat*') ? 'active' : '' }}"><i class="fa-solid fa-pills"></i> Data Obat</a>
+<a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Manajemen User</a>
+<a href="{{ route('admin.broadcast.index') }}" class="nav-link {{ request()->routeIs('admin.broadcast*') ? 'active' : '' }}"><i class="fa-solid fa-bullhorn"></i> Broadcast</a>
+<a href="{{ route('admin.notifications') }}" class="nav-link {{ request()->routeIs('admin.notifications*') ? 'active' : '' }}"><i class="fa-solid fa-bell"></i> Notifikasi</a>
+<a href="{{ route('admin.pembayaran') }}" class="nav-link {{ request()->routeIs('admin.pembayaran*') ? 'active' : '' }}"><i class="fa-solid fa-file-invoice-dollar"></i> Pembayaran</a>
+<a href="{{ route('admin.laporan') }}" class="nav-link {{ request()->routeIs('admin.laporan*') ? 'active' : '' }}"><i class="fa-solid fa-chart-line"></i> Laporan</a>
 @endsection
 
 @section('styles')
@@ -126,11 +128,16 @@
 
             <!-- Promotion Blast (Integrated) -->
             <div class="mt-4 pt-4 border-top">
-                <label class="small fw-bold text-muted mb-2"><i class="fa-solid fa-paper-plane me-1"></i> Quick Broadcast Pengumuman</label>
-                <div class="input-group">
-                    <input type="text" class="form-control border-light-subtle bg-light small" placeholder="Ketik pesan untuk semua pasien...">
-                    <button class="btn btn-dark px-4 small">Kirim</button>
-                </div>
+                <form action="{{ route('admin.broadcast.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="Title" value="Pengumuman Klinik">
+                    <input type="hidden" name="TargetRole" value="pasien">
+                    <label class="small fw-bold text-muted mb-2"><i class="fa-solid fa-paper-plane me-1"></i> Quick Broadcast Pengumuman</label>
+                    <div class="input-group">
+                        <input type="text" name="Message" class="form-control border-light-subtle bg-light small" placeholder="Ketik pesan untuk semua pasien..." required>
+                        <button type="submit" class="btn btn-dark px-4 small">Kirim</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

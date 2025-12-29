@@ -93,10 +93,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/laporan/download', [App\Http\Controllers\LaporanController::class, 'downloadPDF'])->name('admin.laporan.pdf');
     });
 
+    // Fitur khusus Pasien
+    Route::prefix('pasien')->group(function () {
+        Route::get('/rekam-medis', [App\Http\Controllers\PasienController::class, 'rekamMedis'])->name('pasien.rekam-medis');
+        Route::get('/jadwal', [App\Http\Controllers\PasienController::class, 'jadwal'])->name('pasien.jadwal');
+        Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('pasien.notifications');
+        Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('pasien.notifications.read');
+    });
+
+    // Tambahan fitur broadcast untuk admin
+    Route::prefix('admin')->group(function () {
+        Route::get('/broadcast', [App\Http\Controllers\Admin\BroadcastController::class, 'index'])->name('admin.broadcast.index');
+        Route::get('/broadcast/create', [App\Http\Controllers\Admin\BroadcastController::class, 'create'])->name('admin.broadcast.create');
+        Route::post('/broadcast', [App\Http\Controllers\Admin\BroadcastController::class, 'store'])->name('admin.broadcast.store');
+        Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('admin.notifications');
+        Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('admin.notifications.read');
+    });
+
     // Fitur khusus Dokter
     Route::prefix('dokter')->group(function () {
         Route::get('/rekam-medis/create/{idBooking}', [App\Http\Controllers\RekamMedisController::class, 'create'])->name('dokter.rekam-medis.create');
         Route::post('/rekam-medis', [App\Http\Controllers\RekamMedisController::class, 'store'])->name('dokter.rekam-medis.store');
+        Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('dokter.notifications');
+        Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('dokter.notifications.read');
         
         // Jadwal Saya
         Route::get('/jadwal', [App\Http\Controllers\DokterController::class, 'jadwal'])->name('dokter.jadwal');
