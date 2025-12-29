@@ -6,6 +6,7 @@ use App\Models\Pembayaran;
 use App\Models\RekamMedis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PembayaranController extends Controller
 {
@@ -78,13 +79,32 @@ class PembayaranController extends Controller
             $pembayaran->Status = 'PAID';
             $pembayaran->save();
 
+            // Send Confirmation Email
+            $pembayaran->load(['pasien.user', 'rekamMedis']);
+            if ($pembayaran->pasien && $pembayaran->pasien->user && $pembayaran->pasien->user->email) {
+                try {
+                    \Illuminate\Support\Facades\Mail::to($pembayaran->pasien->user->email)->send(new \App\Mail\PaymentConfirmed($pembayaran));
+                } catch (\Exception $e) {
+                    \Log::error('Gagal mengirim email konfirmasi pembayaran: ' . $e->getMessage());
+                }
+            }
+
             DB::commit();
 
-            return redirect()->route('admin.pembayaran')->with('success', 'Pembayaran berhasil diproses.');
+            return redirect()->route('admin.pembayaran')->with('success', 'Pembayaran berhasil diproses dan e-kwitansi telah dikirim ke email pasien.');
 
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Gagal memproses pembayaran: ' . $e->getMessage());
         }
+    }
+
+    public function downloadInvoice($id)
+    {
+        $pembayaran = Pembayaran::with(['pasien', 'rekamMedis.dokter', 'rekamMedis.tindakan', 'rekamMedis.obat'])->findOrFail($id);
+        
+        $pdf = Pdf::loadView('admin.pembayaran.billing_pdf', compact('pembayaran'));
+        
+        return $pdf->download("Billing-{$pembayaran->IdPembayaran}.pdf");
     }
 }

@@ -154,12 +154,24 @@ class BookingController extends Controller
     public function destroy($id)
     {
         try {
+            // Get booking details before/after SP for email
+            $booking = Booking::with(['pasien.user', 'jadwal.dokter'])->findOrFail($id);
+
             // Call stored procedure Sp_CancelBooking
             DB::statement('CALL Sp_CancelBooking(?)', [$id]);
 
+            // Send Email to patient if user exists
+            if ($booking->pasien && $booking->pasien->user && $booking->pasien->user->email) {
+                try {
+                    \Illuminate\Support\Facades\Mail::to($booking->pasien->user->email)->send(new \App\Mail\BookingCancelled($booking));
+                } catch (\Exception $e) {
+                    \Log::error('Gagal mengirim email pembatalan: ' . $e->getMessage());
+                }
+            }
+
             \Log::info('Booking berhasil dibatalkan', ['IdBooking' => $id]);
 
-            return redirect()->route('admin.booking')->with('success', 'Booking berhasil dibatalkan');
+            return redirect()->route('admin.booking')->with('success', 'Booking berhasil dibatalkan dan email pemberitahuan telah dikirim.');
 
         } catch (\Exception $e) {
             \Log::error('Gagal membatalkan booking', [

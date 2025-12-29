@@ -119,6 +119,7 @@
                             <th>Waktu Bayar</th>
                             <th>Total</th>
                             <th>Status</th>
+                            <th class="text-center">Lihat Bill</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -130,6 +131,11 @@
                             <td>{{ \Carbon\Carbon::parse($pay->TanggalPembayaran)->isoFormat('D MMM YYYY, HH:mm') }}</td>
                             <td class="fw-bold text-success">Rp {{ number_format($pay->TotalBayar, 0, ',', '.') }}</td>
                             <td><span class="badge bg-success-subtle text-success border-0 px-3 rounded-pill">Lunas</span></td>
+                            <td class="text-center">
+                                <a href="{{ route('admin.pembayaran.download', $pay->IdPembayaran) }}" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                    <i class="fa-solid fa-file-pdf me-1"></i> PDF
+                                </a>
+                            </td>
                         </tr>
                         @empty
                         <tr><td colspan="6" class="text-center py-5 text-muted">Tidak ada riwayat pembayaran untuk periode ini.</td></tr>

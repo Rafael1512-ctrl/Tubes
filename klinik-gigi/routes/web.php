@@ -74,6 +74,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/pembayaran', [App\Http\Controllers\PembayaranController::class, 'index'])->name('admin.pembayaran');
         Route::get('/pembayaran/create/{id}', [App\Http\Controllers\PembayaranController::class, 'create'])->name('admin.pembayaran.create');
         Route::post('/pembayaran', [App\Http\Controllers\PembayaranController::class, 'store'])->name('admin.pembayaran.store');
+        Route::get('/pembayaran/{id}/download', [App\Http\Controllers\PembayaranController::class, 'downloadInvoice'])->name('admin.pembayaran.download');
 
         // Patient Data (New)
         Route::get('/pasien', [AdminController::class, 'pasien'])->name('admin.pasien');
