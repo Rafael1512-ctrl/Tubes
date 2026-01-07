@@ -20,7 +20,6 @@
                         <tr>
                             <th class="ps-4">Tanggal & Waktu</th>
                             <th>Dokter</th>
-                            <th>No Antrian</th>
                             <th>Status</th>
                             <th class="text-end pe-4">Aksi</th>
                         </tr>
@@ -38,9 +37,7 @@
                                     <span>{{ $b->jadwal->dokter->Nama ?? '-' }}</span>
                                 </div>
                             </td>
-                            <td>
-                                <div class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3">{{ $b->NomorAntrian ?? '-' }}</div>
-                            </td>
+
                             <td>
                                 @php
                                     $statusColor = [
@@ -67,7 +64,7 @@
                                 <i class="fa-solid fa-calendar-xmark fa-4x mb-4 opacity-25"></i>
                                 <h4>Belum Ada Janji Temu</h4>
                                 <p>Silakan buat janji temu untuk pemeriksaan rutin.</p>
-                                <a href="{{ route('admin.booking.create') }}" class="btn btn-primary rounded-pill px-4">Buat Janji Temu</a>
+                                <a href="{{ route('pasien.booking.create') }}" class="btn btn-primary rounded-pill px-4">Buat Janji Temu</a>
                             </td>
                         </tr>
                         @endforelse

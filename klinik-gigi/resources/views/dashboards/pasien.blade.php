@@ -140,7 +140,7 @@
             <div class="welcome-overlay"></div>
             <div class="row align-items-center position-relative z-1">
                 <div class="col-md-7">
-                    <span class="badge bg-white bg-opacity-20 backdrop-blur text-white mb-3 px-3 py-2 rounded-pill fw-light border border-white border-opacity-25">
+                    <span class="badge bg-white bg-opacity-20 backdrop-blur text-primary mb-3 px-3 py-2 rounded-pill fw-light border border-white border-opacity-25">
                         <i class="fas fa-smile me-2"></i>Senyum Sehat Hari Ini
                     </span>
                     <h1 class="display-5 fw-bold mb-3">Halo, {{ Auth::user()->name ?? 'Pasien' }}! 👋</h1>
@@ -148,7 +148,7 @@
                         Kesehatan gigi adalah investasi masa depan. Jangan lupa jadwalkan pemeriksaan rutin Anda bersama dokter ahli kami.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="{{ route('admin.booking.create') }}" class="btn btn-light text-primary fw-bold text-uppercase rounded-pill px-4 py-3 shadow-lg">
+                        <a href="{{ route('pasien.booking.create') }}" class="btn btn-light text-primary fw-bold text-uppercase rounded-pill px-4 py-3 shadow-lg">
                             <i class="fa-solid fa-calendar-plus me-2"></i> Buat Janji Temu
                         </a>
                     </div>
@@ -270,7 +270,7 @@
             @empty
             <div class="text-center py-3">
                 <p class="text-muted small">Tidak ada janji temu aktif</p>
-                <a href="{{ route('admin.booking.create') }}" class="btn btn-primary btn-sm rounded-pill px-3">Buat Sekarang</a>
+                <a href="{{ route('pasien.booking.create') }}" class="btn btn-primary btn-sm rounded-pill px-3">Buat Sekarang</a>
             </div>
             @endforelse
         </div>

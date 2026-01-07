@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2025 at 08:26 AM
+-- Generation Time: Jan 07, 2026 at 09:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -551,8 +551,32 @@ INSERT INTO `booking` (`IdBooking`, `IdJadwal`, `PasienID`, `TanggalBooking`, `S
 ('B-2512-0011', 'J-2601-0003', 'P-2025-00001', '2025-12-28 14:00:00', 'PRESENT'),
 ('B-2512-0012', 'J-2601-0004', 'P-2025-00002', '2025-12-28 14:30:00', 'CANCELLED'),
 ('B-2512-0013', 'J-2512-0011', 'P-2025-00005', '2025-12-28 17:20:38', 'COMPLETED'),
-('B-2512-0014', 'J-2512-0013', 'P-2025-00001', '2025-12-29 14:20:11', 'PRESENT'),
-('B-2512-0015', 'J-2512-0012', 'P-2025-00001', '2025-12-29 14:20:29', 'PRESENT');
+('B-2512-0014', 'J-2512-0013', 'P-2025-00001', '2025-12-29 14:20:11', 'CANCELLED'),
+('B-2512-0015', 'J-2512-0012', 'P-2025-00001', '2025-12-29 14:20:29', 'COMPLETED'),
+('B-2601-0001', 'J-2601-0006', 'P-2026-00001', '2026-01-07 15:41:43', 'PRESENT');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `broadcasts`
+--
+
+CREATE TABLE `broadcasts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `Title` varchar(255) NOT NULL,
+  `Message` text NOT NULL,
+  `AuthorID` bigint(20) UNSIGNED NOT NULL,
+  `TargetRole` varchar(255) NOT NULL DEFAULT 'pasien',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `broadcasts`
+--
+
+INSERT INTO `broadcasts` (`id`, `Title`, `Message`, `AuthorID`, `TargetRole`, `created_at`, `updated_at`) VALUES
+(1, 'Pengumuman Klinik', 'test', 1, 'pasien', '2025-12-29 15:23:56', '2025-12-29 15:23:56');
 
 -- --------------------------------------------------------
 
@@ -576,7 +600,9 @@ INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
 ('klinik-gigi-zenith-cache-356a192b7913b04c54574d18c28d46e6395428ab', 'i:1;', 1766982229),
 ('klinik-gigi-zenith-cache-356a192b7913b04c54574d18c28d46e6395428ab:timer', 'i:1766982229;', 1766982229),
 ('klinik-gigi-zenith-cache-77de68daecd823babbb58edb1c8e14d7106e83bb', 'i:1;', 1766993104),
-('klinik-gigi-zenith-cache-77de68daecd823babbb58edb1c8e14d7106e83bb:timer', 'i:1766993104;', 1766993104);
+('klinik-gigi-zenith-cache-77de68daecd823babbb58edb1c8e14d7106e83bb:timer', 'i:1766993104;', 1766993104),
+('klinik-gigi-zenith-cache-da4b9237bacccdf19c0760cab7aec4a8359010b0', 'i:1;', 1766993602),
+('klinik-gigi-zenith-cache-da4b9237bacccdf19c0760cab7aec4a8359010b0:timer', 'i:1766993602;', 1766993602);
 
 -- --------------------------------------------------------
 
@@ -653,22 +679,23 @@ INSERT INTO `jadwal` (`IdJadwal`, `IdDokter`, `Tanggal`, `JamMulai`, `JamAkhir`,
 ('J-2507-0008', 'D-004', '2025-07-29', '17:00:00', '20:00:00', 'Not Available', 4),
 ('J-2512-0001', 'D-001', '2025-12-28', '09:00:00', '12:00:00', 'Not Available', 15),
 ('J-2512-0002', 'D-001', '2025-12-28', '17:00:00', '20:00:00', 'Not Available', 15),
-('J-2512-0003', 'D-002', '2025-12-30', '09:00:00', '12:00:00', 'Available', 4),
-('J-2512-0004', 'D-002', '2025-12-29', '17:00:00', '20:00:00', 'Available', 4),
+('J-2512-0003', 'D-002', '2025-12-30', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2512-0004', 'D-002', '2025-12-29', '17:00:00', '20:00:00', 'Not Available', 4),
 ('J-2512-0005', 'D-001', '2025-12-28', '09:00:00', '12:00:00', 'Not Available', 15),
 ('J-2512-0006', 'D-003', '2025-12-29', '09:00:00', '12:00:00', 'Not Available', 4),
-('J-2512-0007', 'D-003', '2025-12-30', '17:00:00', '20:00:00', 'Available', 4),
+('J-2512-0007', 'D-003', '2025-12-30', '17:00:00', '20:00:00', 'Not Available', 4),
 ('J-2512-0008', 'D-004', '2025-12-29', '09:00:00', '12:00:00', 'Not Available', 4),
-('J-2512-0009', 'D-004', '2025-12-31', '17:00:00', '20:00:00', 'Available', 4),
-('J-2512-0010', 'D-002', '2025-12-30', '17:00:00', '20:00:00', 'Available', 4),
+('J-2512-0009', 'D-004', '2025-12-31', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2512-0010', 'D-002', '2025-12-30', '17:00:00', '20:00:00', 'Not Available', 4),
 ('J-2512-0011', 'D-002', '2025-12-28', '17:00:00', '20:00:00', 'Not Available', 4),
-('J-2512-0012', 'D-001', '2025-12-29', '17:00:00', '20:00:00', 'Available', 15),
-('J-2512-0013', 'D-003', '2025-12-29', '17:00:00', '20:00:00', 'Available', 4),
-('J-2601-0001', 'D-001', '2026-01-02', '09:00:00', '12:00:00', 'Available', 15),
-('J-2601-0002', 'D-002', '2026-01-03', '09:00:00', '12:00:00', 'Available', 4),
-('J-2601-0003', 'D-003', '2026-01-05', '09:00:00', '12:00:00', 'Available', 4),
-('J-2601-0004', 'D-004', '2026-01-06', '17:00:00', '20:00:00', 'Available', 4),
-('J-2601-0005', 'D-001', '2026-01-04', '09:00:00', '12:00:00', 'Available', 15);
+('J-2512-0012', 'D-001', '2025-12-29', '17:00:00', '20:00:00', 'Not Available', 15),
+('J-2512-0013', 'D-003', '2025-12-29', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2601-0001', 'D-001', '2026-01-02', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2601-0002', 'D-002', '2026-01-03', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2601-0003', 'D-003', '2026-01-05', '09:00:00', '12:00:00', 'Not Available', 4),
+('J-2601-0004', 'D-004', '2026-01-06', '17:00:00', '20:00:00', 'Not Available', 4),
+('J-2601-0005', 'D-001', '2026-01-04', '09:00:00', '12:00:00', 'Not Available', 15),
+('J-2601-0006', 'D-001', '2026-01-07', '17:00:00', '20:00:00', 'Available', 15);
 
 -- --------------------------------------------------------
 
@@ -750,7 +777,39 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '0001_01_01_000001_create_cache_table', 1),
 (3, '0001_01_01_000002_create_jobs_table', 1),
 (4, '2025_12_26_155609_add_user_id_to_pegawai_table', 2),
-(5, '2025_12_29_141644_add_kategori_to_tindakan_table', 3);
+(5, '2025_12_29_141644_add_kategori_to_tindakan_table', 3),
+(6, '2025_12_26_162100_add_user_id_to_pasien_table', 4),
+(7, '2025_12_29_215338_create_broadcasts_table', 5),
+(8, '2025_12_29_215347_create_notifications_table', 5),
+(9, '2025_12_29_222634_add_prices_to_obat_table', 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` char(36) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `notifiable_type` varchar(255) NOT NULL,
+  `notifiable_id` bigint(20) UNSIGNED NOT NULL,
+  `data` text NOT NULL,
+  `read_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
+('15b0e492-0677-4acd-984b-77b024596440', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 13, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
+('355fbb8d-e7ae-48c0-b347-b0dc55af5ee3', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 6, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
+('5cd11d9c-3cda-460e-baf9-8fa6c648cc2b', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 3, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
+('8a88b18d-f118-4332-9bfb-9f3ca5c7cb7f', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 12, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
+('ccc6ab96-b3e8-46e7-8a79-56c9be3a7f71', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 11, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57');
 
 -- --------------------------------------------------------
 
@@ -763,6 +822,7 @@ CREATE TABLE `obat` (
   `IdJenisObat` int(11) NOT NULL,
   `NamaObat` varchar(100) NOT NULL,
   `Satuan` varchar(20) DEFAULT NULL,
+  `HargaBeli` decimal(15,2) NOT NULL DEFAULT 0.00,
   `Harga` decimal(12,2) NOT NULL,
   `Stok` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -771,20 +831,20 @@ CREATE TABLE `obat` (
 -- Dumping data for table `obat`
 --
 
-INSERT INTO `obat` (`IdObat`, `IdJenisObat`, `NamaObat`, `Satuan`, `Harga`, `Stok`) VALUES
-('O-00001', 1, 'Paracetamol 500mg', 'Tablet', 2000.00, 188),
-('O-00002', 1, 'Ibuprofen 400mg', 'Tablet', 3000.00, 73),
-('O-00003', 2, 'Amoxicillin 500mg', 'Kapsul', 5000.00, 21),
-('O-00004', 2, 'Clindamycin 300mg', 'Kapsul', 8000.00, 40),
-('O-00005', 3, 'Chlorhexidine 0.2%', 'Botol 100ml', 25000.00, 28),
-('O-00006', 3, 'Povidone Iodine', 'Botol 50ml', 15000.00, 25),
-('O-00007', 4, 'Dexamethasone', 'Tablet', 3500.00, 50),
-('O-00008', 5, 'Lidocaine 2%', 'Ampul', 12000.00, 93),
-('O-00009', 5, 'Mepivacaine 3%', 'Ampul', 15000.00, 64),
-('O-00010', 1, 'Ketorolac 10mg', 'Tablet', 4500.00, 55),
-('O-00011', 6, 'Fluoride Gel 1.23%', 'Tube 50g', 75000.00, 30),
-('O-00012', 7, 'Wax Orthodonti', 'Pack 10 strips', 25000.00, 50),
-('O-00013', 3, 'Antiseptik Rongga Mulut', 'Botol 200ml', 45000.00, 24);
+INSERT INTO `obat` (`IdObat`, `IdJenisObat`, `NamaObat`, `Satuan`, `HargaBeli`, `Harga`, `Stok`) VALUES
+('O-00001', 1, 'Paracetamol 500mg', 'Tablet', 1000.00, 2000.00, 188),
+('O-00002', 1, 'Ibuprofen 400mg', 'Tablet', 1500.00, 3000.00, 72),
+('O-00003', 2, 'Amoxicillin 500mg', 'Kapsul', 2500.00, 5000.00, 21),
+('O-00004', 2, 'Clindamycin 300mg', 'Kapsul', 4000.00, 8000.00, 40),
+('O-00005', 3, 'Chlorhexidine 0.2%', 'Botol 100ml', 12500.00, 25000.00, 28),
+('O-00006', 3, 'Povidone Iodine', 'Botol 50ml', 7500.00, 15000.00, 25),
+('O-00007', 4, 'Dexamethasone', 'Tablet', 1750.00, 3500.00, 50),
+('O-00008', 5, 'Lidocaine 2%', 'Ampul', 6000.00, 12000.00, 93),
+('O-00009', 5, 'Mepivacaine 3%', 'Ampul', 7500.00, 15000.00, 64),
+('O-00010', 1, 'Ketorolac 10mg', 'Tablet', 2250.00, 4500.00, 55),
+('O-00011', 6, 'Fluoride Gel 1.23%', 'Tube 50g', 37500.00, 75000.00, 30),
+('O-00012', 7, 'Wax Orthodonti', 'Pack 10 strips', 12500.00, 25000.00, 50),
+('O-00013', 3, 'Antiseptik Rongga Mulut', 'Botol 200ml', 22500.00, 45000.00, 24);
 
 -- --------------------------------------------------------
 
@@ -847,7 +907,8 @@ INSERT INTO `pasien` (`PasienID`, `user_id`, `Nama`, `TanggalLahir`, `Alamat`, `
 ('P-2025-00002', 6, 'aryanto budi', '2005-12-09', 'jl sukakarya', '087634568721', 'L'),
 ('P-2025-00003', 11, 'Anita Rahma', '2018-05-15', 'Jl. Merdeka No. 12, Bandung', '08111222333', 'P'),
 ('P-2025-00004', 12, 'Rudi Hartono', '1985-08-20', 'Jl. Sudirman No. 45, Jakarta', '08222333444', 'L'),
-('P-2025-00005', 13, 'Siti Nurhaliza', '1990-11-30', 'Jl. Gatot Subroto No. 78, Surabaya', '08333444555', 'P');
+('P-2025-00005', 13, 'Siti Nurhaliza', '1990-11-30', 'Jl. Gatot Subroto No. 78, Surabaya', '08333444555', 'P'),
+('P-2026-00001', 20, 'Rafael', '2026-01-07', 'Bakjer', '085325553535', 'L');
 
 -- --------------------------------------------------------
 
@@ -921,7 +982,8 @@ INSERT INTO `pembayaran` (`IdPembayaran`, `IdRekamMedis`, `PasienID`, `TanggalPe
 ('PAY-2512-0002', 'RM-2025-0002', 'P-2025-00002', '2025-12-28 09:19:18', 'Tunai', 15339000.00, 'PAID'),
 ('PAY-2512-0003', 'RM-2025-0003', 'P-2025-00001', '2025-12-28 09:19:21', 'Transfer', 5616000.00, 'PAID'),
 ('PAY-2512-0012', 'RM-2025-0012', 'P-2025-00005', '2025-12-28 17:23:22', 'Tunai', 50000.00, 'PAID'),
-('PAY-2512-0013', 'RM-2025-0013', 'P-2025-00005', '2025-12-29 14:03:17', 'Asuransi', 357000.00, 'PAID');
+('PAY-2512-0013', 'RM-2025-0013', 'P-2025-00005', '2025-12-29 14:03:17', 'Asuransi', 357000.00, 'PAID'),
+('PAY-2512-0014', 'RM-2025-0014', 'P-2025-00001', '2025-12-29 14:34:12', 'Tunai', 303000.00, 'PAID');
 
 -- --------------------------------------------------------
 
@@ -956,7 +1018,8 @@ INSERT INTO `rekammedis` (`IdRekamMedis`, `IdBooking`, `PasienID`, `DokterID`, `
 ('RM-2025-0010', 'B-2507-0001', 'P-2025-00004', 'D-001', '2025-07-07', 'Ulkus aftosa rekuren', 'Aplikasi topikal, saran diet, kontrol jika tidak membaik'),
 ('RM-2025-0011', 'B-2507-0003', 'P-2025-00001', 'D-003', '2025-07-08', 'Gigi molar ketiga impaksi mesioangular', 'Konsultasi bedah pencabutan, rencana operasi'),
 ('RM-2025-0012', 'B-2512-0013', 'P-2025-00005', 'D-002', '2025-12-28', 'konsultasi pemasangan behel', 'Minta ronthen gigi keseluruhan'),
-('RM-2025-0013', 'B-2512-0008', 'P-2025-00005', 'D-003', '2025-12-29', 'sakit gigi berlubang', 'pencabutan gigi biasa');
+('RM-2025-0013', 'B-2512-0008', 'P-2025-00005', 'D-003', '2025-12-29', 'sakit gigi berlubang', 'pencabutan gigi biasa'),
+('RM-2025-0014', 'B-2512-0015', 'P-2025-00001', 'D-001', '2025-12-29', 'gigi berlubang pada gigi geraham', 'sakit gigi saat makan makanan manis');
 
 -- --------------------------------------------------------
 
@@ -998,7 +1061,8 @@ INSERT INTO `rekammedis_obat` (`IdRekamMedis`, `IdObat`, `Dosis`, `Frekuensi`, `
 ('RM-2025-0011', 'O-00003', '500mg', '3x1', 5, 15.00, 5000.00),
 ('RM-2025-0011', 'O-00008', '1.8ml', 'suntik lokal', 1, 2.00, 12000.00),
 ('RM-2025-0013', 'O-00001', '-', '-', 1, 2.00, 2000.00),
-('RM-2025-0013', 'O-00002', '-', '-', 1, 1.00, 3000.00);
+('RM-2025-0013', 'O-00002', '-', '-', 1, 1.00, 3000.00),
+('RM-2025-0014', 'O-00002', '3x1', '-', 1, 1.00, 3000.00);
 
 -- --------------------------------------------------------
 
@@ -1038,7 +1102,8 @@ INSERT INTO `rekammedis_tindakan` (`IdRekamMedis`, `IdTindakan`, `Jumlah`, `Harg
 ('RM-2025-0011', 'T-015', 1, 2500000.00),
 ('RM-2025-0011', 'T-019', 1, 300000.00),
 ('RM-2025-0012', 'T-001', 1, 50000.00),
-('RM-2025-0013', 'T-005', 1, 350000.00);
+('RM-2025-0013', 'T-005', 1, 350000.00),
+('RM-2025-0014', 'T-003', 1, 300000.00);
 
 -- --------------------------------------------------------
 
@@ -1054,6 +1119,13 @@ CREATE TABLE `sessions` (
   `payload` longtext NOT NULL,
   `last_activity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('3bYOaIlfeSRp907e4CSKLKHP4rljS5sidKCUwLBo', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRDlJVncyVVp2SkJ6MDlweGRKZVdyTm1DWWs2b1BHSm9CbkVUWHkwTCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9fQ==', 1767022368);
 
 -- --------------------------------------------------------
 
@@ -1121,16 +1193,17 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`) VALUES
 (1, 'Hans Maulana Budiputra', 'hansenmaulana10@gmail.com', '2025-12-29 11:23:07', '$2y$12$ElQFh1jzDEFSBtb9Lyo6Eui8ChX7fou5Zd/pP8wbT.85TE9aUmjFy', NULL, '2025-12-27 14:49:18', '2025-12-29 11:23:07', 'admin'),
-(2, 'Rafael', 'rafael@klinik.dokter', NULL, '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-27 14:49:18', '2025-12-27 14:49:18', 'dokter'),
+(2, 'Rafael', 'hansenmaulana9@gmail.com', '2025-12-29 14:32:31', '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-27 14:49:18', '2025-12-29 14:32:31', 'dokter'),
 (3, 'Errvin junius', '2472052@maranatha.ac.id', '2025-12-29 14:24:11', '$2y$12$EPjOiy2SMrWHbeNvmDWe2urqEDx.RTxrvR80YB6bctw6Fk7QeJOL6', NULL, '2025-12-27 14:49:18', '2025-12-29 14:24:11', 'pasien'),
 (5, 'Bryant supadmo', 'bray@klinik.admin', NULL, '$2y$12$rDybcEollkyPKJ8iYfxsSul3qs6D7mZ/2QGbnHvq24ioJJ6cui8he', NULL, '2025-12-27 09:02:10', '2025-12-27 09:02:10', 'admin'),
 (6, 'aryanto budi', 'budi@klinik.pasien', NULL, '$2y$12$m09kSIzwRQ79nZkQ7dArd.e17.jtRKit8aouLOuCcPhywdfh0NIIi', NULL, '2025-12-27 09:10:41', '2025-12-27 09:10:41', 'pasien'),
 (7, 'Budi Santoso', 'santoso@klinik.dokter', NULL, '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-27 09:16:28', '2025-12-28 16:10:05', 'dokter'),
-(9, 'Sari Mawar', 'hansenmaulana9@gmail.com', '2025-12-29 14:01:17', '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-28 15:48:45', '2025-12-29 14:01:17', 'dokter'),
+(9, 'Sari Mawar', 'sari.mawar@klinik.dokter', '2025-12-29 14:01:17', '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-28 15:48:45', '2025-12-29 14:31:53', 'dokter'),
 (10, 'Andi Wijaya', 'andi.wijaya@klinik.dokter', NULL, '$2y$12$CVXyWbX8N.KHBC/3IgbxneA0hLUa0BS2nTP2/D28vgBANNnxnpKdi', NULL, '2025-12-28 15:48:45', '2025-12-28 16:10:13', 'dokter'),
 (11, 'Anita Rahma', 'anita@klinik.pasien', NULL, '$2y$12$clat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien'),
 (12, 'Rudi Hartono', 'rudi@klinik.pasien', NULL, '$2y$12$dlat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien'),
-(13, 'Siti Nurhaliza', 'siti@klinik.pasien', NULL, '$2y$12$elat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien');
+(13, 'Siti Nurhaliza', 'siti@klinik.pasien', NULL, '$2y$12$elat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien'),
+(20, 'Rafael', '2472025@maranatha.ac.id', '2026-01-07 15:27:21', '$2y$12$d5q9vU.XLSke3DNL6h5QOORgC9TBuwQttGII1yYHdG7WG27tUkFge', NULL, '2026-01-07 15:25:21', '2026-01-07 15:27:21', 'pasien');
 
 -- --------------------------------------------------------
 
@@ -1198,6 +1271,13 @@ ALTER TABLE `booking`
   ADD KEY `PasienID` (`PasienID`);
 
 --
+-- Indexes for table `broadcasts`
+--
+ALTER TABLE `broadcasts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `broadcasts_authorid_index` (`AuthorID`);
+
+--
 -- Indexes for table `cache`
 --
 ALTER TABLE `cache`
@@ -1247,6 +1327,13 @@ ALTER TABLE `jobs`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notifications_notifiable_type_notifiable_id_index` (`notifiable_type`,`notifiable_id`);
 
 --
 -- Indexes for table `obat`
@@ -1337,6 +1424,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `broadcasts`
+--
+ALTER TABLE `broadcasts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `failedjobs`
 --
 ALTER TABLE `failedjobs`
@@ -1358,7 +1451,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `obat_log`
@@ -1370,7 +1463,7 @@ ALTER TABLE `obat_log`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables

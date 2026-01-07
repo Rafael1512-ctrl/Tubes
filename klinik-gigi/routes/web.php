@@ -99,6 +99,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/jadwal', [App\Http\Controllers\PasienController::class, 'jadwal'])->name('pasien.jadwal');
         Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('pasien.notifications');
         Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('pasien.notifications.read');
+        
+        // Booking fitur baru
+        Route::get('/booking/create', [App\Http\Controllers\PasienController::class, 'bookingCreate'])->name('pasien.booking.create');
+        Route::post('/booking', [App\Http\Controllers\PasienController::class, 'bookingStore'])->name('pasien.booking.store');
     });
 
     // Tambahan fitur broadcast untuk admin
