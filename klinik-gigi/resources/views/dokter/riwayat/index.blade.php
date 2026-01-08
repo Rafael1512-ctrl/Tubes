@@ -6,7 +6,7 @@
 @section('header-subtitle','Daftar rekam medis yang telah Anda buat')
 
 @section('sidebar-menu')
-<a href="/dokter/dashboard" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
+<a href="{{ route('dokter.dashboard') }}" class="nav-link"><i class="fa-solid fa-stethoscope"></i> Praktek Hari Ini</a>
 <a href="{{ route('dokter.jadwal') }}" class="nav-link"><i class="fa-solid fa-calendar-week"></i> Jadwal Saya</a>
 <a href="{{ route('dokter.pasien') }}" class="nav-link"><i class="fa-solid fa-user-injured"></i> Data Pasien</a>
 <a href="{{ route('dokter.riwayat') }}" class="nav-link active"><i class="fa-solid fa-history"></i> Riwayat Praktek</a>

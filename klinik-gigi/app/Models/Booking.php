@@ -17,11 +17,13 @@ class Booking extends Model
         'IdJadwal',
         'PasienID',
         'TanggalBooking',
-        'Status'
+        'Status',
+        'CancelledAt'
     ];
 
     protected $casts = [
-        'TanggalBooking' => 'datetime'
+        'TanggalBooking' => 'datetime',
+        'CancelledAt' => 'datetime'
     ];
 
     /**
@@ -94,5 +96,30 @@ class Booking extends Model
     public function scopeByTanggalRange($query, $startDate, $endDate)
     {
         return $query->whereBetween('TanggalBooking', [$startDate, $endDate]);
+    }
+
+    /**
+     * Static Method: Auto Cancel Expired Bookings
+     * Cancels bookings with status 'PRESENT' if the schedule time has passed.
+     */
+    public static function autoCancelExpired()
+    {
+        // Update bookings where status is PRESENT and schedule end time has passed
+        return self::where('Status', 'PRESENT')
+            ->whereHas('jadwal', function($q) {
+                $q->where(function($sq) {
+                    // Date has passed
+                    $sq->where('Tanggal', '<', now()->toDateString())
+                       // Or today, but time has passed
+                       ->orWhere(function($ssq) {
+                           $ssq->where('Tanggal', now()->toDateString())
+                               ->where('JamAkhir', '<', now()->format('H:i:s'));
+                       });
+                });
+            })
+            ->update([
+                'Status' => 'CANCELLED',
+                'CancelledAt' => now()
+            ]);
     }
 }

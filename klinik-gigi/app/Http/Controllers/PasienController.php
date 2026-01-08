@@ -138,4 +138,32 @@ class PasienController extends Controller
                 ->with('error', 'Gagal membuat janji temu: ' . $e->getMessage());
         }
     }
+    public function bookingCancel($id)
+    {
+        $pasien = Auth::user()->pasien;
+        if (!$pasien) return back()->with('error', 'Data pasien tidak ditemukan.');
+
+        $booking = Booking::where('IdBooking', $id)
+            ->where('PasienID', $pasien->PasienID)
+            ->firstOrFail();
+
+        if ($booking->Status != 'PRESENT') {
+            return back()->with('error', 'Booking tidak dapat dibatalkan karena statusnya bukan aktif.');
+        }
+
+        try {
+            DB::transaction(function () use ($booking) {
+                // Call Stored Procedure or Update directly
+                // Using model update to ensure CancelledAt is set
+                $booking->update([
+                    'Status' => 'CANCELLED',
+                    'CancelledAt' => now()
+                ]);
+            });
+
+            return back()->with('success', 'Booking berhasil dibatalkan.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal membatalkan booking: ' . $e->getMessage());
+        }
+    }
 }

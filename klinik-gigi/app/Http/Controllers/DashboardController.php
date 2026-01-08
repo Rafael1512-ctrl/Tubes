@@ -15,6 +15,7 @@ class DashboardController extends Controller
         
         // Auto Update status jadwals yang sudah lewat
         \App\Models\Jadwal::autoUpdateStatus();
+        \App\Models\Booking::autoCancelExpired();
 
         // Get recent bookings (PRESENT status only, ordered by newest)
         $recentBookings = Booking::with(['jadwal.dokter', 'pasien'])
@@ -89,6 +90,9 @@ class DashboardController extends Controller
         $user = Auth::user();
         $dokter = $user->pegawai; 
 
+        // Auto Cancel Expired Bookings
+        \App\Models\Booking::autoCancelExpired(); 
+
         // Default empty state
         $jadwalHariIni = collect([]); // Collection of jadwals
         $antrian = collect([]);
@@ -136,11 +140,13 @@ class DashboardController extends Controller
         $upcomingBookings = Booking::with(['jadwal.dokter'])
             ->where('PasienID', $pasien->PasienID)
             ->where('Status', 'PRESENT')
-            ->whereHas('jadwal', function($q) {
-                $q->where('Tanggal', '>=', today());
-            })
-            ->orderBy('TanggalBooking', 'asc')
-            ->get();
+            ->get()
+            ->sortBy(function($booking) {
+                 return $booking->jadwal->Tanggal . ' ' . $booking->jadwal->JamMulai;
+            });
+        
+        // Auto Cancel Expired Bookings
+        \App\Models\Booking::autoCancelExpired();
 
         $medicalHistory = \App\Models\RekamMedis::with(['dokter', 'tindakan'])
             ->where('PasienID', $pasien->PasienID)

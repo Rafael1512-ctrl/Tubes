@@ -113,6 +113,8 @@
             align-items: center;
             margin-bottom: 2rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1020;
         }
 
         /* Cards */
@@ -193,7 +195,8 @@
                 <small class="text-muted">@yield('header-subtitle', 'Welcome back!')</small>
             </div>
             <div class="d-flex align-items-center gap-3">
-                <!-- Notifications Dropdown -->
+                <!-- Notifications Dropdown (Hidden for Dokter & Admin) -->
+                @if(Auth::user()->role !== 'dokter' && Auth::user()->role !== 'admin')
                 <div class="dropdown">
                     <button class="bg-white p-2 rounded-circle shadow-sm border-0 position-relative" type="button" data-bs-toggle="dropdown">
                         <i class="fa-solid fa-bell text-primary"></i>
@@ -203,7 +206,7 @@
                             </span>
                         @endif
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width: 320px; border-radius: 15px; overflow: hidden;">
+                    <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width: 320px; border-radius: 15px; overflow: hidden; z-index: 1050;">
                         <div class="p-3 bg-primary text-white">
                             <h6 class="m-0">Notifikasi</h6>
                         </div>
@@ -228,6 +231,7 @@
                         </a>
                     </div>
                 </div>
+                @endif
                 <div class="d-flex align-items-center gap-2">
                     <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random" class="rounded-circle" width="40">
                     <div class="d-none d-md-block">

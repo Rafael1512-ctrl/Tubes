@@ -103,6 +103,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Booking fitur baru
         Route::get('/booking/create', [App\Http\Controllers\PasienController::class, 'bookingCreate'])->name('pasien.booking.create');
         Route::post('/booking', [App\Http\Controllers\PasienController::class, 'bookingStore'])->name('pasien.booking.store');
+        Route::post('/booking/{id}/cancel', [App\Http\Controllers\PasienController::class, 'bookingCancel'])->name('pasien.booking.cancel');
     });
 
     // Tambahan fitur broadcast untuk admin
@@ -110,16 +111,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/broadcast', [App\Http\Controllers\Admin\BroadcastController::class, 'index'])->name('admin.broadcast.index');
         Route::get('/broadcast/create', [App\Http\Controllers\Admin\BroadcastController::class, 'create'])->name('admin.broadcast.create');
         Route::post('/broadcast', [App\Http\Controllers\Admin\BroadcastController::class, 'store'])->name('admin.broadcast.store');
-        Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('admin.notifications');
-        Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('admin.notifications.read');
+
     });
 
     // Fitur khusus Dokter
     Route::prefix('dokter')->group(function () {
         Route::get('/rekam-medis/create/{idBooking}', [App\Http\Controllers\RekamMedisController::class, 'create'])->name('dokter.rekam-medis.create');
         Route::post('/rekam-medis', [App\Http\Controllers\RekamMedisController::class, 'store'])->name('dokter.rekam-medis.store');
-        Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('dokter.notifications');
-        Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('dokter.notifications.read');
+
         
         // Jadwal Saya
         Route::get('/jadwal', [App\Http\Controllers\DokterController::class, 'jadwal'])->name('dokter.jadwal');

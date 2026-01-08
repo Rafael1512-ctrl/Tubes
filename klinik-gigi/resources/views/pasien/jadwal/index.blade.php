@@ -28,8 +28,12 @@
                         @forelse($bookings as $b)
                         <tr>
                             <td class="ps-4">
-                                <div class="fw-bold">{{ \Carbon\Carbon::parse($b->jadwal->Tanggal)->format('d M Y') }}</div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ $b->jadwal->JamMulai }} - {{ $b->jadwal->JamSelesai }}</small>
+                                <div class="fw-bold">{{ $b->jadwal->Tanggal ? $b->jadwal->Tanggal->format('d M Y') : '-' }}</div>
+                                <small class="text-muted">
+                                    <i class="fa-regular fa-clock me-1"></i>
+                                    {{ $b->jadwal->JamMulai ? $b->jadwal->JamMulai->format('H:i') : '-' }} - 
+                                    {{ $b->jadwal->JamAkhir ? $b->jadwal->JamAkhir->format('H:i') : '-' }}
+                                </small>
                             </td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
@@ -47,13 +51,23 @@
                                         'WAITING' => 'warning'
                                     ][$b->Status] ?? 'secondary';
                                 @endphp
-                                <span class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} rounded-pill px-3">
-                                    {{ $b->Status }}
-                                </span>
+                                <div class="d-flex flex-column align-items-start gap-1">
+                                    <span class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} rounded-pill px-3">
+                                        {{ $b->Status }}
+                                    </span>
+                                    @if($b->Status == 'CANCELLED' && $b->CancelledAt)
+                                        <small class="text-danger" style="font-size: 0.7rem;">
+                                            Dibatalkan: {{ $b->CancelledAt->format('d M Y, H:i') }}
+                                        </small>
+                                    @endif
+                                </div>
                             </td>
                             <td class="text-end pe-4">
                                 @if($b->Status == 'PRESENT')
-                                <button class="btn btn-sm btn-outline-danger rounded-pill px-3">Batalkan</button>
+                                <form action="{{ route('pasien.booking.cancel', $b->IdBooking) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan janji temu ini?');">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">Batalkan</button>
+                                </form>
                                 @endif
                                 <button class="btn btn-sm btn-light rounded-pill px-3">Detail</button>
                             </td>
