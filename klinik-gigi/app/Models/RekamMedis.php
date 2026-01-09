@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RekamMedis extends Model
 {
-    protected $table = 'rekammedis';
+    protected $table = 'v_rekam_medis_lengkap';
     protected $primaryKey = 'IdRekamMedis';
     public $incrementing = false;
     protected $keyType = 'string';
