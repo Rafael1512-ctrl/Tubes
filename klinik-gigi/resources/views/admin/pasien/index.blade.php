@@ -55,6 +55,7 @@
                     </td>
                     <td>
                         <div class="small fw-semibold"><i class="fa-solid fa-phone small me-1"></i>{{ $pasien->NoTelp }}</div>
+                        <div class="small text-muted"><i class="fa-solid fa-envelope small me-1"></i>{{ $pasien->email ?? '-' }}</div>
                     </td>
                     <td class="text-center">
                         <a href="{{ route('admin.pasien.history', $pasien->PasienID) }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">

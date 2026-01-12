@@ -9,7 +9,7 @@ class Pasien extends Model
 {
     use HasFactory;
 
-    protected $table = 'v_pasien_user';
+    protected $table = 'pasien';
     protected $primaryKey = 'PasienID'; // HARUS 'PasienID' bukan 'pasienid'
     public $incrementing = false;
     public $timestamps = false;

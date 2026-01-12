@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jadwal;
 use App\Models\Pegawai;
+use App\Models\ViewJadwal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,8 +19,7 @@ class JadwalController extends Controller
         $month = $request->get('month', now()->month);
         $dokterId = $request->get('dokter');
 
-        $query = Jadwal::with('dokter')
-            ->byBulan($year, $month);
+        $query = ViewJadwal::byBulan($year, $month);
 
         if ($dokterId) {
             $query->byDokter($dokterId);
@@ -195,14 +195,13 @@ class JadwalController extends Controller
      */
     public function getByDate($date)
     {
-        $jadwals = Jadwal::with('dokter')
-            ->byTanggal($date)
+        $jadwals = ViewJadwal::byTanggal($date)
             ->get()
             ->map(function ($jadwal) {
                 return [
                     'id' => $jadwal->IdJadwal,
-                    'dokter' => $jadwal->dokter->Nama ?? '-',
-                    'jam' => $jadwal->formatted_jam,
+                    'dokter' => $jadwal->nama_dokter, 
+                    'jam' => $jadwal->JamMulai . ' - ' . $jadwal->JamAkhir, // View usually has raw columns
                     'sesi' => $jadwal->sesi,
                     'status' => $jadwal->Status,
                     'kapasitas' => $jadwal->Kapasitas,

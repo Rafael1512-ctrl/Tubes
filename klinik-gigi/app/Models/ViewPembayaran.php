@@ -4,21 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pembayaran extends Model
+class ViewPembayaran extends Model
 {
-    protected $table = 'pembayaran';
+    protected $table = 'v_pembayaran_lengkap';
     protected $primaryKey = 'IdPembayaran';
     public $incrementing = false;
     protected $keyType = 'string';
     public $timestamps = false;
 
-    protected $fillable = [
-        'IdPembayaran', 'IdRekamMedis', 'PasienID', 'TanggalPembayaran', 'Metode', 'TotalBayar', 'Status'
-    ];
-
     protected $casts = [
         'TanggalPembayaran' => 'datetime',
-        'TotalBayar' => 'decimal:2'
+        'TotalBayar' => 'decimal:2',
+        'tanggal_periksa' => 'date'
     ];
 
     public function rekamMedis()
@@ -30,4 +27,7 @@ class Pembayaran extends Model
     {
         return $this->belongsTo(Pasien::class, 'PasienID');
     }
+
+    public function save(array $options = []) { return false; }
+    public function update(array $attributes = [], array $options = []) { return false; }
 }

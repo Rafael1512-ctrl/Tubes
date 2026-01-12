@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Jadwal extends Model
 {
-    protected $table = 'v_jadwal_lengkap';
+    use Traits\JadwalScopes;
+    protected $table = 'jadwal';
     protected $primaryKey = 'IdJadwal';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -95,52 +96,8 @@ class Jadwal extends Model
     }
 
     /**
-     * Scope: Filter by status
+     * Scopes are now handled by JadwalScopes trait
      */
-    public function scopeByStatus($query, $status)
-    {
-        return $query->where('Status', $status);
-    }
-
-    /**
-     * Scope: Filter by tanggal
-     */
-    public function scopeByTanggal($query, $tanggal)
-    {
-        return $query->whereDate('Tanggal', $tanggal);
-    }
-
-    /**
-     * Scope: Filter by dokter
-     */
-    public function scopeByDokter($query, $dokterId)
-    {
-        return $query->where('IdDokter', $dokterId);
-    }
-
-    /**
-     * Scope: Filter by bulan
-     */
-    public function scopeByBulan($query, $year, $month)
-    {
-        return $query->whereYear('Tanggal', $year)
-                     ->whereMonth('Tanggal', $month);
-    }
-
-    /**
-     * Scope: Only available jadwal (future or ongoing today)
-     */
-    public function scopeAvailable($query)
-    {
-        return $query->where('Status', 'Available')
-                     ->where(function($q) {
-                         $q->where('Tanggal', '>', now()->toDateString())
-                           ->orWhere(function($sq) {
-                               $sq->where('Tanggal', now()->toDateString())
-                                  ->whereRaw('TIMESTAMPDIFF(MINUTE, NOW(), CONCAT(Tanggal, " ", JamAkhir)) >= 60');
-                           });
-                     });
-    }
 
     /**
      * Static Method: Auto Update Status for Expired Schedules

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Pegawai;
 use App\Models\Pasien;
+use App\Models\ViewPasien;
+use App\Models\ViewPegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -269,9 +271,10 @@ class AdminController extends Controller
     {
         $search = $request->query('search');
 
-        $pasiens = Pasien::when($search, function($query, $search) {
+        $pasiens = ViewPasien::when($search, function($query, $search) {
             return $query->where('Nama', 'LIKE', "%{$search}%")
-                         ->orWhere('PasienID', 'LIKE', "%{$search}%");
+                         ->orWhere('PasienID', 'LIKE', "%{$search}%")
+                         ->orWhere('email', 'LIKE', "%{$search}%");
         })->paginate(15);
 
         return view('admin.pasien.index', compact('pasiens'));

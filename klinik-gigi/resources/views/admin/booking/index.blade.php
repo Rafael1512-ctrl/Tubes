@@ -217,7 +217,7 @@
                                 <i class="fa-solid fa-user text-primary"></i>
                             </div>
                             <div>
-                                <div class="fw-bold">{{ $booking->pasien->Nama ?? '-' }}</div>
+                                <div class="fw-bold">{{ $booking->nama_pasien ?? '-' }}</div>
                                 <small class="text-muted"><i class="fa-solid fa-phone fa-xs me-1"></i>{{ $booking->pasien->NoTelp ?? '-' }}</small>
                             </div>
                         </div>
@@ -228,22 +228,22 @@
                                 <i class="fa-solid fa-user-doctor text-info"></i>
                             </div>
                             <div>
-                                <div class="fw-bold">{{ $booking->jadwal->dokter->Nama ?? '-' }}</div>
+                                <div class="fw-bold">{{ $booking->nama_dokter ?? '-' }}</div>
                                 <small class="text-muted">{{ ucfirst($booking->jadwal->dokter->Jabatan ?? '-') }}</small>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <div class="fw-bold text-dark">{{ $booking->jadwal->formatted_tanggal ?? '-' }}</div>
-                        <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ $booking->jadwal->formatted_jam ?? '-' }}</small>
+                        <div class="fw-bold text-dark">{{ $booking->formatted_tanggal ?? '-' }}</div>
+                        <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ $booking->formatted_jam ?? '-' }}</small>
                     </td>
                     <td>
                         @php
-                            $sesiClass = $booking->jadwal->sesi == 'Pagi' ? 'warning' : 'primary';
-                            $sesiIcon = $booking->jadwal->sesi == 'Pagi' ? 'fa-sun' : 'fa-moon';
+                            $sesiClass = $booking->sesi == 'Pagi' ? 'warning' : 'primary';
+                            $sesiIcon = $booking->sesi == 'Pagi' ? 'fa-sun' : 'fa-moon';
                         @endphp
                         <span class="badge bg-{{ $sesiClass }} bg-opacity-10 text-{{ $sesiClass }} border border-{{ $sesiClass }} border-opacity-25 px-3 py-2 rounded-pill">
-                            <i class="fa-solid {{ $sesiIcon }} me-1"></i>{{ $booking->jadwal->sesi ?? '-' }}
+                            <i class="fa-solid {{ $sesiIcon }} me-1"></i>{{ $booking->sesi ?? '-' }}
                         </span>
                     </td>
                     <td>

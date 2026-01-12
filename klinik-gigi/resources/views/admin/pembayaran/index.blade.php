@@ -68,10 +68,10 @@
                         <tr>
                             <td><code>{{ $rm->IdRekamMedis }}</code></td>
                             <td>
-                                <div class="fw-bold">{{ $rm->pasien->Nama ?? '-' }}</div>
+                                <div class="fw-bold">{{ $rm->nama_pasien ?? '-' }}</div>
                                 <small class="text-muted">{{ $rm->PasienID }}</small>
                             </td>
-                            <td>{{ $rm->dokter->Nama ?? '-' }}</td>
+                            <td>{{ $rm->nama_dokter ?? '-' }}</td>
                             <td>{{ \Carbon\Carbon::parse($rm->Tanggal)->isoFormat('D MMM YYYY') }}</td>
                             <td class="text-center">
                                 <a href="{{ route('admin.pembayaran.create', $rm->IdRekamMedis) }}" class="btn btn-primary btn-sm px-3 rounded-pill">
@@ -128,7 +128,7 @@
                         @forelse($paidHistory as $pay)
                         <tr>
                             <td><code>{{ $pay->IdPembayaran }}</code></td>
-                            <td>{{ $pay->pasien->Nama ?? '-' }}</td>
+                            <td>{{ $pay->nama_pasien ?? '-' }}</td>
                             <td><span class="badge bg-light text-dark font-monospace">{{ $pay->Metode }}</span></td>
                             <td>{{ \Carbon\Carbon::parse($pay->TanggalPembayaran)->isoFormat('D MMM YYYY, HH:mm') }}</td>
                             <td class="fw-bold text-success">Rp {{ number_format($pay->TotalBayar, 0, ',', '.') }}</td>

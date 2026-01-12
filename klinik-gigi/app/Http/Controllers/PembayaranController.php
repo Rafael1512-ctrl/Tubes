@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pembayaran;
 use App\Models\RekamMedis;
+use App\Models\ViewPembayaran;
+use App\Models\ViewRekamMedis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -13,19 +15,17 @@ class PembayaranController extends Controller
     public function index(Request $request)
     {
         // 1. Get Rekam Medis that DOES NOT have payment (Pending to be processed)
-        $unpaidRekamMedis = RekamMedis::with(['pasien', 'dokter'])
-            ->leftJoin('pembayaran', 'rekammedis.IdRekamMedis', '=', 'pembayaran.IdRekamMedis')
+        $unpaidRekamMedis = ViewRekamMedis::leftJoin('pembayaran', 'v_rekam_medis_lengkap.IdRekamMedis', '=', 'pembayaran.IdRekamMedis')
             ->whereNull('pembayaran.IdPembayaran')
-            ->select('rekammedis.*')
-            ->orderBy('rekammedis.Tanggal', 'desc')
+            ->select('v_rekam_medis_lengkap.*')
+            ->orderBy('v_rekam_medis_lengkap.Tanggal', 'desc')
             ->get();
 
         // 2. Get History of PAID payments with filters
         $month = $request->query('month', date('m'));
         $year = $request->query('year', date('Y'));
 
-        $paidHistory = Pembayaran::with(['pasien', 'rekamMedis'])
-            ->where('Status', 'PAID')
+        $paidHistory = ViewPembayaran::where('Status', 'PAID')
             ->whereMonth('TanggalPembayaran', $month)
             ->whereYear('TanggalPembayaran', $year)
             ->orderBy('TanggalPembayaran', 'desc')

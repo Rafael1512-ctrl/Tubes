@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Jadwal;
 use App\Models\Pasien;
+use App\Models\ViewBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +13,7 @@ class BookingController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Booking::with(['jadwal.dokter', 'pasien']);
+        $query = ViewBooking::query();
 
         // Filter by status
         if ($request->has('status') && $request->status != '') {
@@ -36,9 +37,7 @@ class BookingController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('IdBooking', 'like', "%{$search}%")
-                  ->orWhereHas('pasien', function ($q2) use ($search) {
-                      $q2->where('Nama', 'like', "%{$search}%");
-                  });
+                  ->orWhere('nama_pasien', 'like', "%{$search}%");
             });
         }
 

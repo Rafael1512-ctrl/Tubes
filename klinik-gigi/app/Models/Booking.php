@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
-    protected $table = 'v_booking_lengkap';
+    use Traits\BookingScopes;
+    protected $table = 'booking';
     protected $primaryKey = 'IdBooking';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -59,36 +60,8 @@ class Booking extends Model
     }
 
     /**
-     * Scope: Filter by status
+     * Scopes are now handled by BookingScopes trait
      */
-    public function scopeByStatus($query, $status)
-    {
-        return $query->where('Status', $status);
-    }
-
-    /**
-     * Scope: Filter by pasien
-     */
-    public function scopeByPasien($query, $pasienId)
-    {
-        return $query->where('PasienID', $pasienId);
-    }
-
-    /**
-     * Scope: Filter by jadwal
-     */
-    public function scopeByJadwal($query, $jadwalId)
-    {
-        return $query->where('IdJadwal', $jadwalId);
-    }
-
-    /**
-     * Scope: Only active bookings
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('Status', '!=', 'CANCELLED');
-    }
 
     /**
      * Scope: Filter by tanggal range

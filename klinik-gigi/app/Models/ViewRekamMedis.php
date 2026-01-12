@@ -4,17 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RekamMedis extends Model
+class ViewRekamMedis extends Model
 {
-    protected $table = 'rekammedis';
+    protected $table = 'v_rekam_medis_lengkap';
     protected $primaryKey = 'IdRekamMedis';
     public $incrementing = false;
     protected $keyType = 'string';
     public $timestamps = false;
-
-    protected $fillable = [
-        'IdRekamMedis', 'IdBooking', 'PasienID', 'DokterID', 'Tanggal', 'Diagnosa', 'Catatan'
-    ];
 
     protected $casts = [
         'Tanggal' => 'date'
@@ -51,4 +47,7 @@ class RekamMedis extends Model
     {
         return $this->hasOne(Pembayaran::class, 'IdRekamMedis');
     }
+
+    public function save(array $options = []) { return false; }
+    public function update(array $attributes = [], array $options = []) { return false; }
 }
