@@ -10,10 +10,22 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('obat_log', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('obat_log')) {
+            Schema::create('obat_log', function (Blueprint $table) {
+                $table->integer('LogID')->autoIncrement();
+                $table->string('IdObat', 7);
+                $table->dateTime('Tanggal')->useCurrent();
+                $table->string('Aksi', 50);
+                $table->decimal('Jumlah', 12, 2);
+                $table->decimal('StokSebelum', 12, 2);
+                $table->decimal('StokSesudah', 12, 2);
+                $table->string('IdRekamMedis', 15)->nullable();
+                $table->string('CreatedBy', 50)->nullable();
+                
+                $table->primary('LogID');
+                // Indexes or FKs if needed
+            });
+        }
     }
 
     /**

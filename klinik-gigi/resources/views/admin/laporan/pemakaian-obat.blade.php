@@ -20,25 +20,47 @@
 @section('styles')
     <style>
         .report-nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 5px;
         }
 
         .report-nav a {
-            color: rgba(255, 255, 255, 0.8);
+            background: white;
+            color: #64748b;
+            padding: 12px 24px;
+            border-radius: 50px;
             text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+            white-space: nowrap;
         }
 
-        .report-nav a:hover,
+        .report-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+
         .report-nav a.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border-color: transparent !important;
+            box-shadow: 0 10px 15px -3px rgba(118, 75, 162, 0.3);
+        }
+
+        .report-nav a i {
+            font-size: 1.1rem;
         }
 
         .stat-card {
@@ -63,16 +85,28 @@
 
 @section('content')
     <!-- Report Navigation -->
-    <div class="report-nav d-flex flex-wrap gap-2 justify-content-center">
-        <a href="{{ route('admin.laporan') }}"><i class="fa-solid fa-chart-pie me-1"></i> Overview</a>
-        <a href="{{ route('admin.laporan.keuangan') }}"><i class="fa-solid fa-coins me-1"></i> Keuangan</a>
-        <a href="{{ route('admin.laporan.pembelian-obat') }}"><i class="fa-solid fa-cart-plus me-1"></i> Pembelian Obat</a>
-        <a href="{{ route('admin.laporan.penjualan-obat') }}"><i class="fa-solid fa-prescription-bottle me-1"></i> Penjualan
-            Obat</a>
-        <a href="{{ route('admin.laporan.pemakaian-obat') }}" class="active"><i class="fa-solid fa-pills me-1"></i>
-            Pemakaian Obat</a>
-        <a href="{{ route('admin.laporan.penjualan-tindakan') }}"><i class="fa-solid fa-tooth me-1"></i> Penjualan
-            Tindakan</a>
+    <div class="report-nav">
+        <a href="{{ route('admin.laporan') }}" class="{{ request()->routeIs('admin.laporan') ? 'active' : '' }}">
+            <i class="fa-solid fa-chart-pie"></i> Overview
+        </a>
+        <a href="{{ route('admin.laporan.keuangan') }}" class="{{ request()->routeIs('admin.laporan.keuangan') ? 'active' : '' }}">
+            <i class="fa-solid fa-coins"></i> Keuangan
+        </a>
+        <a href="{{ route('admin.laporan.pembelian-obat') }}" class="{{ request()->routeIs('admin.laporan.pembelian-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-cart-plus"></i> Pembelian Obat
+        </a>
+        <a href="{{ route('admin.laporan.penjualan-obat') }}" class="{{ request()->routeIs('admin.laporan.penjualan-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-prescription-bottle"></i> Penjualan Obat
+        </a>
+        <a href="{{ route('admin.laporan.pendapatan-obat') }}" class="{{ request()->routeIs('admin.laporan.pendapatan-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-money-bill-trend-up"></i> Pendapatan per Obat
+        </a>
+        <a href="{{ route('admin.laporan.pemakaian-obat') }}" class="{{ request()->routeIs('admin.laporan.pemakaian-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-pills"></i> Pemakaian Obat
+        </a>
+        <a href="{{ route('admin.laporan.penjualan-tindakan') }}" class="{{ request()->routeIs('admin.laporan.penjualan-tindakan') ? 'active' : '' }}">
+            <i class="fa-solid fa-tooth"></i> Penjualan Tindakan
+        </a>
     </div>
 
     <!-- Filter -->
@@ -107,40 +141,40 @@
     <!-- Summary -->
     <div class="row g-4 mb-4">
         <div class="col-md-4">
-            <div class="card stat-card p-4 bg-gradient text-white"
-                style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="mb-1 opacity-75">Total Pemakaian</p>
+                        <p class="mb-1 opacity-75 fw-medium">Total Pemakaian</p>
                         <h3 class="fw-bold mb-0">{{ $pemakaian->sum('TotalPemakaian') }} Unit</h3>
                     </div>
-                    <i class="fa-solid fa-pills fa-3x opacity-50"></i>
+                    <i class="fa-solid fa-pills fa-3x opacity-25"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card stat-card p-4 bg-gradient text-white"
-                style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333 !important;">
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%) !important; color: #333 !important;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="mb-1" style="color: #666;">Jenis Obat Digunakan</p>
+                        <p class="mb-1 fw-medium" style="color: #666;">Jenis Obat Digunakan</p>
                         <h3 class="fw-bold mb-0" style="color: #333;">{{ $pemakaian->count() }} Jenis</h3>
                     </div>
-                    <i class="fa-solid fa-capsules fa-3x" style="color: rgba(0,0,0,0.2);"></i>
+                    <i class="fa-solid fa-capsules fa-3x" style="color: rgba(0,0,0,0.15);"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card stat-card p-4 bg-gradient text-white"
-                style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%) !important;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="mb-1 opacity-75">Rata-rata per Obat</p>
+                        <p class="mb-1 opacity-75 fw-medium">Rata-rata per Obat</p>
                         <h3 class="fw-bold mb-0">
                             {{ $pemakaian->count() > 0 ? round($pemakaian->sum('TotalPemakaian') / $pemakaian->count(), 1) : 0 }}
                             Unit</h3>
                     </div>
-                    <i class="fa-solid fa-chart-simple fa-3x opacity-50"></i>
+                    <i class="fa-solid fa-chart-simple fa-3x opacity-25"></i>
                 </div>
             </div>
         </div>

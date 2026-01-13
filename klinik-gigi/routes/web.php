@@ -108,6 +108,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/laporan/penjualan-tindakan', [App\Http\Controllers\LaporanController::class, 'penjualanTindakan'])->name('admin.laporan.penjualan-tindakan');
         Route::get('/laporan/penjualan-tindakan/pdf', [App\Http\Controllers\LaporanController::class, 'downloadPenjualanTindakanPDF'])->name('admin.laporan.penjualan-tindakan.pdf');
+
+        Route::get('/laporan/pendapatan-obat', [App\Http\Controllers\LaporanController::class, 'pendapatanObat'])->name('admin.laporan.pendapatan-obat');
     });
 
     // Fitur khusus Pasien

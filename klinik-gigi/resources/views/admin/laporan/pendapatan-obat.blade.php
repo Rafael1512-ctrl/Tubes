@@ -1,9 +1,9 @@
 @extends('layouts.dashboard')
 
 @section('theme', 'admin')
-@section('title', 'Laporan Pembelian Obat')
-@section('header-title', 'Laporan Pembelian Obat')
-@section('header-subtitle', 'Data pembelian stok obat periode ' . ($month ? \Carbon\Carbon::create()->month($month)->translatedFormat('F') . ' ' : '') . $year)
+@section('title', 'Laporan Pendapatan per Obat')
+@section('header-title', 'Laporan Pendapatan per Obat')
+@section('header-subtitle', 'Detail pendapatan per obat untuk periode tahun ' . $year)
 
 @section('sidebar-menu')
     <a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
@@ -105,166 +105,117 @@
 
     <!-- Filter -->
     <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
-        <form action="{{ route('admin.laporan.pembelian-obat') }}" method="GET" class="row g-3 align-items-end">
+        <form action="{{ route('admin.laporan.pendapatan-obat') }}" method="GET" class="row g-3 align-items-end">
             <div class="col-md-3">
                 <label class="form-label small fw-bold">Tahun</label>
                 <select name="year" class="form-select rounded-pill">
-                    @for($i = date('Y'); $i >= date('Y') - 5; $i--)
+                    @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
                         <option value="{{ $i }}" {{ $year == $i ? 'selected' : '' }}>{{ $i }}</option>
                     @endfor
                 </select>
             </div>
-            <div class="col-md-3">
-                <label class="form-label small fw-bold">Bulan (Opsional)</label>
-                <select name="month" class="form-select rounded-pill">
-                    <option value="">Semua Bulan</option>
-                    @for($m = 1; $m <= 12; $m++)
-                        <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
-                            {{ Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+            <div class="col-md-5">
+                <label class="form-label small fw-bold">Pilih Obat</label>
+                <select name="id_obat" class="form-select rounded-pill">
+                    <option value="">Semua Obat</option>
+                    @foreach ($obats as $obat)
+                        <option value="{{ $obat->IdObat }}" {{ $idObat == $obat->IdObat ? 'selected' : '' }}>
+                            {{ $obat->IdObat }} - {{ $obat->NamaObat }}
                         </option>
-                    @endfor
+                    @endforeach
                 </select>
             </div>
-            <div class="col-md-4 d-flex gap-2">
-                <button type="submit" class="btn btn-primary rounded-pill px-4">
-                    <i class="fa-solid fa-filter me-1"></i> Filter
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-4 w-100">
+                    <i class="fa-solid fa-filter me-1"></i> Filter Laporan
                 </button>
-                <a href="{{ route('admin.laporan.pembelian-obat.pdf', ['year' => $year, 'month' => $month]) }}"
-                    class="btn btn-danger rounded-pill px-4">
-                    <i class="fa-solid fa-file-pdf me-1"></i> Download PDF
-                </a>
             </div>
         </form>
     </div>
 
     <!-- Summary -->
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card stat-card p-4 text-white"
-                style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;">
+                style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="mb-1 opacity-75 fw-medium">Total Pembelian</p>
-                        <h3 class="fw-bold mb-0">Rp {{ number_format($totalPembelian, 0, ',', '.') }}</h3>
+                        <p class="mb-1 opacity-75 fw-medium">Total Pendapatan (Obat)</p>
+                        <h3 class="fw-bold mb-0">Rp {{ number_format($detailPendapatan->sum('Subtotal'), 0, ',', '.') }}</h3>
                     </div>
-                    <i class="fa-solid fa-cart-shopping fa-3x opacity-25"></i>
+                    <i class="fa-solid fa-sack-dollar fa-3x opacity-25"></i>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card stat-card p-4 text-white"
-                style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;">
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="mb-1 opacity-75 fw-medium">Jumlah Transaksi</p>
-                        <h3 class="fw-bold mb-0">{{ $pembelian->count() }}</h3>
+                        <p class="mb-1 opacity-75 fw-medium">Total Pemakaian</p>
+                        <h3 class="fw-bold mb-0">{{ $detailPendapatan->sum('Jumlah') }} Unit</h3>
                     </div>
-                    <i class="fa-solid fa-receipt fa-3x opacity-25"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card stat-card p-4 text-white"
-                style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="mb-1 opacity-75 fw-medium">Total Item</p>
-                        <h3 class="fw-bold mb-0">{{ $pembelian->sum('Jumlah') }} Unit</h3>
-                    </div>
-                    <i class="fa-solid fa-boxes-stacked fa-3x opacity-25"></i>
+                    <i class="fa-solid fa-box-open fa-3x opacity-25"></i>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Chart -->
-    <div class="row g-4 mb-4">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100" style="min-height: 400px;">
-                <h5 class="fw-bold mb-4"><i class="fa-solid fa-chart-area text-primary me-2"></i>Tren Pembelian Bulanan</h5>
-                <div style="flex-grow: 1;">
-                    <canvas id="pembelianChart"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-                <div class="p-4 border-bottom">
-                    <h5 class="fw-bold mb-0">Ringkasan Bulanan</h5>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0 fw-medium">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>Bulan</th>
-                                <th class="text-end">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($pembelianBulanan as $sum)
-                                <tr>
-                                    <td>{{ Carbon\Carbon::create()->month($sum->bulan)->translatedFormat('F') }}</td>
-                                    <td class="text-end fw-bold">Rp {{ number_format($sum->total, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                            @if($pembelianBulanan->isEmpty())
-                                <tr>
-                                    <td colspan="2" class="text-center py-4 text-muted small">Tidak ada data</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+        <h5 class="fw-bold mb-4"><i class="fa-solid fa-chart-line text-primary me-2"></i>Tren Pendapatan Bulanan</h5>
+        <canvas id="pendapatanChart" height="100"></canvas>
     </div>
 
     <!-- Data Table -->
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
         <div class="p-4 border-bottom">
-            <h5 class="fw-bold mb-0"><i class="fa-solid fa-table-list text-primary me-2"></i>Detail Pembelian Obat</h5>
+            <h5 class="fw-bold mb-0"><i class="fa-solid fa-list-check text-warning me-2"></i>Detail Penggunaan Obat pada Rekam
+                Medis</h5>
         </div>
         <div class="table-responsive">
             <table class="table table-hover data-table mb-0">
                 <thead>
                     <tr>
-                        <th class="ps-4">Tanggal</th>
+                        <th class="ps-4">No</th>
+                        <th>ID Rekam Medis</th>
+                        <th>Tanggal</th>
                         <th>Nama Obat</th>
-                        <th>Jumlah</th>
-                        <th>Harga Satuan</th>
-                        <th class="text-end">Subtotal</th>
-                        <th class="text-end pe-4">Oleh</th>
+                        <th class="text-center">Jumlah</th>
+                        <th class="text-end">Harga Satuan</th>
+                        <th class="text-end pe-4">Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($pembelian as $item)
+                    @forelse($detailPendapatan as $index => $item)
                         <tr>
-                            <td class="ps-4">{{ Carbon\Carbon::parse($item->Tanggal)->format('d M Y H:i') }}</td>
-                            <td>
-                                <span class="fw-bold">{{ $item->NamaObat }}</span>
-                                <small class="d-block text-muted">{{ $item->IdObat }}</small>
+                            <td class="ps-4">{{ $index + 1 }}</td>
+                            <td><span class="badge bg-primary-subtle text-primary">{{ $item->IdRekamMedis }}</span></td>
+                            <td>{{ \Carbon\Carbon::parse($item->Tanggal)->format('d/m/Y') }}</td>
+                            <td class="fw-bold">{{ $item->NamaObat }}</td>
+                            <td class="text-center">{{ (float) $item->Jumlah }}</td>
+                            <td class="text-end">Rp {{ number_format($item->HargaSatuan, 0, ',', '.') }}</td>
+                            <td class="text-end pe-4 fw-bold text-success">Rp {{ number_format($item->Subtotal, 0, ',', '.') }}
                             </td>
-                            <td><span class="badge bg-primary-subtle text-primary">{{ $item->Jumlah }}
-                                    {{ $item->Satuan }}</span></td>
-                            <td>Rp {{ number_format($item->HargaBeli, 0, ',', '.') }}</td>
-                            <td class="text-end fw-bold">Rp {{ number_format($item->Subtotal, 0, ',', '.') }}</td>
-                            <td class="text-end pe-4"><span class="badge bg-light text-dark">{{ $item->CreatedBy }}</span></td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-5 text-muted">
+                            <td colspan="7" class="text-center py-5 text-muted">
                                 <i class="fa-solid fa-inbox fa-3x mb-3 opacity-25"></i>
-                                <p>Belum ada data pembelian obat</p>
+                                <p>Tidak ada data ditemukan untuk filter ini</p>
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
-                @if($pembelian->count() > 0)
+                @if ($detailPendapatan->count() > 0)
                     <tfoot class="bg-light">
                         <tr>
                             <td colspan="4" class="ps-4 fw-bold">TOTAL</td>
-                            <td class="text-end fw-bold text-success">Rp {{ number_format($totalPembelian, 0, ',', '.') }}</td>
+                            <td class="text-center fw-bold">{{ $detailPendapatan->sum('Jumlah') }}</td>
                             <td></td>
+                            <td class="text-end pe-4 fw-bold text-success">Rp
+                                {{ number_format($detailPendapatan->sum('Subtotal'), 0, ',', '.') }}
+                            </td>
                         </tr>
                     </tfoot>
                 @endif
@@ -277,38 +228,41 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-        const pembelianData = @json($pembelianBulanan->pluck('total', 'bulan'));
-        const values = months.map((_, i) => pembelianData[i + 1] || 0);
+        const monthlyData = @json($monthlyRevenue);
+        const values = months.map((_, i) => monthlyData[i + 1] || 0);
 
-        const ctx = document.getElementById('pembelianChart').getContext('2d');
+        const ctx = document.getElementById('pendapatanChart').getContext('2d');
         const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, 'rgba(245, 87, 108, 0.5)');
-        gradient.addColorStop(1, 'rgba(245, 87, 108, 0)');
+        gradient.addColorStop(0, 'rgba(102, 126, 234, 0.5)');
+        gradient.addColorStop(1, 'rgba(118, 75, 162, 0)');
 
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: months,
                 datasets: [{
-                    label: 'Pembelian',
+                    label: 'Pendapatan',
                     data: values,
-                    borderColor: '#f5576c',
+                    borderColor: '#667eea',
                     backgroundColor: gradient,
                     fill: true,
                     tension: 0.4,
                     pointRadius: 5,
-                    pointBackgroundColor: '#f5576c'
+                    pointBackgroundColor: '#764ba2'
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: v => 'Rp ' + (v / 1000000).toFixed(1) + 'jt'
+                            callback: v => 'Rp ' + (v / 1000).toFixed(0) + 'k'
                         }
                     }
                 }

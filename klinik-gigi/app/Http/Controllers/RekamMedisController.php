@@ -111,7 +111,21 @@ class RekamMedisController extends Controller
                             ]);
 
                             // Kurangi Stok (Simple)
+                            $stokSebelum = $obatData->Stok;
                             $obatData->decrement('Stok', $obatItem['qty'] ?? 1);
+                            $stokSesudah = $obatData->fresh()->Stok;
+
+                            // Log Pemakaian Obat
+                            DB::table('obat_log')->insert([
+                                'IdObat' => $obatItem['id'],
+                                'Tanggal' => now(),
+                                'Aksi' => 'KELUAR',
+                                'Jumlah' => $obatItem['qty'] ?? 1,
+                                'StokSebelum' => $stokSebelum,
+                                'StokSesudah' => $stokSesudah,
+                                'IdRekamMedis' => $idRekamMedis,
+                                'CreatedBy' => Auth::user()->name
+                            ]);
                         }
                     }
                 }

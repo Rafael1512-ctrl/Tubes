@@ -56,7 +56,7 @@ class LaporanController extends Controller
         // 4. Medicine Cost Calculation (COGS) - dari obat_log untuk pembelian
         $medicineCost = DB::table('obat_log')
             ->join('obat', 'obat_log.IdObat', '=', 'obat.IdObat')
-            ->where('obat_log.Aksi', 'Tambah')
+            ->where('obat_log.Aksi', 'MASUK')
             ->whereYear('obat_log.Tanggal', $year)
             ->select(DB::raw('SUM(obat_log.Jumlah * obat.HargaBeli) as total_cost'))
             ->first()
@@ -108,7 +108,7 @@ class LaporanController extends Controller
         // Pengeluaran (Modal Obat) from obat_log
         $pengeluaranQuery = DB::table('obat_log')
             ->join('obat', 'obat_log.IdObat', '=', 'obat.IdObat')
-            ->where('obat_log.Aksi', 'Tambah')
+            ->where('obat_log.Aksi', 'MASUK')
             ->whereYear('obat_log.Tanggal', $year);
 
         if ($month) {
@@ -124,7 +124,7 @@ class LaporanController extends Controller
                 DB::raw('MONTH(obat_log.Tanggal) as bulan'),
                 DB::raw('SUM(obat_log.Jumlah * obat.HargaBeli) as total')
             )
-            ->where('obat_log.Aksi', 'Tambah')
+            ->where('obat_log.Aksi', 'MASUK')
             ->whereYear('obat_log.Tanggal', $year)
             ->groupBy('bulan')
             ->orderBy('bulan')
@@ -163,7 +163,7 @@ class LaporanController extends Controller
 
         $query = DB::table('obat_log')
             ->join('obat', 'obat_log.IdObat', '=', 'obat.IdObat')
-            ->where('obat_log.Aksi', 'Tambah')
+            ->where('obat_log.Aksi', 'MASUK')
             ->whereYear('obat_log.Tanggal', $year);
 
         if ($month) {
@@ -190,7 +190,7 @@ class LaporanController extends Controller
                 DB::raw('SUM(obat_log.Jumlah * obat.HargaBeli) as total'),
                 DB::raw('SUM(obat_log.Jumlah) as total_item')
             )
-            ->where('obat_log.Aksi', 'Tambah')
+            ->where('obat_log.Aksi', 'MASUK')
             ->whereYear('obat_log.Tanggal', $year)
             ->groupBy('bulan')
             ->orderBy('bulan')
@@ -308,6 +308,62 @@ class LaporanController extends Controller
     }
 
     /**
+     * Laporan Pendapatan per Obat
+     */
+    public function pendapatanObat(Request $request)
+    {
+        $year = $request->query('year', date('Y'));
+        $idObat = $request->query('id_obat', null);
+
+        $obats = Obat::orderBy('NamaObat')->get();
+
+        $query = DB::table('rekammedis_obat')
+            ->join('rekammedis', 'rekammedis_obat.IdRekamMedis', '=', 'rekammedis.IdRekamMedis')
+            ->join('pembayaran', 'rekammedis.IdRekamMedis', '=', 'pembayaran.IdRekamMedis')
+            ->join('obat', 'rekammedis_obat.IdObat', '=', 'obat.IdObat')
+            ->where('pembayaran.Status', 'PAID')
+            ->whereYear('rekammedis.Tanggal', $year);
+
+        if ($idObat) {
+            $query->where('rekammedis_obat.IdObat', $idObat);
+        }
+
+        $detailPendapatan = (clone $query)->select(
+            'rekammedis.IdRekamMedis',
+            'rekammedis.Tanggal',
+            'obat.NamaObat',
+            'rekammedis_obat.Jumlah',
+            'rekammedis_obat.HargaSatuan',
+            DB::raw('(rekammedis_obat.Jumlah * rekammedis_obat.HargaSatuan) as Subtotal')
+        )
+            ->orderBy('rekammedis.Tanggal', 'desc')
+            ->get();
+
+        $pendapatanBulanan = $query->select(
+            DB::raw('MONTH(rekammedis.Tanggal) as bulan'),
+            DB::raw('SUM(rekammedis_obat.Jumlah * rekammedis_obat.HargaSatuan) as total')
+        )
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->get()
+            ->pluck('total', 'bulan')
+            ->all();
+
+        $monthlyRevenue = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyRevenue[$i] = $pendapatanBulanan[$i] ?? 0;
+        }
+
+        return view('admin.laporan.pendapatan-obat', compact(
+            'year',
+            'idObat',
+            'obats',
+            'detailPendapatan',
+            'monthlyRevenue'
+        ));
+    }
+
+    /**
      * Laporan Penjualan Tindakan
      */
     public function penjualanTindakan(Request $request)
@@ -392,7 +448,7 @@ class LaporanController extends Controller
         // Pengeluaran
         $pengeluaranQuery = DB::table('obat_log')
             ->join('obat', 'obat_log.IdObat', '=', 'obat.IdObat')
-            ->where('obat_log.Aksi', 'Tambah')
+            ->where('obat_log.Aksi', 'MASUK')
             ->whereYear('obat_log.Tanggal', $year);
         if ($month)
             $pengeluaranQuery->whereMonth('obat_log.Tanggal', $month);
@@ -423,7 +479,7 @@ class LaporanController extends Controller
 
         $query = DB::table('obat_log')
             ->join('obat', 'obat_log.IdObat', '=', 'obat.IdObat')
-            ->where('obat_log.Aksi', 'Tambah')
+            ->where('obat_log.Aksi', 'MASUK')
             ->whereYear('obat_log.Tanggal', $year);
 
         if ($month) {
@@ -567,7 +623,7 @@ class LaporanController extends Controller
 
         $medicineCost = DB::table('obat_log')
             ->join('obat', 'obat_log.IdObat', '=', 'obat.IdObat')
-            ->where('obat_log.Aksi', 'Tambah')
+            ->where('obat_log.Aksi', 'MASUK')
             ->whereYear('obat_log.Tanggal', $year)
             ->select(DB::raw('SUM(obat_log.Jumlah * obat.HargaBeli) as total_cost'))
             ->first()

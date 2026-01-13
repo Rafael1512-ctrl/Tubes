@@ -20,25 +20,47 @@
 @section('styles')
     <style>
         .report-nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 5px;
         }
 
         .report-nav a {
-            color: rgba(255, 255, 255, 0.8);
+            background: white;
+            color: #64748b;
+            padding: 12px 24px;
+            border-radius: 50px;
             text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+            white-space: nowrap;
         }
 
-        .report-nav a:hover,
+        .report-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+
         .report-nav a.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border-color: transparent !important;
+            box-shadow: 0 10px 15px -3px rgba(118, 75, 162, 0.3);
+        }
+
+        .report-nav a i {
+            font-size: 1.1rem;
         }
 
         .stat-card {
@@ -64,15 +86,28 @@
 
 @section('content')
     <!-- Report Navigation -->
-    <div class="report-nav d-flex flex-wrap gap-2 justify-content-center">
-        <a href="{{ route('admin.laporan') }}"><i class="fa-solid fa-chart-pie me-1"></i> Overview</a>
-        <a href="{{ route('admin.laporan.keuangan') }}" class="active"><i class="fa-solid fa-coins me-1"></i> Keuangan</a>
-        <a href="{{ route('admin.laporan.pembelian-obat') }}"><i class="fa-solid fa-cart-plus me-1"></i> Pembelian Obat</a>
-        <a href="{{ route('admin.laporan.penjualan-obat') }}"><i class="fa-solid fa-prescription-bottle me-1"></i> Penjualan
-            Obat</a>
-        <a href="{{ route('admin.laporan.pemakaian-obat') }}"><i class="fa-solid fa-pills me-1"></i> Pemakaian Obat</a>
-        <a href="{{ route('admin.laporan.penjualan-tindakan') }}"><i class="fa-solid fa-tooth me-1"></i> Penjualan
-            Tindakan</a>
+    <div class="report-nav">
+        <a href="{{ route('admin.laporan') }}" class="{{ request()->routeIs('admin.laporan') ? 'active' : '' }}">
+            <i class="fa-solid fa-chart-pie"></i> Overview
+        </a>
+        <a href="{{ route('admin.laporan.keuangan') }}" class="{{ request()->routeIs('admin.laporan.keuangan') ? 'active' : '' }}">
+            <i class="fa-solid fa-coins"></i> Keuangan
+        </a>
+        <a href="{{ route('admin.laporan.pembelian-obat') }}" class="{{ request()->routeIs('admin.laporan.pembelian-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-cart-plus"></i> Pembelian Obat
+        </a>
+        <a href="{{ route('admin.laporan.penjualan-obat') }}" class="{{ request()->routeIs('admin.laporan.penjualan-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-prescription-bottle"></i> Penjualan Obat
+        </a>
+        <a href="{{ route('admin.laporan.pendapatan-obat') }}" class="{{ request()->routeIs('admin.laporan.pendapatan-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-money-bill-trend-up"></i> Pendapatan per Obat
+        </a>
+        <a href="{{ route('admin.laporan.pemakaian-obat') }}" class="{{ request()->routeIs('admin.laporan.pemakaian-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-pills"></i> Pemakaian Obat
+        </a>
+        <a href="{{ route('admin.laporan.penjualan-tindakan') }}" class="{{ request()->routeIs('admin.laporan.penjualan-tindakan') ? 'active' : '' }}">
+            <i class="fa-solid fa-tooth"></i> Penjualan Tindakan
+        </a>
     </div>
 
     <!-- Filter -->
@@ -111,41 +146,38 @@
     <!-- Summary Cards -->
     <div class="row g-4 mb-4">
         <div class="col-md-4">
-            <div class="card stat-card p-4 border-start border-success border-4">
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="text-muted mb-1 small">Pendapatan Kotor</p>
-                        <h3 class="fw-bold text-success mb-0">Rp {{ number_format($pendapatanKotor, 0, ',', '.') }}</h3>
+                        <p class="mb-1 opacity-75 fw-medium">Pendapatan Kotor</p>
+                        <h3 class="fw-bold mb-0">Rp {{ number_format($pendapatanKotor, 0, ',', '.') }}</h3>
                     </div>
-                    <div class="bg-success-subtle text-success p-3 rounded-4">
-                        <i class="fa-solid fa-arrow-trend-up fa-2x"></i>
-                    </div>
+                    <i class="fa-solid fa-arrow-trend-up fa-3x opacity-25"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card stat-card p-4 border-start border-danger border-4">
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #f85032 0%, #e73827 100%) !important;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="text-muted mb-1 small">Pengeluaran (Modal Obat)</p>
-                        <h3 class="fw-bold text-danger mb-0">Rp {{ number_format($pengeluaran, 0, ',', '.') }}</h3>
+                        <p class="mb-1 opacity-75 fw-medium">Pengeluaran (Modal Obat)</p>
+                        <h3 class="fw-bold mb-0">Rp {{ number_format($pengeluaran, 0, ',', '.') }}</h3>
                     </div>
-                    <div class="bg-danger-subtle text-danger p-3 rounded-4">
-                        <i class="fa-solid fa-arrow-trend-down fa-2x"></i>
-                    </div>
+                    <i class="fa-solid fa-arrow-trend-down fa-3x opacity-25"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card stat-card p-4 border-start border-primary border-4">
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="text-muted mb-1 small">Laba Kotor</p>
-                        <h3 class="fw-bold text-primary mb-0">Rp {{ number_format($labaKotor, 0, ',', '.') }}</h3>
+                        <p class="mb-1 opacity-75 fw-medium">Laba Kotor</p>
+                        <h3 class="fw-bold mb-0">Rp {{ number_format($labaKotor, 0, ',', '.') }}</h3>
                     </div>
-                    <div class="bg-primary-subtle text-primary p-3 rounded-4">
-                        <i class="fa-solid fa-wallet fa-2x"></i>
-                    </div>
+                    <i class="fa-solid fa-wallet fa-3x opacity-25"></i>
                 </div>
             </div>
         </div>

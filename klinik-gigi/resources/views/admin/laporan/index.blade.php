@@ -29,15 +29,15 @@
 
 @section('styles')
     <style>
-        .report-card {
+        .stat-card {
             border-radius: 15px;
             border: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s;
         }
 
-        .report-card:hover {
-            transform: translateY(-5px);
+        .stat-card:hover {
+            transform: translateY(-3px);
         }
 
         .chart-container {
@@ -46,36 +46,48 @@
             width: 100%;
         }
 
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
         .report-nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 5px;
         }
 
         .report-nav a {
-            color: rgba(255, 255, 255, 0.8);
+            background: white;
+            color: #64748b;
+            padding: 12px 24px;
+            border-radius: 50px;
             text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+            white-space: nowrap;
         }
 
-        .report-nav a:hover,
+        .report-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+
         .report-nav a.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border-color: transparent !important;
+            box-shadow: 0 10px 15px -3px rgba(118, 75, 162, 0.3);
+        }
+
+        .report-nav a i {
+            font-size: 1.1rem;
         }
     </style>
 @endsection
@@ -83,15 +95,28 @@
 @section('content')
 
     <!-- Report Navigation -->
-    <div class="report-nav d-flex flex-wrap gap-2 justify-content-center">
-        <a href="{{ route('admin.laporan') }}" class="active"><i class="fa-solid fa-chart-pie me-1"></i> Overview</a>
-        <a href="{{ route('admin.laporan.keuangan') }}"><i class="fa-solid fa-coins me-1"></i> Keuangan</a>
-        <a href="{{ route('admin.laporan.pembelian-obat') }}"><i class="fa-solid fa-cart-plus me-1"></i> Pembelian Obat</a>
-        <a href="{{ route('admin.laporan.penjualan-obat') }}"><i class="fa-solid fa-prescription-bottle me-1"></i> Penjualan
-            Obat</a>
-        <a href="{{ route('admin.laporan.pemakaian-obat') }}"><i class="fa-solid fa-pills me-1"></i> Pemakaian Obat</a>
-        <a href="{{ route('admin.laporan.penjualan-tindakan') }}"><i class="fa-solid fa-tooth me-1"></i> Penjualan
-            Tindakan</a>
+    <div class="report-nav">
+        <a href="{{ route('admin.laporan') }}" class="{{ request()->routeIs('admin.laporan') ? 'active' : '' }}">
+            <i class="fa-solid fa-chart-pie"></i> Overview
+        </a>
+        <a href="{{ route('admin.laporan.keuangan') }}" class="{{ request()->routeIs('admin.laporan.keuangan') ? 'active' : '' }}">
+            <i class="fa-solid fa-coins"></i> Keuangan
+        </a>
+        <a href="{{ route('admin.laporan.pembelian-obat') }}" class="{{ request()->routeIs('admin.laporan.pembelian-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-cart-plus"></i> Pembelian Obat
+        </a>
+        <a href="{{ route('admin.laporan.penjualan-obat') }}" class="{{ request()->routeIs('admin.laporan.penjualan-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-prescription-bottle"></i> Penjualan Obat
+        </a>
+        <a href="{{ route('admin.laporan.pendapatan-obat') }}" class="{{ request()->routeIs('admin.laporan.pendapatan-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-money-bill-trend-up"></i> Pendapatan per Obat
+        </a>
+        <a href="{{ route('admin.laporan.pemakaian-obat') }}" class="{{ request()->routeIs('admin.laporan.pemakaian-obat') ? 'active' : '' }}">
+            <i class="fa-solid fa-pills"></i> Pemakaian Obat
+        </a>
+        <a href="{{ route('admin.laporan.penjualan-tindakan') }}" class="{{ request()->routeIs('admin.laporan.penjualan-tindakan') ? 'active' : '' }}">
+            <i class="fa-solid fa-tooth"></i> Penjualan Tindakan
+        </a>
     </div>
 
     <!-- Filter Year -->
@@ -114,87 +139,74 @@
     <!-- Summary Row -->
     <div class="row g-4 mb-4">
         <div class="col-md-4">
-            <div class="card report-card p-4 bg-white">
-                <div class="d-flex justify-content-between mb-3">
-                    <div class="stat-icon bg-primary-subtle text-primary">
-                        <i class="fa-solid fa-money-bill-trend-up"></i>
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 opacity-75 fw-medium">Total Pendapatan ({{ $year }})</p>
+                        <h4 class="fw-bold mb-0">Rp {{ number_format($totalRevenueYear, 0, ',', '.') }}</h4>
                     </div>
-                    <div class="text-end">
-                        <small class="text-muted d-block">Total Pendapatan Th. {{ $year }}</small>
-                        <h4 class="fw-bold mb-0 text-primary">Rp {{ number_format($totalRevenueYear, 0, ',', '.') }}</h4>
-                    </div>
-                </div>
-                <div class="small">
-                    <span class="text-success fw-bold"><i class="fa-solid fa-arrow-up me-1"></i> 12%</span>
-                    <span class="text-muted ms-1">dari tahun lalu</span>
+                    <i class="fa-solid fa-money-bill-trend-up fa-2x opacity-25"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card report-card p-4 bg-white">
-                <div class="d-flex justify-content-between mb-3">
-                    <div class="stat-icon bg-success-subtle text-success">
-                        <i class="fa-solid fa-user-plus"></i>
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 opacity-75 fw-medium">Pasien Baru</p>
+                        <h4 class="fw-bold mb-0">{{ $totalPasienNew }} Pasien</h4>
                     </div>
-                    <div class="text-end">
-                        <small class="text-muted d-block">Pasien Baru Th. {{ $year }}</small>
-                        <h4 class="fw-bold mb-0 text-success">{{ $totalPasienNew }} Pasien</h4>
-                    </div>
-                </div>
-                <div class="small">
-                    <span class="text-success fw-bold"><i class="fa-solid fa-arrow-up me-1"></i> 8%</span>
-                    <span class="text-muted ms-1">pertumbuhan</span>
+                    <i class="fa-solid fa-user-plus fa-2x opacity-25"></i>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card report-card p-4 bg-white">
-                <div class="d-flex justify-content-between mb-3">
-                    <div class="stat-icon bg-info-subtle text-info">
-                        <i class="fa-solid fa-notes-medical"></i>
+            <div class="card stat-card p-4 text-white"
+                style="background: linear-gradient(135deg, #f5af19 0%, #f12711 100%) !important;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 opacity-75 fw-medium">Total Pemeriksaan</p>
+                        <h4 class="fw-bold mb-0">{{ $totalPemeriksaan }}</h4>
                     </div>
-                    <div class="text-end">
-                        <small class="text-muted d-block">Total Pemeriksaan Th. {{ $year }}</small>
-                        <h4 class="fw-bold mb-0 text-info">{{ $totalPemeriksaan }}</h4>
-                    </div>
-                </div>
-                <div class="small">
-                    <span class="text-muted">Target tercapai 85%</span>
+                    <i class="fa-solid fa-notes-medical fa-2x opacity-25"></i>
                 </div>
             </div>
         </div>
-        <!-- Summary Row 2: Finance Detail -->
-        <div class="row g-4 mb-4">
-            <div class="col-md-6">
-                <div class="card report-card p-4 bg-white border-start border-danger border-4">
-                    <div class="d-flex justify-content-between mb-2">
-                        <div>
-                            <small class="text-muted d-block">Modal Obat (COGS)</small>
-                            <h4 class="fw-bold mb-0 text-danger">Rp {{ number_format($medicineCost, 0, ',', '.') }}</h4>
-                        </div>
-                        <div class="stat-icon bg-danger-subtle text-danger">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </div>
+    </div>
+
+    <!-- Summary Row 2: Finance Detail -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card stat-card p-4 bg-white border-start border-danger border-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <small class="text-muted d-block uppercase fw-bold" style="font-size: 0.7rem;">Modal Obat (COGS)</small>
+                        <h4 class="fw-bold mb-0 text-danger">Rp {{ number_format($medicineCost, 0, ',', '.') }}</h4>
                     </div>
-                    <p class="small text-muted mb-0">Total nilai beli obat yang terpakai selama tahun {{ $year }}</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card report-card p-4 bg-white border-start border-success border-4">
-                    <div class="d-flex justify-content-between mb-2">
-                        <div>
-                            <small class="text-muted d-block">Laba Kotor Estimasi</small>
-                            <h4 class="fw-bold mb-0 text-success">Rp {{ number_format($estimatedProfit, 0, ',', '.') }}</h4>
-                        </div>
-                        <div class="stat-icon bg-success-subtle text-success">
-                            <i class="fa-solid fa-hand-holding-dollar"></i>
-                        </div>
+                    <div class="bg-danger-subtle text-danger p-3 rounded-pill">
+                        <i class="fa-solid fa-cart-shopping"></i>
                     </div>
-                    <p class="small text-muted mb-0">Pendapatan dikurangi modal obat (belum termasuk operasional lainnya)
-                    </p>
                 </div>
+                <p class="small text-muted mb-0 mt-2">Nilai beli obat terpakai tahun {{ $year }}</p>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card stat-card p-4 bg-white border-start border-success border-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <small class="text-muted d-block uppercase fw-bold" style="font-size: 0.7rem;">Laba Kotor Estimasi</small>
+                        <h4 class="fw-bold mb-0 text-success">Rp {{ number_format($estimatedProfit, 0, ',', '.') }}</h4>
+                    </div>
+                    <div class="bg-success-subtle text-success p-3 rounded-pill">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                </div>
+                <p class="small text-muted mb-0 mt-2">Pendapatan dikurangi modal obat</p>
+            </div>
+        </div>
+    </div>
 
         <div class="row g-4">
             <!-- Revenue Chart -->
