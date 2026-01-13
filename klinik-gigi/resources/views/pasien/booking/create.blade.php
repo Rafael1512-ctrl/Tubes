@@ -10,7 +10,6 @@
 <a href="{{ route('pasien.jadwal') }}" class="nav-link {{ request()->routeIs('pasien.jadwal', 'pasien.booking.create') ? 'active' : '' }}"><i class="fa-solid fa-calendar-check"></i> Jadwal Saya</a>
 <a href="{{ route('pasien.rekam-medis') }}" class="nav-link {{ request()->routeIs('pasien.rekam-medis') ? 'active' : '' }}"><i class="fa-solid fa-file-medical"></i> Rekam Medis</a>
 <a href="{{ route('pasien.notifications') }}" class="nav-link {{ request()->routeIs('pasien.notifications') ? 'active' : '' }}"><i class="fa-solid fa-bell"></i> Notifikasi</a>
-<a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Pengaturan</a>
 @endsection
 
 @section('content')

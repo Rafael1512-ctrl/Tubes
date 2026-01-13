@@ -1,13 +1,13 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Jadwal Saya - Zenith Dental')
+@section('no-sidebar', 'true')
 @section('header-title', 'Daftar Janji Temu')
 
-@section('sidebar-menu')
-<a href="{{ route('pasien.dashboard') }}" class="nav-link"><i class="fa-solid fa-home"></i> Beranda</a>
-<a href="{{ route('pasien.jadwal') }}" class="nav-link active"><i class="fa-solid fa-calendar-check"></i> Jadwal Saya</a>
-<a href="{{ route('pasien.rekam-medis') }}" class="nav-link"><i class="fa-solid fa-file-medical"></i> Rekam Medis</a>
-<a href="{{ route('pasien.notifications') }}" class="nav-link"><i class="fa-solid fa-bell"></i> Notifikasi</a>
+@section('navbar-menu')
+<a href="{{ route('pasien.dashboard') }}" class="nav-link {{ request()->routeIs('pasien.dashboard') ? 'active' : '' }}">Beranda</a>
+<a href="{{ route('pasien.jadwal') }}" class="nav-link {{ request()->routeIs('pasien.jadwal') ? 'active' : '' }}">Jadwal Saya</a>
+<a href="{{ route('pasien.rekam-medis') }}" class="nav-link {{ request()->routeIs('pasien.rekam-medis') ? 'active' : '' }}">Rekam Medis</a>
 @endsection
 
 @section('content')
@@ -64,10 +64,9 @@
                             </td>
                             <td class="text-end pe-4">
                                 @if($b->Status == 'PRESENT')
-                                <form action="{{ route('pasien.booking.cancel', $b->IdBooking) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan janji temu ini?');">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">Batalkan</button>
-                                </form>
+                                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="confirmCancel('{{ route('pasien.booking.cancel', $b->IdBooking) }}', '{{ $b->jadwal->dokter->Nama }}', '{{ $b->jadwal->Tanggal->format('d M Y') }}')">
+                                    Batalkan
+                                </button>
                                 @elseif($b->Status == 'COMPLETED')
                                 <a href="{{ route('pasien.rekam-medis', ['dari' => $b->jadwal->Tanggal ? $b->jadwal->Tanggal->format('Y-m-d') : '', 'sampai' => $b->jadwal->Tanggal ? $b->jadwal->Tanggal->format('Y-m-d') : '']) }}" class="btn btn-sm btn-primary rounded-pill px-4">
                                     <i class="fa-solid fa-file-medical me-1"></i> Detail
@@ -96,4 +95,53 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+    function confirmCancel(url, dokter, tanggal) {
+        Swal.fire({
+            title: 'Batalkan Janji Temu?',
+            html: `Anda akan membatalkan janji temu dengan <br><span class="text-primary fw-bold">${dokter}</span><br>pada <span class="text-dark fw-bold">${tanggal}</span>.`,
+            icon: 'warning',
+            iconColor: '#f87171',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: '<i class="fa-solid fa-trash-can me-2"></i>Ya, Batalkan',
+            cancelButtonText: 'Kembali',
+            reverseButtons: true,
+            showClass: {
+                popup: 'animate__animated animate__fadeInUp animate__faster'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutDown animate__faster'
+            },
+            customClass: {
+                popup: 'rounded-5 shadow-lg border-0 p-4',
+                confirmButton: 'rounded-pill px-4 py-2 fw-bold shadow-sm',
+                cancelButton: 'rounded-pill px-4 py-2 fw-bold'
+            },
+            backdrop: `
+                rgba(15, 23, 42, 0.4)
+                left top
+                no-repeat
+            `
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
+                
+                const csrfToken = document.createElement('input');
+                csrfToken.type = 'hidden';
+                csrfToken.name = '_token';
+                csrfToken.value = '{{ csrf_token() }}';
+                
+                form.appendChild(csrfToken);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+</script>
+@endpush
 @endsection

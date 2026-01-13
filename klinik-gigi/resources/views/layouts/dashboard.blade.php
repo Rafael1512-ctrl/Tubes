@@ -7,9 +7,10 @@
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         :root {
@@ -44,6 +45,28 @@
                             radial-gradient(at 100% 0%, var(--primary-soft) 0, transparent 50%);
             background-attachment: fixed;
             min-height: 100vh;
+        }
+
+        /* Navbar Layout (For Patients) */
+        .navbar-top {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0.75rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.4rem;
+            text-decoration: none;
         }
 
         /* Sidebar Styling */
@@ -100,6 +123,12 @@
         .main-content {
             margin-left: var(--sidebar-width);
             padding: 2rem;
+            transition: margin 0.3s ease;
+        }
+
+        .main-content.no-sidebar {
+            margin-left: 0;
+            padding-top: 2rem;
         }
 
         /* Topbar */
@@ -158,9 +187,78 @@
 </head>
 <body data-theme="@yield('theme', 'pasien')">
 
-    <!-- Sidebar -->
+    <!-- Navbar (For No-Sidebar Layout) -->
+    @if(trim($__env->yieldContent('no-sidebar')) === 'true')
+    <nav class="navbar-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="{{ route('home') }}" class="navbar-brand-custom">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" width="40" height="40" class="rounded-circle">
+                Zenith Dental
+            </a>
+            
+            <div class="d-none d-lg-flex align-items-center gap-4">
+                @yield('navbar-menu')
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="dropdown">
+                    <button class="bg-white p-2 rounded-circle shadow-sm border-0 position-relative" type="button" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-bell text-primary"></i>
+                        @if(Auth::user()->unreadNotifications->count() > 0)
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                {{ Auth::user()->unreadNotifications->count() }}
+                            </span>
+                        @endif
+                    </button>
+                    <!-- Notifications Dropdown Content (Same as Topbar) -->
+                    <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width: 320px; border-radius: 15px; overflow: hidden; z-index: 1050;">
+                        <div class="p-3 bg-primary text-white">
+                            <h6 class="m-0">Notifikasi</h6>
+                        </div>
+                        <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                            @forelse(Auth::user()->notifications()->limit(5)->get() as $notification)
+                                <a href="{{ $notification->data['link'] ?? '#' }}" class="list-group-item list-group-item-action p-3 @if(!$notification->read_at) bg-light @endif">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h6 class="mb-1 fw-bold small">{{ $notification->data['title'] ?? 'Notifikasi' }}</h6>
+                                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                    </div>
+                                    <p class="mb-0 small text-muted">{{ Str::limit($notification->data['message'] ?? '', 80) }}</p>
+                                </a>
+                            @empty
+                                <div class="p-4 text-center">
+                                    <i class="fa-solid fa-bell-slash text-muted mb-2"></i>
+                                    <p class="mb-0 small text-muted">Tidak ada notifikasi</p>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="bg-transparent border-0 d-flex align-items-center gap-2 p-0" type="button" data-bs-toggle="dropdown">
+                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random" class="rounded-circle shadow-sm" width="35">
+                        <i class="fa-solid fa-chevron-down small text-muted"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2">
+                        <li><div class="dropdown-header fw-bold text-dark">{{ Auth::user()->name }}</div></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button class="dropdown-item text-danger d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    @else
+    <!-- Sidebar (Original) -->
     <nav class="sidebar" id="sidebar">
-        <a href="#" class="brand">
+        <a href="{{ route('home') }}" class="brand">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" width="40" height="40" class="rounded-circle">
             Zenith Dental
         </a>
@@ -178,17 +276,21 @@
             </form>
         </div>
     </nav>
+    @endif
 
     <!-- Main Content -->
-    <main class="main-content">
-        <!-- Header Mobile -->
+    <main class="main-content {{ trim($__env->yieldContent('no-sidebar')) === 'true' ? 'no-sidebar container' : '' }}">
+        <!-- Header Mobile (Original, hidden if no-sidebar is true) -->
+        @if(trim($__env->yieldContent('no-sidebar')) !== 'true')
         <div class="d-lg-none mb-3">
             <button class="btn btn-primary" onclick="document.getElementById('sidebar').classList.toggle('show')">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
+        @endif
 
-        <!-- Topbar -->
+        <!-- Topbar (Only if Sidebar layout) -->
+        @if(trim($__env->yieldContent('no-sidebar')) !== 'true')
         <div class="topbar">
             <div>
                 <h5 class="m-0 fw-bold">@yield('header-title', 'Dashboard')</h5>
@@ -241,6 +343,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <!-- Content -->
         @if(session('success'))

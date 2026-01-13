@@ -7,7 +7,7 @@
 
 @section('sidebar-menu')
 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fa-solid fa-home"></i> Dashboard</a>
-<a href="{{ route('admin.booking') }}" class="nav-link {{ request()->routeIs('admin.booking*') ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
+<a href="{{ route('admin.jadwal') }}" class="nav-link {{ request()->routeIs(['admin.jadwal*', 'admin.booking*']) ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
 <a href="{{ route('admin.pasien') }}" class="nav-link {{ request()->routeIs('admin.pasien*') ? 'active' : '' }}"><i class="fa-solid fa-hospital-user"></i> Data Pasien</a>
 <a href="{{ route('admin.obat') }}" class="nav-link {{ request()->routeIs('admin.obat*') ? 'active' : '' }}"><i class="fa-solid fa-pills"></i> Data Obat</a>
 <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Manajemen User</a>
@@ -111,11 +111,7 @@
                             </td>
                             <td class="text-end">
                                 @if($booking->Status == 'PRESENT')
-                                <form action="{{ route('admin.booking.destroy', $booking->IdBooking) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin membatalkan booking ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-3 rounded-pill" style="font-size: 0.75rem;">Cancel</button>
-                                </form>
+                                <button type="button" class="btn btn-sm btn-outline-danger py-1 px-3 rounded-pill" style="font-size: 0.75rem;" onclick="confirmCancel('{{ route('admin.booking.destroy', $booking->IdBooking) }}', '{{ $booking->pasien->Nama }}')">Cancel</button>
                                 @endif
                             </td>
                         </tr>
@@ -172,4 +168,38 @@
     </div>
 </div>
 
+@push('scripts')
+<script>
+    function confirmCancel(url, pasien) {
+        Swal.fire({
+            title: 'Batalkan Booking?',
+            text: `Apakah Anda yakin ingin membatalkan booking untuk ${pasien}?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Batalkan!',
+            cancelButtonText: 'Tutup'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
+                const csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = '{{ csrf_token() }}';
+                const method = document.createElement('input');
+                method.type = 'hidden';
+                method.name = '_method';
+                method.value = 'DELETE';
+                form.appendChild(csrf);
+                form.appendChild(method);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+</script>
+@endpush
 @endsection

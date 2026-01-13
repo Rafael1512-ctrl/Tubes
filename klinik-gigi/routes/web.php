@@ -88,6 +88,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/obat/{id}/edit', [App\Http\Controllers\ObatController::class, 'edit'])->name('admin.obat.edit');
         Route::put('/obat/{id}', [App\Http\Controllers\ObatController::class, 'update'])->name('admin.obat.update');
         Route::delete('/obat/{id}', [App\Http\Controllers\ObatController::class, 'destroy'])->name('admin.obat.destroy');
+        Route::post('/obat/{id}/add-stock', [App\Http\Controllers\ObatController::class, 'addStock'])->name('admin.obat.add-stock');
 
 
         // Laporan (New)

@@ -1,14 +1,13 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Rekam Medis - Zenith Dental')
+@section('no-sidebar', 'true')
 @section('header-title', 'Riwayat Perawatan Gigi')
 
-@section('sidebar-menu')
-    <a href="{{ route('pasien.dashboard') }}" class="nav-link"><i class="fa-solid fa-home"></i> Beranda</a>
-    <a href="{{ route('pasien.jadwal') }}" class="nav-link"><i class="fa-solid fa-calendar-check"></i> Jadwal Saya</a>
-    <a href="{{ route('pasien.rekam-medis') }}" class="nav-link active"><i class="fa-solid fa-file-medical"></i> Rekam
-        Medis</a>
-    <a href="{{ route('pasien.notifications') }}" class="nav-link"><i class="fa-solid fa-bell"></i> Notifikasi</a>
+@section('navbar-menu')
+<a href="{{ route('pasien.dashboard') }}" class="nav-link {{ request()->routeIs('pasien.dashboard') ? 'active' : '' }}">Beranda</a>
+<a href="{{ route('pasien.jadwal') }}" class="nav-link {{ request()->routeIs('pasien.jadwal') ? 'active' : '' }}">Jadwal Saya</a>
+<a href="{{ route('pasien.rekam-medis') }}" class="nav-link {{ request()->routeIs('pasien.rekam-medis') ? 'active' : '' }}">Rekam Medis</a>
 @endsection
 
 @section('content')

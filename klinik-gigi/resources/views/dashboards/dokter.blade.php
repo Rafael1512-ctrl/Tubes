@@ -21,7 +21,7 @@
         
         <!-- Today's Overview -->
         <div class="row g-3 mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                  <div class="card-custom bg-info-subtle border-0 h-100">
                     <h6 class="text-info-emphasis fw-bold">Jadwal Hari Ini</h6>
                     @if($jadwalHariIni->isNotEmpty())
@@ -33,19 +33,26 @@
                     @endif
                  </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                  <div class="card-custom bg-primary-subtle border-0 h-100">
                     <h6 class="text-primary-emphasis fw-bold">Total Pasien</h6>
                     <h2 class="fw-bold mb-0 text-primary-emphasis">{{ $antrian->count() }}</h2>
                     <small>{{ $totalPasienSelesai }} Selesai • {{ $totalPasienMenunggu }} Menunggu</small>
                  </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                 <div class="card-custom bg-warning-subtle border-0 h-100 position-relative border-start border-warning border-4">
+                    <h6 class="text-warning-emphasis fw-bold">Notifikasi</h6>
+                    <h2 class="fw-bold mb-0 text-warning-emphasis">{{ Auth::user()->unreadNotifications->count() }}</h2>
+                    <small>Pesan Belum Dibaca</small>
+                 </div>
+            </div>
+            <div class="col-md-3">
                  <div class="card-custom bg-success-subtle border-0 h-100">
                     <h6 class="text-success-emphasis fw-bold">Status Ruangan</h6>
                     @if($jadwalHariIni->isNotEmpty())
                          <h2 class="fw-bold mb-0 text-success-emphasis">Ready</h2>
-                         <small>Ruang Praktek Aktif</small>
+                         <small>Ruang Praktik Aktif</small>
                     @else
                          <h2 class="fw-bold mb-0 text-secondary">Closed</h2>
                          <small>-</small>

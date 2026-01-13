@@ -1,183 +1,126 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Dashboard Pasien - Zenith Dental')
+@section('no-sidebar', 'true')
 @section('header-title', 'Dashboard Pasien')
 @section('header-subtitle', 'Pantau kesehatan gigi Anda dengan mudah')
 
+@section('navbar-menu')
+<a href="{{ route('pasien.dashboard') }}" class="nav-link {{ request()->routeIs('pasien.dashboard') ? 'active' : '' }}">Beranda</a>
+<a href="{{ route('pasien.jadwal') }}" class="nav-link {{ request()->routeIs('pasien.jadwal') ? 'active' : '' }}">Jadwal Saya</a>
+<a href="{{ route('pasien.rekam-medis') }}" class="nav-link {{ request()->routeIs('pasien.rekam-medis') ? 'active' : '' }}">Rekam Medis</a>
+@endsection
+
 @section('styles')
 <style>
-    /* Styling khusus untuk Dashboard Pasien agar lebih elegan */
+    /* Align with Landing Page (welcome.blade.php) */
+    :root {
+        --primary: #0ea5e9;
+        --secondary: #2563eb;
+        --gradient-primary: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+    }
+
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Plus Jakarta Sans', sans-serif;
         font-weight: 700;
     }
 
     .welcome-card {
-        background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
-        border-radius: 20px;
+        background: var(--gradient-primary);
+        border-radius: 30px;
         color: white;
         position: relative;
         overflow: hidden;
         border: none;
-        box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.3);
+        box-shadow: 0 25px 50px -12px rgba(14, 165, 233, 0.25);
     }
 
     .welcome-overlay {
         position: absolute;
         top: 0; right: 0; bottom: 0; left: 0;
-        background: radial-gradient(circle at 90% 10%, rgba(255,255,255,0.2) 0%, transparent 60%);
+        background: url('https://www.transparenttextures.com/patterns/cubes.png');
+        opacity: 0.1;
         pointer-events: none;
-    }
-
-    .doctor-card {
-        background: white;
-        border: 1px solid rgba(0,0,0,0.05);
-        border-radius: 20px;
-        padding: 20px;
-        transition: all 0.3s ease;
-        min-width: 280px;
-        position: relative;
-    }
-
-    .doctor-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-        border-color: rgba(14, 165, 233, 0.2);
-    }
-
-    .doctor-img-wrapper {
-        width: 70px;
-        height: 70px;
-        border-radius: 20px;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .doctor-img-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
     }
 
     .menu-grid-card {
         background: white;
-        border-radius: 20px;
-        padding: 1.5rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(0,0,0,0.04);
+        border-radius: 24px;
+        padding: 1.75rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(0,0,0,0.05);
         height: 100%;
         display: flex;
         align-items: center;
-        gap: 15px;
-        position: relative;
-        overflow: hidden;
+        gap: 20px;
     }
 
     .menu-grid-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        border-color: rgba(14, 165, 233, 0.3);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        border-color: var(--primary);
     }
     
     .menu-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
+        width: 60px;
+        height: 60px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         transition: all 0.3s;
     }
 
-    .menu-grid-card:hover .menu-icon {
-        transform: scale(1.1) rotate(5deg);
-    }
-
-    /* Scrollbar halus untuk daftar dokter */
-    .doctor-list-container {
-        scrollbar-width: thin;
-        scrollbar-color: #cbd5e1 transparent;
-        padding-bottom: 20px;
-        padding-top: 5px;
-        padding-left: 5px; /* prevent shadow crop */
-    }
-    
-    .promo-card {
-        border-radius: 20px;
-        overflow: hidden;
+    .stat-badge {
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        padding: 8px 16px;
+        border-radius: 100px;
+        font-weight: 600;
+        font-size: 0.8rem;
+        border: 1px solid rgba(255,255,255,0.2);
     }
 
     .article-item {
-        transition: background 0.2s;
+        transition: all 0.3s;
         border-bottom: 1px solid #f1f5f9;
+        cursor: pointer;
     }
-    .article-item:last-child {
-        border-bottom: none;
-    }
+
     .article-item:hover {
         background: #f8fafc;
+        padding-left: 1.5rem !important;
     }
 
-    /* Floating WhatsApp Button */
-    .whatsapp-float {
-        position: fixed;
-        width: 60px;
-        height: 60px;
-        bottom: 30px;
-        right: 30px;
-        background-color: #25d366;
-        color: #FFF;
-        border-radius: 50px;
-        text-align: center;
-        font-size: 32px;
-        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        text-decoration: none;
-    }
-
-    .whatsapp-float:hover {
-        transform: scale(1.1) rotate(5deg);
-        color: white;
-        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
-    }
-
-    .whatsapp-tooltip {
-        position: fixed;
-        bottom: 42px;
-        right: 100px;
-        background: white;
-        color: #1a1a1a;
-        padding: 8px 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        font-size: 14px;
+    .nav-link {
         font-weight: 600;
-        z-index: 999;
-        pointer-events: none;
-        opacity: 0;
-        transform: translateX(10px);
-        transition: all 0.3s ease;
+        color: #64748b;
+        transition: all 0.3s;
+        padding: 0.5rem 1rem !important;
+        border-radius: 10px;
     }
 
-    .whatsapp-float:hover + .whatsapp-tooltip {
-        opacity: 1;
-        transform: translateX(0);
+    .nav-link:hover, .nav-link.active {
+        color: var(--primary);
+        background: rgba(14, 165, 233, 0.05);
+    }
+
+    /* Premium Illustrations Containers */
+    .illustration-box {
+        position: relative;
+    }
+
+    .floating-img {
+        animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
     }
 </style>
-<!-- Font import same as welcome -->
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-@endsection
-
-@section('sidebar-menu')
-<a href="{{ route('pasien.dashboard') }}" class="nav-link {{ request()->routeIs('pasien.dashboard') ? 'active' : '' }}"><i class="fa-solid fa-home"></i> Beranda</a>
-<a href="{{ route('pasien.jadwal') }}" class="nav-link {{ request()->routeIs('pasien.jadwal') ? 'active' : '' }}"><i class="fa-solid fa-calendar-check"></i> Jadwal Saya</a>
-<a href="{{ route('pasien.rekam-medis') }}" class="nav-link {{ request()->routeIs('pasien.rekam-medis') ? 'active' : '' }}"><i class="fa-solid fa-file-medical"></i> Rekam Medis</a>
-<a href="{{ route('pasien.notifications') }}" class="nav-link {{ request()->routeIs('pasien.notifications') ? 'active' : '' }}"><i class="fa-solid fa-bell"></i> Notifikasi</a>
 @endsection
 
 @section('content')
@@ -189,60 +132,22 @@
             <div class="welcome-overlay"></div>
             <div class="row align-items-center position-relative z-1">
                 <div class="col-md-7 ps-md-4">
-                    <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-10 backdrop-blur text-white px-3 py-2 rounded-pill mb-4 border border-white border-opacity-20 shadow-sm">
-                        <span class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 24px; height: 24px; font-size: 12px;">
-                            <i class="fas fa-sparkles"></i>
-                        </span>
-                        <span class="small fw-semibold letter-spacing-1">SENYUM SEHAT HARI INI</span>
+                    <div class="stat-badge mb-4 d-inline-block">
+                        <i class="fas fa-sparkles me-2"></i>SENYUM SEHAT HARI INI
                     </div>
-                    <h1 class="display-5 fw-bold mb-3">Halo, {{ Auth::user()->name ?? 'Pasien' }}! 👋</h1>
+                    <h1 class="display-4 fw-bold mb-3">Halo, {{ Auth::user()->name ?? 'Pasien' }}! 👋</h1>
                     <p class="mb-4 lead text-white text-opacity-90 fw-light" style="max-width: 500px; line-height: 1.6;">
                         Kesehatan gigi adalah investasi masa depan. Jangan lupa jadwalkan pemeriksaan rutin Anda bersama dokter ahli kami.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="{{ route('pasien.booking.create') }}" class="btn btn-light text-primary fw-bold text-uppercase rounded-pill px-4 py-3 shadow-lg hover-scale">
+                        <a href="{{ route('pasien.booking.create') }}" class="btn btn-light text-primary fw-bold rounded-pill px-5 py-3 shadow-lg transform-hover">
                             <i class="fa-solid fa-calendar-plus me-2"></i> Buat Janji Temu
                         </a>
                     </div>
                 </div>
-                <div class="col-md-5 d-none d-md-block text-center position-relative">
-                     <i class="fa-solid fa-tooth text-white opacity-10 position-absolute" style="font-size: 15rem; transform: rotate(15deg); top: -20px; right: -20px; z-index: 0;"></i>
-                    <div class="position-relative z-1 d-inline-block">
-                        <div class="bg-white rounded-4 p-4 shadow-lg text-start" style="width: 280px; transform: rotate(-2deg); transition: transform 0.3s ease;">
-                            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                        <i class="fa-solid fa-calendar-check text-primary"></i>
-                                    </div>
-                                    <span class="small fw-bold text-dark text-uppercase tracking-wider">Jadwal Mendatang</span>
-                                </div>
-                                <div class="spinner-grow spinner-grow-sm text-primary opacity-50" role="status"></div>
-                            </div>
-                            @if($upcomingBookings->count() > 0)
-                                <div class="d-flex gap-3 align-items-center">
-                                    <div class="bg-primary rounded-3 text-center px-3 py-2 text-white">
-                                         <span class="d-block fw-bold display-6 mb-0" style="line-height: 1;">
-                                            {{ $upcomingBookings->first()->jadwal->Tanggal ? $upcomingBookings->first()->jadwal->Tanggal->format('d') : '-' }}
-                                         </span>
-                                         <span class="d-block small text-white text-opacity-75 text-uppercase" style="font-size: 0.7rem;">
-                                            {{ $upcomingBookings->first()->jadwal->Tanggal ? $upcomingBookings->first()->jadwal->Tanggal->format('M') : '-' }}
-                                         </span>
-                                    </div>
-                                    <div>
-                                        <div class="text-dark fw-bold mb-0" style="font-size: 1rem;">{{ $upcomingBookings->first()->jadwal->dokter->Nama ?? 'Dokter Gigi' }}</div>
-                                        <div class="text-muted small">
-                                            <i class="fa-regular fa-clock me-1"></i> 
-                                            {{ $upcomingBookings->first()->jadwal->JamMulai ? $upcomingBookings->first()->jadwal->JamMulai->format('H:i') : '-' }} WIB
-                                        </div>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="d-flex align-items-center gap-2 text-muted py-2">
-                                    <i class="fa-regular fa-calendar-xmark fa-lg"></i>
-                                    <span class="small">Belum ada jadwal aktif. <br>Yuk buat janji sekarang!</span>
-                                </div>
-                            @endif
-                        </div>
+                <div class="col-md-5 d-none d-md-block text-center mt-4 mt-md-0">
+                    <div class="illustration-box floating-img">
+                         <img src="https://cdni.iconscout.com/illustration/premium/thumb/dentist-examining-patient-teeth-illustration-download-in-svg-png-gif-file-formats--medical-care-dentistry-doctor-treatment-pack-healthcare-illustrations-4735519.png" class="img-fluid" style="max-height: 300px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));">
                     </div>
                 </div>
             </div>

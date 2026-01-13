@@ -45,7 +45,6 @@ class ObatController extends Controller
             'Satuan' => 'required|string|max:20',
             'HargaBeli' => 'required|numeric|min:0',
             'HargaJual' => 'required|numeric|min:0',
-            'Harga' => 'nullable|numeric|min:0',
             'Stok' => 'required|integer|min:0',
         ]);
 
@@ -74,8 +73,7 @@ class ObatController extends Controller
                 'NamaObat' => $request->NamaObat,
                 'Satuan' => $request->Satuan,
                 'HargaBeli' => $request->HargaBeli,
-                'HargaJual' => $request->HargaJual,
-                'Harga' => $request->Harga ?? $request->HargaJual,
+                'Harga' => $request->HargaJual,
                 'Stok' => $request->Stok,
             ]);
 
@@ -102,17 +100,19 @@ class ObatController extends Controller
             'Satuan' => 'required|string|max:20',
             'HargaBeli' => 'required|numeric|min:0',
             'HargaJual' => 'required|numeric|min:0',
-            'Harga' => 'nullable|numeric|min:0',
             'Stok' => 'required|integer|min:0',
         ]);
 
         try {
             $obat = Obat::findOrFail($id);
-            $data = $request->all();
-            if (!isset($data['Harga']) || empty($data['Harga'])) {
-                $data['Harga'] = $request->HargaJual;
-            }
-            $obat->update($data);
+            $obat->update([
+                'IdJenisObat' => $request->IdJenisObat,
+                'NamaObat' => $request->NamaObat,
+                'Satuan' => $request->Satuan,
+                'HargaBeli' => $request->HargaBeli,
+                'Harga' => $request->HargaJual,
+                'Stok' => $request->Stok,
+            ]);
 
             return redirect()->route('admin.obat')->with('success', 'Obat berhasil diperbarui');
         } catch (\Exception $e) {
@@ -128,6 +128,22 @@ class ObatController extends Controller
             return redirect()->route('admin.obat')->with('success', 'Obat berhasil dihapus');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menghapus obat: ' . $e->getMessage());
+        }
+    }
+
+    public function addStock(Request $request, $id)
+    {
+        $request->validate([
+            'tambah_stok' => 'required|integer|min:1',
+        ]);
+
+        try {
+            $obat = Obat::findOrFail($id);
+            $obat->increment('Stok', $request->tambah_stok);
+
+            return redirect()->route('admin.obat')->with('success', "Stok {$obat->NamaObat} berhasil ditambah {$request->tambah_stok} {$obat->Satuan}");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambah stok: ' . $e->getMessage());
         }
     }
 }

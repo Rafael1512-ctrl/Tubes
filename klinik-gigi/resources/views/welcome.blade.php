@@ -99,13 +99,21 @@
 
         .nav-link {
             font-weight: 600;
-            color: #64748b !important;
+            color: #64748b;
             margin: 0 15px;
             position: relative;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+        }
+
+        .navbar.scrolled .nav-link {
+            color: #475569;
+        }
+
+        .navbar.scrolled .nav-link:hover, .navbar.scrolled .nav-link.active {
             color: var(--primary) !important;
         }
 
@@ -397,48 +405,185 @@
 
         /* Footer */
         .footer {
-            background: #f8fafc;
-            padding-top: 80px;
-            border-top: 1px solid #e2e8f0;
+            background: #0f172a;
+            color: #94a3b8;
+            padding-top: 100px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            position: relative;
         }
 
         .footer h5 {
-            color: var(--dark);
+            color: white;
             margin-bottom: 25px;
             font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--gradient-primary);
         }
 
         .footer-link {
             display: block;
-            color: #64748b;
-            margin-bottom: 12px;
+            color: #94a3b8;
+            margin-bottom: 15px;
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-link i {
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: all 0.3s;
         }
 
         .footer-link:hover {
-            color: var(--primary);
-            padding-left: 5px;
+            color: white;
+            padding-left: 10px;
+        }
+
+        .footer-link:hover i {
+            opacity: 1;
         }
 
         .social-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--dark);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            color: white;
             transition: all 0.3s;
             text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .social-btn:hover {
             background: var(--gradient-primary);
             color: white;
-            transform: translateY(-3px);
+            transform: translateY(-5px);
+            border-color: transparent;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .footer-bottom {
+            background: #020617;
+            padding: 30px 0;
+            margin-top: 80px;
+        }
+
+        /* Modal Auth Tabs Legibility */
+        #authTab .nav-link {
+            color: #64748b;
+            border: none;
+            background: transparent;
+        }
+
+        #authTab .nav-link.active {
+            background: var(--gradient-primary);
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        #authTab .nav-link:not(.active):hover {
+            color: var(--primary);
+        }
+
+        /* Doctor Section Card */
+        .doctor-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--primary-soft);
+        }
+
+        .doctor-img-wrapper {
+            position: relative;
+            padding: 20px 20px 0 20px;
+            overflow: hidden;
+        }
+
+        .doctor-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        .doctor-card:hover .doctor-img {
+            transform: scale(1.05);
+        }
+
+        .doctor-info {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .doctor-name {
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .doctor-specialty {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .doctor-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .doctor-card:hover .doctor-social {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .doctor-social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .doctor-social-link:hover {
+            background: var(--primary);
+            color: white;
         }
 
         @media (max-width: 991px) {
@@ -473,13 +618,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link active" href="#beranda">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
                     <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
                     <li class="nav-item"><a class="nav-link" href="#dokter">Dokter</a></li>
                 </ul>
                 <div class="d-flex gap-3">
-                    <button type="button" class="btn btn-outline-primary rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#loginModal">Masuk</button>
-                    <button type="button" class="btn btn-primary-gradient" data-bs-toggle="modal" data-bs-target="#loginModal">Daftar</button>
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="showTab('login-tab')">Masuk</button>
+                    <button type="button" class="btn btn-primary-gradient" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="showTab('register-tab')">Daftar</button>
                 </div>
             </div>
         </div>
@@ -636,6 +781,84 @@
         </div>
     </section>
 
+    <!-- Doctor Section -->
+    <section id="dokter" class="py-5">
+        <div class="container py-5">
+            <div class="section-header" data-aos="fade-up">
+                <span class="badge">Tenaga Ahli Kami</span>
+                <h2 class="display-6 fw-bold">Bertemu Dengan Tim Dokter Spesialis</h2>
+                <p class="text-muted">Kami memiliki tim dokter yang sangat berpengalaman dan berdedikasi tinggi untuk memberikan perawatan gigi terbaik bagi Anda.</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="doctor-card">
+                        <div class="doctor-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dr. Adrian" class="doctor-img">
+                        </div>
+                        <div class="doctor-info">
+                            <h5 class="doctor-name fw-bold">Dr. Adrian Pratama</h5>
+                            <span class="doctor-specialty">Spesialis Ortodonti</span>
+                            <div class="doctor-social">
+                                <a href="#" class="doctor-social-link"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="doctor-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="doctor-social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="doctor-card">
+                        <div class="doctor-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dr. Sarah" class="doctor-img">
+                        </div>
+                        <div class="doctor-info">
+                            <h5 class="doctor-name fw-bold">Dr. Sarah Anindita</h5>
+                            <span class="doctor-specialty">Dokter Gigi Umum</span>
+                            <div class="doctor-social">
+                                <a href="#" class="doctor-social-link"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="doctor-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="doctor-social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="doctor-card">
+                        <div class="doctor-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6027a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dr. Michael" class="doctor-img">
+                        </div>
+                        <div class="doctor-info">
+                            <h5 class="doctor-name fw-bold">Dr. Michael Gunawan</h5>
+                            <span class="doctor-specialty">Spesialis Bedah Mulut</span>
+                            <div class="doctor-social">
+                                <a href="#" class="doctor-social-link"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="doctor-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="doctor-social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="doctor-card">
+                        <div class="doctor-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1559839734-2b71ef157923?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dr. Elena" class="doctor-img">
+                        </div>
+                        <div class="doctor-info">
+                            <h5 class="doctor-name fw-bold">Dr. Elena Putri</h5>
+                            <span class="doctor-specialty">Spesialis Gigi Anak</span>
+                            <div class="doctor-social">
+                                <a href="#" class="doctor-social-link"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="doctor-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="doctor-social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Services Section -->
     <section id="layanan" class="py-5 bg-light">
         <div class="container py-5">
@@ -770,9 +993,9 @@
                     @endif
 
                     <!-- Tabs for Login/Register -->
-                    <ul class="nav nav-pills nav-fill mb-4 bg-light rounded-pill p-1" id="authTab" role="tablist">
+                    <ul class="nav nav-pills nav-fill mb-4 bg-light rounded-pill p-1 shadow-sm" id="authTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ !old('name') ? 'active' : '' }} rounded-pill fw-bold" id="login-tab" data-bs-toggle="pill" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="{{ !old('name') ? 'true' : 'false' }}">Masuk</button>
+                            <button class="nav-link {{ !old('name') ? 'active' : '' }} rounded-pill fw-bold" id="login-tab" data-bs-toggle="pill" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="{{ !old('name') ? 'true' : 'false' }}" >Masuk</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link {{ old('name') ? 'active' : '' }} rounded-pill fw-bold" id="register-tab" data-bs-toggle="pill" data-bs-target="#register" type="button" role="tab" aria-controls="register" aria-selected="{{ old('name') ? 'true' : 'false' }}">Daftar</button>
@@ -790,22 +1013,26 @@
                             <form method="POST" action="{{ route('login.post') }}">
                                 @csrf
                                 <div class="mb-3">
-                                    <label class="form-label fw-600 small">Email Address</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-0"><i class="fas fa-envelope text-muted"></i></span>
-                                        <input type="email" name="email" class="form-control bg-light border-0" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                                    <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Email Address</label>
+                                    <div class="input-group input-group-lg shadow-sm">
+                                        <span class="input-group-text bg-white border-end-0 rounded-start-4"><i class="fas fa-envelope text-primary opacity-75"></i></span>
+                                        <input type="email" name="email" class="form-control border-start-0 rounded-end-4 bg-white fs-6" placeholder="nama@email.com" value="{{ old('email') }}" required>
                                     </div>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label fw-600 small">Password</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-0"><i class="fas fa-lock text-muted"></i></span>
-                                        <input type="password" name="password" class="form-control bg-light border-0" placeholder="••••••••" required>
+                                    <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Password</label>
+                                    <div class="input-group input-group-lg shadow-sm">
+                                        <span class="input-group-text bg-white border-end-0 rounded-start-4"><i class="fas fa-lock text-primary opacity-75"></i></span>
+                                        <input type="password" name="password" class="form-control border-start-0 rounded-end-4 bg-white fs-6" placeholder="••••••••" required>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary-gradient w-100 py-3 rounded-pill fw-bold shadow-glow mb-3">
+                                <button type="submit" class="btn btn-primary-gradient w-100 py-3 rounded-pill fw-bold shadow-glow mb-4">
                                     Masuk ke Dashboard
                                 </button>
+                                
+                                <div class="text-center">
+                                    <p class="small text-muted mb-0">Lupa password? <a href="#" class="text-primary fw-bold text-decoration-none">Hubungi Admin</a></p>
+                                </div>
                             </form>
                         </div>
 
@@ -819,20 +1046,20 @@
                             <form method="POST" action="{{ route('register') }}">
                                 @csrf
                                 <div class="mb-3">
-                                    <label class="form-label fw-600 small">Nama Lengkap</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-0"><i class="fas fa-user text-muted"></i></span>
-                                        <input type="text" name="name" class="form-control bg-light border-0" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required>
+                                    <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Nama Lengkap</label>
+                                    <div class="input-group shadow-sm">
+                                        <span class="input-group-text bg-white border-end-0 rounded-start-3"><i class="fas fa-user text-primary opacity-75"></i></span>
+                                        <input type="text" name="name" class="form-control border-start-0 rounded-end-3 bg-white" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-7">
-                                        <label class="form-label fw-600 small">Email Address</label>
-                                        <input type="email" name="email" class="form-control bg-light border-0" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                                        <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Email Address</label>
+                                        <input type="email" name="email" class="form-control rounded-3 bg-white shadow-sm" placeholder="nama@email.com" value="{{ old('email') }}" required>
                                     </div>
                                     <div class="col-md-5">
-                                        <label class="form-label fw-600 small">Jenis Kelamin</label>
-                                        <select name="jenis_kelamin" class="form-select bg-light border-0" required>
+                                        <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Gender</label>
+                                        <select name="jenis_kelamin" class="form-select rounded-3 bg-white shadow-sm" required>
                                             <option value="">Pilih</option>
                                             <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
                                             <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
@@ -841,33 +1068,36 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label fw-600 small">Nomor Telepon</label>
-                                        <input type="text" name="no_telp" class="form-control bg-light border-0" placeholder="08xxxxxxxxxx" value="{{ old('no_telp') }}" required>
+                                        <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Nomor Telepon</label>
+                                        <input type="text" name="no_telp" class="form-control rounded-3 bg-white shadow-sm" placeholder="08xxxxxxxxxx" value="{{ old('no_telp') }}" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label fw-600 small">Tanggal Lahir</label>
-                                        <input type="date" name="tanggal_lahir" class="form-control bg-light border-0" value="{{ old('tanggal_lahir') }}" required>
+                                        <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Tanggal Lahir</label>
+                                        <input type="date" name="tanggal_lahir" class="form-control rounded-3 bg-white shadow-sm" value="{{ old('tanggal_lahir') }}" required>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-600 small">Alamat Tinggal</label>
-                                    <textarea name="alamat" class="form-control bg-light border-0" rows="2" placeholder="Masukkan alamat lengkap" required>{{ old('alamat') }}</textarea>
+                                    <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Alamat Tinggal</label>
+                                    <textarea name="alamat" class="form-control rounded-3 bg-white shadow-sm" rows="2" placeholder="Masukkan alamat lengkap" required>{{ old('alamat') }}</textarea>
                                 </div>
-                                <div class="row mb-3">
+                                <div class="row mb-4">
                                     <div class="col-md-6">
-                                        <label class="form-label fw-600 small">Password</label>
-                                        <input type="password" name="password" class="form-control bg-light border-0" placeholder="••••••••" required>
+                                        <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Password</label>
+                                        <input type="password" name="password" class="form-control rounded-3 bg-white shadow-sm" placeholder="••••••••" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label fw-600 small">Konfirmasi</label>
-                                        <input type="password" name="password_confirmation" class="form-control bg-light border-0" placeholder="••••••••" required>
+                                        <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Konfirmasi</label>
+                                        <input type="password" name="password_confirmation" class="form-control rounded-3 bg-white shadow-sm" placeholder="••••••••" required>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary-gradient w-100 py-3 rounded-pill fw-bold shadow-glow mb-3">
                                     Daftar Sekarang
                                 </button>
+                                <p class="text-center text-muted small mt-3">
+                                    Sudah memiliki akun? <a href="javascript:void(0)" onclick="showTab('login-tab')" class="text-primary fw-bold text-decoration-none">Masuk di sini</a>
+                                </p>
                                 <p class="text-center text-muted x-small">
-                                    Dengan mendaftar, Anda menyetujui syarat & ketentuan kami.
+                                    Dengan mendaftar, Anda menyetujui <a href="#" class="text-decoration-none text-primary">syarat & ketentuan</a> kami.
                                 </p>
                             </form>
                         </div>
@@ -880,51 +1110,80 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="row gy-5 mb-5">
-                <div class="col-lg-4">
-                    <div class="d-flex align-items-center gap-2 mb-4">
-                        <h4 class="mb-0 text-primary fw-bold">Klinik Gigi Zenith</h4>
-                    </div>
-                    <p class="text-muted mb-4">Memberikan layanan kesehatan gigi terbaik dengan teknologi modern dan dokter berpengalaman untuk senyum sehat keluarga Indonesia.</p>
-                    <div class="d-flex gap-2">
+            <div class="row gy-5">
+                <div class="col-lg-5 pe-lg-5">
+                    <a class="navbar-brand mb-4 d-inline-block" href="/">
+                        <div class="brand-logo shadow-glow">
+                             <i class="fas fa-tooth"></i>
+                        </div>
+                        <span class="text-white">Zenith Dental</span>
+                    </a>
+                    <p class="mb-4 text-opacity-75" style="max-width: 400px; line-height: 1.8;">Membangun masa depan senyum Indonesia dengan teknologi kedokteran gigi tercanggih dan pelayanan setulus hati untuk setiap keluarga.</p>
+                    <div class="d-flex gap-3">
                         <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-6">
-                    <h5>Navigasi</h5>
-                    <a href="#beranda" class="footer-link">Beranda</a>
-                    <a href="#tentang" class="footer-link">Tentang Kami</a>
-                    <a href="#layanan" class="footer-link">Layanan</a>
-                    <a href="#dokter" class="footer-link">Dokter</a>
+                <div class="col-lg-3 col-6">
+                    <h5>Layanan Cepat</h5>
+                    <div class="footer-links">
+                        <a href="#beranda" class="footer-link"><i class="fas fa-chevron-right"></i> Beranda</a>
+                        <a href="#tentang" class="footer-link"><i class="fas fa-chevron-right"></i> Tentang Kami</a>
+                        <a href="#layanan" class="footer-link"><i class="fas fa-chevron-right"></i> Layanan Medis</a>
+                        <a href="#dokter" class="footer-link"><i class="fas fa-chevron-right"></i> Tim Dokter</a>
+                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#loginModal" class="footer-link"><i class="fas fa-chevron-right"></i> Buat Janji Temu</a>
+                    </div>
                 </div>
-                <div class="col-lg-2 col-6">
-                    <h5>Layanan</h5>
-                    <a href="#" class="footer-link">Pemeriksaan Gigi</a>
-                    <a href="#" class="footer-link">Whitening</a>
-                    <a href="#" class="footer-link">Kawat Gigi</a>
-                    <a href="#" class="footer-link">Implan</a>
-                </div>
+
                 <div class="col-lg-4">
-                    <h5>Hubungi Kami</h5>
-                    <div class="d-flex gap-3 mb-3">
-                        <div class="text-primary"><i class="fas fa-map-marker-alt"></i></div>
-                        <p class="text-muted m-0">Jl. Sehat Raya No. 123, Jakarta Selatan, DKI Jakarta 12345</p>
-                    </div>
-                    <div class="d-flex gap-3 mb-3">
-                        <div class="text-primary"><i class="fas fa-phone"></i></div>
-                        <p class="text-muted m-0">+62 21 1234 5678</p>
-                    </div>
-                    <div class="d-flex gap-3">
-                        <div class="text-primary"><i class="fas fa-envelope"></i></div>
-                        <p class="text-muted m-0">info@klinikgigisehat.com</p>
+                    <h5>Informasi Kontak</h5>
+                    <div class="d-flex flex-column gap-4">
+                        <div class="d-flex gap-3">
+                            <div class="social-btn" style="width: 40px; height: 40px; background: rgba(14, 165, 233, 0.1); border: none; color: var(--primary);">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <div class="text-white fw-bold mb-1 small">Lokasi Klinik</div>
+                                <p class="m-0 small opacity-75">Jl. Sehat Raya No. 123, Jakarta Selatan</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="social-btn" style="width: 40px; height: 40px; background: rgba(45, 212, 191, 0.1); border: none; color: var(--secondary);">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <div class="text-white fw-bold mb-1 small">Telepon & WA</div>
+                                <p class="m-0 small opacity-75">+62 21 1234 5678</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="social-btn" style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.1); border: none; color: var(--accent);">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <div class="text-white fw-bold mb-1 small">Email Support</div>
+                                <p class="m-0 small opacity-75">hello@zenithdental.com</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="border-top py-4 text-center text-muted small">
-                &copy; {{ date('Y') }} Klinik Gigi Zenith. All rights reserved.
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <p class="m-0 small opacity-50">&copy; {{ date('Y') }} Klinik Gigi Zenith. Crafted with <i class="fas fa-heart text-danger mx-1"></i> for your smile.</p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="d-flex justify-content-center justify-content-md-end gap-4 small opacity-50">
+                            <a href="#" class="text-white text-decoration-none">Privacy Policy</a>
+                            <a href="#" class="text-white text-decoration-none">Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
@@ -949,11 +1208,45 @@
             }
         });
 
+        // Function to show specific tab in login modal
+        function showTab(tabId) {
+            const triggerEl = document.querySelector('#' + tabId);
+            if (triggerEl) {
+                bootstrap.Tab.getOrCreateInstance(triggerEl).show();
+            }
+        }
+
         // Auto open login modal if there are errors (Back from failed attempt)
         @if($errors->any() || session('error') || session('success'))
             const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
         @endif
+
+        // Intersection Observer for Active Nav Links
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
     </script>
 </body>
 </html>

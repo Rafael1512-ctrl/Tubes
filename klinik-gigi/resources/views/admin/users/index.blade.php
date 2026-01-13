@@ -7,7 +7,7 @@
 
 @section('sidebar-menu')
 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fa-solid fa-home"></i> Dashboard</a>
-<a href="{{ route('admin.booking') }}" class="nav-link {{ request()->routeIs('admin.booking*') ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
+<a href="{{ route('admin.jadwal') }}" class="nav-link {{ request()->routeIs(['admin.jadwal*', 'admin.booking*']) ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
 <a href="{{ route('admin.pasien') }}" class="nav-link {{ request()->routeIs('admin.pasien*') ? 'active' : '' }}"><i class="fa-solid fa-hospital-user"></i> Data Pasien</a>
 <a href="{{ route('admin.obat') }}" class="nav-link {{ request()->routeIs('admin.obat*') ? 'active' : '' }}"><i class="fa-solid fa-pills"></i> Data Obat</a>
 <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Manajemen User</a>
@@ -201,13 +201,11 @@
                             </a>
                             
                             @if(auth()->id() !== $user->id)
-                            <form action="{{ route('admin.users.destroy',$user->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus user ini?')">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-danger btn-sm rounded-circle" title="Hapus User"
-                                        style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </form>
+                            <button type="button" class="btn btn-danger btn-sm rounded-circle" title="Hapus User"
+                                    onclick="confirmDelete('{{ route('admin.users.destroy', $user->id) }}', '{{ $user->name }}')"
+                                    style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                             @endif
                         </div>
                     </td>
@@ -234,5 +232,36 @@
     
     autoDismissAlert(successAlert);
     autoDismissAlert(errorAlert);
+
+    function confirmDelete(url, name) {
+        Swal.fire({
+            title: 'Hapus User?',
+            text: `Apakah Anda yakin ingin menghapus user ${name}? Tindakan ini tidak dapat dibatalkan.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
+                const csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = '{{ csrf_token() }}';
+                const method = document.createElement('input');
+                method.type = 'hidden';
+                method.name = '_method';
+                method.value = 'DELETE';
+                form.appendChild(csrf);
+                form.appendChild(method);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
 </script>
 @endsection

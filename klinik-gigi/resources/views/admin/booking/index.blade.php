@@ -7,12 +7,11 @@
 
 @section('sidebar-menu')
 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fa-solid fa-home"></i> Dashboard</a>
-<a href="{{ route('admin.booking') }}" class="nav-link {{ request()->routeIs('admin.booking*') ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
+<a href="{{ route('admin.jadwal') }}" class="nav-link {{ request()->routeIs(['admin.jadwal*', 'admin.booking*']) ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
 <a href="{{ route('admin.pasien') }}" class="nav-link {{ request()->routeIs('admin.pasien*') ? 'active' : '' }}"><i class="fa-solid fa-hospital-user"></i> Data Pasien</a>
 <a href="{{ route('admin.obat') }}" class="nav-link {{ request()->routeIs('admin.obat*') ? 'active' : '' }}"><i class="fa-solid fa-pills"></i> Data Obat</a>
 <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Manajemen User</a>
 <a href="{{ route('admin.broadcast.index') }}" class="nav-link {{ request()->routeIs('admin.broadcast*') ? 'active' : '' }}"><i class="fa-solid fa-bullhorn"></i> Broadcast</a>
-
 <a href="{{ route('admin.pembayaran') }}" class="nav-link {{ request()->routeIs('admin.pembayaran*') ? 'active' : '' }}"><i class="fa-solid fa-file-invoice-dollar"></i> Pembayaran</a>
 <a href="{{ route('admin.laporan') }}" class="nav-link {{ request()->routeIs('admin.laporan*') ? 'active' : '' }}"><i class="fa-solid fa-chart-line"></i> Laporan</a>
 @endsection
@@ -275,17 +274,11 @@
                                 </a>
                                 
                                 @if($booking->Status != 'CANCELLED')
-                                <form action="{{ route('admin.booking.destroy', $booking->IdBooking) }}" 
-                                      method="POST" 
-                                      onsubmit="return confirm('Yakin ingin membatalkan booking ini?')"
-                                      style="display:inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm rounded-circle" title="Batalkan Booking"
-                                            style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
-                                        <i class="fa-solid fa-ban"></i>
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-danger btn-sm rounded-circle" title="Batalkan Booking"
+                                        onclick="confirmCancel('{{ route('admin.booking.destroy', $booking->IdBooking) }}', '{{ $booking->nama_pasien }}')"
+                                        style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-ban"></i>
+                                </button>
                                 @endif
                             @endif
                         </div>
@@ -331,6 +324,37 @@
     
     autoDismissAlert(successAlert);
     autoDismissAlert(errorAlert);
+
+    function confirmCancel(url, name) {
+        Swal.fire({
+            title: 'Batalkan Booking?',
+            text: `Apakah Anda yakin ingin membatalkan booking untuk ${name}?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Batalkan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
+                const csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = '{{ csrf_token() }}';
+                const method = document.createElement('input');
+                method.type = 'hidden';
+                method.name = '_method';
+                method.value = 'DELETE';
+                form.appendChild(csrf);
+                form.appendChild(method);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
 </script>
 
 @endsection

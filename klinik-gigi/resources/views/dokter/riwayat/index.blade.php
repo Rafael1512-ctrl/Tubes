@@ -12,6 +12,37 @@
 <a href="{{ route('dokter.riwayat') }}" class="nav-link active"><i class="fa-solid fa-history"></i> Riwayat Praktek</a>
 @endsection
 
+@section('styles')
+<style>
+    /* Fix shaking hover effect by ensuring stable layouts */
+    .table-hover tbody tr {
+        transition: background-color 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(14, 165, 233, 0.05) !important;
+        transform: none !important; /* Ensure no movement on hover */
+    }
+
+    .card-custom:hover {
+        transform: none !important; /* Prevent card from moving in this view to keep table stable */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .badge {
+        transition: none !important; /* Prevent scale jitter */
+    }
+
+    code {
+        background: #f8fafc;
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: var(--primary);
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div class="card-custom mb-4">

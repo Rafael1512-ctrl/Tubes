@@ -7,7 +7,7 @@
 
 @section('sidebar-menu')
 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fa-solid fa-home"></i> Dashboard</a>
-<a href="{{ route('admin.booking') }}" class="nav-link {{ request()->routeIs('admin.booking*') ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
+<a href="{{ route('admin.jadwal') }}" class="nav-link {{ request()->routeIs(['admin.jadwal*', 'admin.booking*']) ? 'active' : '' }}"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
 <a href="{{ route('admin.pasien') }}" class="nav-link {{ request()->routeIs('admin.pasien*') ? 'active' : '' }}"><i class="fa-solid fa-hospital-user"></i> Data Pasien</a>
 <a href="{{ route('admin.obat') }}" class="nav-link {{ request()->routeIs('admin.obat*') ? 'active' : '' }}"><i class="fa-solid fa-pills"></i> Data Obat</a>
 <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Manajemen User</a>
@@ -71,7 +71,7 @@
                     <td><span class="badge bg-info-subtle text-info">{{ $obat->jenisObat->NamaJenis ?? '-' }}</span></td>
                     <td>{{ $obat->Satuan }}</td>
                     <td class="text-muted small">Rp {{ number_format($obat->HargaBeli ?? 0, 0, ',', '.') }}</td>
-                    <td class="fw-bold text-primary">Rp {{ number_format($obat->HargaJual ?? $obat->Harga, 0, ',', '.') }}</td>
+                    <td class="fw-bold text-primary">Rp {{ number_format($obat->Harga ?? 0, 0, ',', '.') }}</td>
                     <td class="text-center">
                         @php
                             $stokClass = 'success';
@@ -84,12 +84,13 @@
                     </td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="showAddStockModal('{{ $obat->IdObat }}', '{{ $obat->NamaObat }}', '{{ $obat->Satuan }}')">
+                                <i class="fa-solid fa-plus me-1"></i> Stok
+                            </button>
                             <a href="{{ route('admin.obat.edit', $obat->IdObat) }}" class="btn btn-sm btn-outline-primary rounded-circle" style="width: 32px; height: 32px;"><i class="fa-solid fa-pen p-1"></i></a>
-                            <form action="{{ route('admin.obat.destroy', $obat->IdObat) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus obat ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" style="width: 32px; height: 32px;"><i class="fa-solid fa-trash p-1"></i></button>
-                            </form>
+                            <button type="button" class="btn btn-sm btn-outline-danger rounded-circle" style="width: 32px; height: 32px;" onclick="confirmDelete('{{ route('admin.obat.destroy', $obat->IdObat) }}', '{{ $obat->NamaObat }}')">
+                                <i class="fa-solid fa-trash p-1"></i>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -107,4 +108,91 @@
     </div>
 </div>
 
+<!-- Add Stock Modal -->
+<div class="modal fade" id="addStockModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="fw-bold m-0">Tambah Stok Obat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addStockForm" method="POST">
+                @csrf
+                <div class="modal-body py-4">
+                    <div class="text-center mb-4">
+                        <div class="bg-success-subtle text-success p-3 rounded-circle d-inline-block mb-2">
+                            <i class="fa-solid fa-pills fa-2x"></i>
+                        </div>
+                        <h6 id="obatName" class="fw-bold mb-1">Nama Obat</h6>
+                        <small class="text-muted" id="obatId">Kode: -</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Jumlah Tambah</label>
+                        <div class="input-group">
+                            <input type="number" name="tambah_stok" class="form-control rounded-start-pill px-3" placeholder="Masukkan jumlah..." required min="1">
+                            <span class="input-group-text rounded-end-pill px-3 bg-light" id="obatSatuan">Satuan</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success rounded-pill px-4">Update Stok</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    function showAddStockModal(id, name, satuan) {
+        const modal = new bootstrap.Modal(document.getElementById('addStockModal'));
+        document.getElementById('obatName').innerText = name;
+        document.getElementById('obatId').innerText = 'Kode: ' + id;
+        document.getElementById('obatSatuan').innerText = satuan;
+        document.getElementById('addStockForm').action = `{{ url('admin/obat') }}/${id}/add-stock`;
+        modal.show();
+    }
+
+    function confirmDelete(url, name) {
+        Swal.fire({
+            title: 'Hapus Obat?',
+            html: `Apakah Anda yakin ingin menghapus <span class="text-primary fw-bold">${name}</span>?<br><small class="text-muted">Tindakan ini tidak dapat dibatalkan.</small>`,
+            icon: 'warning',
+            iconColor: '#f87171',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: '<i class="fa-solid fa-trash-can me-2"></i>Ya, Hapus!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-5 shadow-lg border-0 p-4',
+                confirmButton: 'rounded-pill px-4 py-2 fw-bold shadow-sm',
+                cancelButton: 'rounded-pill px-4 py-2 fw-bold'
+            },
+            backdrop: `rgba(15, 23, 42, 0.4)`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
+                const csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = '{{ csrf_token() }}';
+                const method = document.createElement('input');
+                method.type = 'hidden';
+                method.name = '_method';
+                method.value = 'DELETE';
+                form.appendChild(csrf);
+                form.appendChild(method);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+</script>
+@endpush
 @endsection
