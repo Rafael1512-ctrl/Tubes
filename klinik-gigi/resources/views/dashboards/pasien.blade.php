@@ -300,29 +300,6 @@
             </div>
         </div>
 
-        <!-- Recent Activity / History -->
-        <h4 class="fw-bold mb-3">Riwayat Terakhir</h4>
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-            @forelse($medicalHistory as $history)
-            <div class="article-item p-3 d-flex gap-3 align-items-center">
-                <div class="bg-primary bg-opacity-10 p-3 rounded-3 text-primary">
-                    <i class="fa-solid fa-file-medical-alt fa-lg"></i>
-                </div>
-                <div class="flex-grow-1">
-                    <div class="d-flex justify-content-between">
-                        <h6 class="fw-bold mb-1 text-dark">{{ $history->tindakan->first()->NamaTindakan ?? 'Pemeriksaan' }}</h6>
-                        <small class="text-muted">{{ \Carbon\Carbon::parse($history->Tanggal)->format('d M Y') }}</small>
-                    </div>
-                    <small class="text-muted">Dokter: {{ $history->dokter->Nama ?? '-' }} • Keluhan: {{ Str::limit($history->Keluhan, 50) }}</small>
-                </div>
-            </div>
-            @empty
-            <div class="p-5 text-center text-muted">
-                <i class="fa-solid fa-folder-open fa-3x mb-3 opacity-25"></i>
-                <p>Belum ada riwayat kunjungan</p>
-            </div>
-            @endforelse
-        </div>
     </div>
 
     <!-- Right Sidebar -->
@@ -354,6 +331,43 @@
         </div>
 
 
+    </div>
+</div>
+
+<!-- Recent Activity / History (Full Width) -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h4 class="fw-bold mb-4">Riwayat Terakhir</h4>
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+            @forelse($medicalHistory as $history)
+            <div class="article-item p-4 d-flex gap-4 align-items-center">
+                <div class="bg-primary bg-opacity-10 p-3 rounded-4 text-primary">
+                    <i class="fa-solid fa-file-medical-alt fa-2xl"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="fw-bold mb-0 text-dark">{{ $history->tindakan->first()->NamaTindakan ?? 'Pemeriksaan' }}</h5>
+                        <span class="badge bg-light text-muted border px-3 py-2 rounded-pill">
+                            <i class="fa-regular fa-calendar me-1"></i> {{ \Carbon\Carbon::parse($history->Tanggal)->format('d M Y') }}
+                        </span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-3">
+                        <span class="text-muted small"><i class="fa-solid fa-user-doctor me-1 text-primary"></i> Dokter: {{ $history->dokter->Nama ?? '-' }}</span>
+                        <span class="text-muted small"><i class="fa-solid fa-notes me-1 text-primary"></i> Keluhan: {{ $history->Keluhan ?? '-' }}</span>
+                    </div>
+                </div>
+                <div class="ms-auto">
+                    <a href="{{ route('pasien.rekam-medis') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">Detail</a>
+                </div>
+            </div>
+            @empty
+            <div class="p-5 text-center text-muted">
+                <i class="fa-solid fa-folder-open fa-3x mb-3 opacity-25"></i>
+                <p>Belum ada riwayat kunjungan</p>
+                <a href="{{ route('pasien.booking.create') }}" class="btn btn-primary rounded-pill px-4 mt-2">Buat Janji Pertama</a>
+            </div>
+            @endforelse
+        </div>
     </div>
 </div>
 

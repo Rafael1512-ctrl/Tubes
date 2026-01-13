@@ -25,14 +25,24 @@ class PasienController extends Controller
         return back();
     }
 
-    public function rekamMedis()
+    public function rekamMedis(Request $request)
     {
         $pasien = Auth::user()->pasien;
-        if (!$pasien) return back()->with('error', 'Data pasien tidak ditemukan.');
+        if (!$pasien)
+            return back()->with('error', 'Data pasien tidak ditemukan.');
 
-        $histories = RekamMedis::with(['dokter', 'tindakan', 'obat'])
-            ->where('PasienID', $pasien->PasienID)
-            ->orderBy('Tanggal', 'desc')
+        $query = RekamMedis::with(['dokter', 'tindakan', 'obat'])
+            ->where('PasienID', $pasien->PasienID);
+
+        if ($request->filled('dari')) {
+            $query->whereDate('Tanggal', '>=', $request->dari);
+        }
+
+        if ($request->filled('sampai')) {
+            $query->whereDate('Tanggal', '<=', $request->sampai);
+        }
+
+        $histories = $query->orderBy('Tanggal', 'desc')
             ->paginate(10);
 
         return view('pasien.rekammedis.index', compact('histories'));
@@ -41,7 +51,8 @@ class PasienController extends Controller
     public function jadwal()
     {
         $pasien = Auth::user()->pasien;
-        if (!$pasien) return back()->with('error', 'Data pasien tidak ditemukan.');
+        if (!$pasien)
+            return back()->with('error', 'Data pasien tidak ditemukan.');
 
         $bookings = Booking::with(['jadwal.dokter'])
             ->where('PasienID', $pasien->PasienID)
@@ -55,7 +66,7 @@ class PasienController extends Controller
     {
         $user = Auth::user();
         $pasien = $user->pasien;
-        
+
         if (!$pasien) {
             return redirect()->route('pasien.dashboard')->with('error', 'Data pasien tidak ditemukan. Silahkan lengkapi profil Anda.');
         }
@@ -89,7 +100,7 @@ class PasienController extends Controller
         try {
             // Check if Jadwal is still available and not in the past
             $jadwal = Jadwal::available()->find($request->IdJadwal);
-            
+
             if (!$jadwal) {
                 return redirect()->back()->withInput()->with('error', 'Jadwal yang dipilih sudah tidak tersedia atau sudah terlewati.');
             }
@@ -141,7 +152,8 @@ class PasienController extends Controller
     public function bookingCancel($id)
     {
         $pasien = Auth::user()->pasien;
-        if (!$pasien) return back()->with('error', 'Data pasien tidak ditemukan.');
+        if (!$pasien)
+            return back()->with('error', 'Data pasien tidak ditemukan.');
 
         $booking = Booking::where('IdBooking', $id)
             ->where('PasienID', $pasien->PasienID)

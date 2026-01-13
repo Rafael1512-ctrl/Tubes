@@ -68,13 +68,16 @@
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">Batalkan</button>
                                 </form>
+                                @elseif($b->Status == 'COMPLETED')
+                                <a href="{{ route('pasien.rekam-medis', ['dari' => $b->jadwal->Tanggal ? $b->jadwal->Tanggal->format('Y-m-d') : '', 'sampai' => $b->jadwal->Tanggal ? $b->jadwal->Tanggal->format('Y-m-d') : '']) }}" class="btn btn-sm btn-primary rounded-pill px-4">
+                                    <i class="fa-solid fa-file-medical me-1"></i> Detail
+                                </a>
                                 @endif
-                                <button class="btn btn-sm btn-light rounded-pill px-3">Detail</button>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="py-5 text-center text-muted">
+                            <td colspan="4" class="py-5 text-center text-muted">
                                 <i class="fa-solid fa-calendar-xmark fa-4x mb-4 opacity-25"></i>
                                 <h4>Belum Ada Janji Temu</h4>
                                 <p>Silakan buat janji temu untuk pemeriksaan rutin.</p>
