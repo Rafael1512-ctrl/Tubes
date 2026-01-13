@@ -15,7 +15,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::get('/register', function() { return redirect('/'); });
+Route::get('/register', function () {
+    return redirect('/'); });
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -52,7 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users/{id}/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
         Route::put('/users/{id}', [AdminController::class, 'update'])->name('admin.users.update');
         Route::delete('/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
-        
+
         // Jadwal Management
         Route::get('/jadwal', [JadwalController::class, 'index'])->name('admin.jadwal');
         Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('admin.jadwal.create');
@@ -61,7 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/jadwal/{id}', [JadwalController::class, 'update'])->name('admin.jadwal.update');
         Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy'])->name('admin.jadwal.destroy');
         Route::get('/jadwal/date/{date}', [JadwalController::class, 'getByDate'])->name('admin.jadwal.bydate');
-        
+
         // Booking Management
         Route::get('/booking', [BookingController::class, 'index'])->name('admin.booking');
         Route::get('/booking/create', [BookingController::class, 'create'])->name('admin.booking.create');
@@ -88,9 +89,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/obat/{id}', [App\Http\Controllers\ObatController::class, 'update'])->name('admin.obat.update');
         Route::delete('/obat/{id}', [App\Http\Controllers\ObatController::class, 'destroy'])->name('admin.obat.destroy');
 
+
         // Laporan (New)
         Route::get('/laporan', [App\Http\Controllers\LaporanController::class, 'index'])->name('admin.laporan');
         Route::get('/laporan/download', [App\Http\Controllers\LaporanController::class, 'downloadPDF'])->name('admin.laporan.pdf');
+
+        // Laporan Detail
+        Route::get('/laporan/keuangan', [App\Http\Controllers\LaporanController::class, 'keuangan'])->name('admin.laporan.keuangan');
+        Route::get('/laporan/keuangan/pdf', [App\Http\Controllers\LaporanController::class, 'downloadKeuanganPDF'])->name('admin.laporan.keuangan.pdf');
+
+        Route::get('/laporan/pembelian-obat', [App\Http\Controllers\LaporanController::class, 'pembelianObat'])->name('admin.laporan.pembelian-obat');
+        Route::get('/laporan/pembelian-obat/pdf', [App\Http\Controllers\LaporanController::class, 'downloadPembelianObatPDF'])->name('admin.laporan.pembelian-obat.pdf');
+
+        Route::get('/laporan/penjualan-obat', [App\Http\Controllers\LaporanController::class, 'penjualanObat'])->name('admin.laporan.penjualan-obat');
+        Route::get('/laporan/penjualan-obat/pdf', [App\Http\Controllers\LaporanController::class, 'downloadPenjualanObatPDF'])->name('admin.laporan.penjualan-obat.pdf');
+
+        Route::get('/laporan/pemakaian-obat', [App\Http\Controllers\LaporanController::class, 'pemakaianObat'])->name('admin.laporan.pemakaian-obat');
+
+        Route::get('/laporan/penjualan-tindakan', [App\Http\Controllers\LaporanController::class, 'penjualanTindakan'])->name('admin.laporan.penjualan-tindakan');
+        Route::get('/laporan/penjualan-tindakan/pdf', [App\Http\Controllers\LaporanController::class, 'downloadPenjualanTindakanPDF'])->name('admin.laporan.penjualan-tindakan.pdf');
     });
 
     // Fitur khusus Pasien
@@ -99,7 +116,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/jadwal', [App\Http\Controllers\PasienController::class, 'jadwal'])->name('pasien.jadwal');
         Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('pasien.notifications');
         Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('pasien.notifications.read');
-        
+
         // Booking fitur baru
         Route::get('/booking/create', [App\Http\Controllers\PasienController::class, 'bookingCreate'])->name('pasien.booking.create');
         Route::post('/booking', [App\Http\Controllers\PasienController::class, 'bookingStore'])->name('pasien.booking.store');
@@ -119,7 +136,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/rekam-medis/create/{idBooking}', [App\Http\Controllers\RekamMedisController::class, 'create'])->name('dokter.rekam-medis.create');
         Route::post('/rekam-medis', [App\Http\Controllers\RekamMedisController::class, 'store'])->name('dokter.rekam-medis.store');
 
-        
+
         // Jadwal Saya
         Route::get('/jadwal', [App\Http\Controllers\DokterController::class, 'jadwal'])->name('dokter.jadwal');
 

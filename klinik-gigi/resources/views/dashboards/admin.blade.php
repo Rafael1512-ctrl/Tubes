@@ -126,19 +126,7 @@
                 </table>
             </div>
 
-            <!-- Promotion Blast (Integrated) -->
-            <div class="mt-4 pt-4 border-top">
-                <form action="{{ route('admin.broadcast.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="Title" value="Pengumuman Klinik">
-                    <input type="hidden" name="TargetRole" value="pasien">
-                    <label class="small fw-bold text-muted mb-2"><i class="fa-solid fa-paper-plane me-1"></i> Quick Broadcast Pengumuman</label>
-                    <div class="input-group">
-                        <input type="text" name="Message" class="form-control border-light-subtle bg-light small" placeholder="Ketik pesan untuk semua pasien..." required>
-                        <button type="submit" class="btn btn-dark px-4 small">Kirim</button>
-                    </div>
-                </form>
-            </div>
+            <!-- List of Queue -->
         </div>
     </div>
 

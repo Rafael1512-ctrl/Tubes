@@ -12,7 +12,7 @@ class DashboardController extends Controller
     public function admin()
     {
         $this->authorizeRole('admin');
-        
+
         // Auto Update status jadwals yang sudah lewat
         \App\Models\Jadwal::autoUpdateStatus();
         \App\Models\Booking::autoCancelExpired();
@@ -21,9 +21,9 @@ class DashboardController extends Controller
         $recentBookings = Booking::with(['jadwal.dokter', 'pasien'])
             ->where('Status', 'PRESENT')
             ->orderBy('TanggalBooking', 'desc')
-            ->limit(10)
+            ->limit(25)
             ->get();
-        
+
         // Get statistics
         $totalPasien = Pasien::count();
         $totalBookingToday = Booking::whereDate('TanggalBooking', today())
@@ -45,11 +45,11 @@ class DashboardController extends Controller
             ->orderBy('count', 'desc')
             ->limit(3)
             ->get();
-        
+
         $totalPemeriksaan = \App\Models\RekamMedis::count();
 
         // 2. Audit Activities
-        $auditUsers = User::orderBy('created_at', 'desc')->limit(3)->get()->map(function($user) {
+        $auditUsers = User::orderBy('created_at', 'desc')->limit(3)->get()->map(function ($user) {
             return [
                 'icon' => 'fa-user-plus',
                 'color' => 'success',
@@ -59,7 +59,7 @@ class DashboardController extends Controller
             ];
         });
 
-        $auditRM = \App\Models\RekamMedis::with(['dokter', 'pasien'])->orderBy('IdRekamMedis', 'desc')->limit(3)->get()->map(function($rm) {
+        $auditRM = \App\Models\RekamMedis::with(['dokter', 'pasien'])->orderBy('IdRekamMedis', 'desc')->limit(3)->get()->map(function ($rm) {
             return [
                 'icon' => 'fa-file-pen',
                 'color' => 'primary',
@@ -70,12 +70,12 @@ class DashboardController extends Controller
         });
 
         $auditActivities = $auditUsers->concat($auditRM)->take(3);
-        
+
         return view('dashboards.admin', compact(
-            'recentBookings', 
-            'totalPasien', 
-            'totalBookingToday', 
-            'totalDokter', 
+            'recentBookings',
+            'totalPasien',
+            'totalBookingToday',
+            'totalDokter',
             'totalPendapatan',
             'topTindakan',
             'totalPemeriksaan',
@@ -86,12 +86,12 @@ class DashboardController extends Controller
     public function dokter()
     {
         $this->authorizeRole('dokter');
-        
+
         $user = Auth::user();
-        $dokter = $user->pegawai; 
+        $dokter = $user->pegawai;
 
         // Auto Cancel Expired Bookings
-        \App\Models\Booking::autoCancelExpired(); 
+        \App\Models\Booking::autoCancelExpired();
 
         // Default empty state
         $jadwalHariIni = collect([]); // Collection of jadwals
@@ -115,7 +115,7 @@ class DashboardController extends Controller
                 })->sortBy('TanggalBooking'); // Or sort by time preference if needed
 
                 $totalPasienMenunggu = $antrian->where('Status', 'PRESENT')->count();
-                $totalPasienSelesai = $antrian->where('Status', 'COMPLETED')->count(); 
+                $totalPasienSelesai = $antrian->where('Status', 'COMPLETED')->count();
             }
         }
 
@@ -141,10 +141,10 @@ class DashboardController extends Controller
             ->where('PasienID', $pasien->PasienID)
             ->where('Status', 'PRESENT')
             ->get()
-            ->sortBy(function($booking) {
-                 return $booking->jadwal->Tanggal . ' ' . $booking->jadwal->JamMulai;
+            ->sortBy(function ($booking) {
+                return $booking->jadwal->Tanggal . ' ' . $booking->jadwal->JamMulai;
             });
-        
+
         // Auto Cancel Expired Bookings
         \App\Models\Booking::autoCancelExpired();
 
@@ -155,7 +155,7 @@ class DashboardController extends Controller
             ->get();
 
         $notifications = $user->unreadNotifications;
-        
+
         $broadcasts = \App\Models\Broadcast::whereIn('TargetRole', ['all', 'pasien'])
             ->latest()
             ->limit(3)
