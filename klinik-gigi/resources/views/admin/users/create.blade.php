@@ -119,7 +119,8 @@
                 <select name="role" id="role" class="form-select" required>
                     <option value="">-- Pilih Role --</option>
                     <option value="admin">Admin</option>
-                    <option value="dokter">Dokter</option>
+                    <option value="dokter_gigi">Dokter Gigi</option>
+                    <option value="dokter_spesialis">Dokter Spesialis</option>
                     <option value="pasien">Pasien</option>
                 </select>
             </div>
@@ -143,16 +144,14 @@
 
             <!-- Data khusus untuk role selain pasien (admin, dokter, pegawai) -->
             <div id="non-pasien-fields" style="display:none;">
-                <div class="mb-3">
+                <div class="mb-3" id="jabatan-wrapper">
                     <label for="jabatan" class="form-label">Jabatan</label>
-                    <select name="jabatan" class="form-control">
+                    <select name="jabatan" id="jabatan" class="form-control">
                         <option value="">-- Pilih Jabatan --</option>
                         <option value="admin">Admin</option>
                         <option value="dokter gigi">Dokter Gigi</option>
                         <option value="dokter spesialis">Dokter Spesialis</option>
-                        <option value="pegawai">Pegawai</option>
                     </select>
-                    <small class="text-muted">Untuk role Admin, pilih Admin. Untuk role Dokter, pilih Dokter Gigi atau Dokter Spesialis. Untuk role Pegawai, pilih Pegawai.</small>
                 </div>
                 <div class="mb-3">
                     <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
@@ -199,6 +198,8 @@
         let role = this.value;
         const nonPasienFields = document.getElementById('non-pasien-fields');
         const pasienFields = document.getElementById('pasien-fields');
+        const jabatanWrapper = document.getElementById('jabatan-wrapper');
+        const jabatanSelect = document.getElementById('jabatan');
         
         // Helper function to toggle inputs
         function toggleInputs(container, enable) {
@@ -220,33 +221,23 @@
         if (role === 'pasien') {
             pasienFields.style.display = 'block';
             toggleInputs(pasienFields, true);
-        } else if (role === 'admin' || role === 'dokter' || role === 'pegawai') {
+        } else if (role !== '') {
             nonPasienFields.style.display = 'block';
             toggleInputs(nonPasienFields, true);
             
-            // Jika role admin, set default jabatan ke admin
+            // Auto setting Jabatan based on Role
             if (role === 'admin') {
-                // Mencari option dengan value admin dan men-select-nya
-                let jabatanSelect = document.querySelector('select[name="jabatan"]');
-                for (let i = 0; i < jabatanSelect.options.length; i++) {
-                    if (jabatanSelect.options[i].value === 'admin') {
-                        jabatanSelect.selectedIndex = i;
-                        break;
-                    }
-                }
-            } else if (role === 'dokter') {
-                // Untuk dokter, default kosong atau bisa diatur
-                let jabatanSelect = document.querySelector('select[name="jabatan"]');
-                jabatanSelect.selectedIndex = 0;
-            } else if (role === 'pegawai') {
-                // Untuk pegawai, default ke pegawai
-                let jabatanSelect = document.querySelector('select[name="jabatan"]');
-                for (let i = 0; i < jabatanSelect.options.length; i++) {
-                    if (jabatanSelect.options[i].value === 'pegawai') {
-                        jabatanSelect.selectedIndex = i;
-                        break;
-                    }
-                }
+                jabatanSelect.value = 'admin';
+                jabatanWrapper.style.display = 'none';
+            } else if (role === 'dokter_gigi') {
+                jabatanSelect.value = 'dokter gigi';
+                jabatanWrapper.style.display = 'none';
+            } else if (role === 'dokter_spesialis') {
+                jabatanSelect.value = 'dokter spesialis';
+                jabatanWrapper.style.display = 'none';
+            } else {
+                jabatanWrapper.style.display = 'block';
+                jabatanSelect.value = '';
             }
         }
     });

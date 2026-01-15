@@ -26,15 +26,15 @@
 @section('content')
 <div class="row g-4 mb-4">
     <!-- Quick Stats / Cards -->
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card-custom h-100 border-0 shadow-sm" style="background: var(--gradient-primary); color: white;">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h6 class="opacity-75 mb-2">Janji Temu Mendatang</h6>
                     <h3 class="fw-bold mb-0">{{ $upcomingBookings->count() }}</h3>
                 </div>
-                <div class="bg-white bg-opacity-20 p-3 rounded-circle">
-                    <i class="fa-solid fa-calendar-check fa-2x"></i>
+                <div class="p-3 rounded-circle" style="background: rgba(0, 80, 150, 0.5);">
+                    <i class="fa-solid fa-calendar-check fa-2x text-white"></i>
                 </div>
             </div>
             <div class="mt-4">
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card-custom h-100 bg-white border-0 shadow-sm">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -62,22 +62,7 @@
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card-custom h-100 bg-white border-0 shadow-sm">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h6 class="text-muted mb-2">Poin Senyum</h6>
-                    <h3 class="fw-bold mb-0 text-dark">1.250</h3>
-                </div>
-                <div class="bg-warning bg-opacity-10 p-3 rounded-circle text-warning">
-                    <i class="fa-solid fa-star fa-2x"></i>
-                </div>
-            </div>
-            <div class="mt-4">
-                <span class="text-muted small">Tukarkan dengan diskon layanan!</span>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <div class="row g-4">
@@ -198,11 +183,16 @@
         </div>
         
         <!-- Promotion Banner -->
-        <div class="mt-4 rounded-4 overflow-hidden position-relative shadow-sm" style="height: 200px;">
-            <img src="https://images.unsplash.com/photo-1593054941324-f725a3d7e799?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="w-100 h-100 object-fit-cover">
-            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-40 d-flex align-items-end p-4">
+        <div class="mt-4 rounded-4 overflow-hidden position-relative shadow-sm" style="height: 200px; background-color: #f1f5f9;">
+            {{-- Path check: {{ public_path('images/promo_whitening.png') }} --}}
+            <img src="{{ asset('images/promo_whitening.png?v=' . time()) }}" 
+                 class="w-100 h-100 object-fit-cover" 
+                 alt="Promo Whitening"
+                 onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#0ea5e9';">
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end p-4" 
+                 style="background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); pointer-events: none;">
                 <div>
-                    <span class="badge bg-accent text-white mb-2">Promo</span>
+                    <span class="badge bg-primary text-white mb-2">Promo</span>
                     <h6 class="text-white fw-bold mb-0">Diskon 50% Scaling Gigi</h6>
                     <small class="text-white opacity-75">Hanya sampai akhir bulan ini!</small>
                 </div>

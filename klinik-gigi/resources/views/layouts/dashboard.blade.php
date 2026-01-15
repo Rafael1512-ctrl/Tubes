@@ -254,12 +254,9 @@
                         <li><div class="dropdown-header fw-bold text-dark">{{ Auth::user()->name }}</div></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button class="dropdown-item text-danger d-flex align-items-center gap-2">
-                                    <i class="fa-solid fa-right-from-bracket"></i> Logout
-                                </button>
-                            </form>
+                            <button type="button" onclick="confirmLogout()" class="dropdown-item text-danger d-flex align-items-center gap-2">
+                                <i class="fa-solid fa-right-from-bracket"></i> Logout
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -279,12 +276,9 @@
         </div>
 
         <div class="mt-auto">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button class="nav-link w-100 text-start text-danger border-0 bg-transparent">
-                    <i class="fa-solid fa-right-from-bracket"></i> Logout
-                </button>
-            </form>
+            <button type="button" onclick="confirmLogout()" class="nav-link w-100 text-start text-danger border-0 bg-transparent">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
         </div>
     </nav>
     @endif
@@ -379,6 +373,32 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Hidden Logout Form -->
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Konfirmasi Logout',
+                text: 'Apakah Anda yakin ingin keluar dari sistem?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fa-solid fa-right-from-bracket me-1"></i> Ya, Logout',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        }
+    </script>
+
     @yield('scripts')
     @stack('scripts')
 </body>

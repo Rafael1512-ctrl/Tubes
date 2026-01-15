@@ -171,7 +171,7 @@ class JadwalController extends Controller
                 ->update(['Status' => 'CANCELLED']);
 
             // 2. Update status jadwal menjadi Cancelled
-            DB::statement('CALL Sp_UpdateJadwalStatus(?, ?)', [$id, 'Cancelled']);
+            Jadwal::where('IdJadwal', $id)->update(['Status' => 'Cancelled']);
 
             DB::commit();
 

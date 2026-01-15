@@ -17,9 +17,17 @@ class AdminController extends Controller
         $query = User::with(['pegawai', 'pasien']);
         
         if ($request->has('role') && $request->role != '') {
-            if ($request->role == 'pegawai') {
-                // "Pegawai" filter should include all staff roles
-                $query->whereIn('role', ['admin', 'dokter', 'pegawai']);
+            if ($request->role == 'staf') {
+                // "Staf" filter should include admin and dokter
+                $query->whereIn('role', ['admin', 'dokter']);
+            } elseif ($request->role == 'dokter_gigi') {
+                $query->where('role', 'dokter')->whereHas('pegawai', function($q) {
+                    $q->where('Jabatan', 'dokter gigi');
+                });
+            } elseif ($request->role == 'dokter_spesialis') {
+                $query->where('role', 'dokter')->whereHas('pegawai', function($q) {
+                    $q->where('Jabatan', 'dokter spesialis');
+                });
             } else {
                 $query->where('role', $request->role);
             }
@@ -37,10 +45,10 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'role' => 'required|in:admin,dokter,pegawai,pasien',
+            'role' => 'required|in:admin,dokter,pasien,dokter_gigi,dokter_spesialis',
             'password' => 'required|min:6',
-            // Validasi conditional untuk pegawai
-            'jabatan' => 'required_if:role,admin,dokter,pegawai',
+            // Validasi conditional untuk pegawai (admin/dokter)
+            'jabatan' => 'required_if:role,admin,dokter,dokter_gigi,dokter_spesialis',
             'tanggal_masuk' => 'nullable|date',
             'no_telp' => 'nullable|string',
             // Validasi conditional untuk pasien
@@ -52,27 +60,36 @@ class AdminController extends Controller
         DB::beginTransaction();
 
         try {
-            \Log::info('Mulai proses tambah user', ['email' => $request->email, 'role' => $request->role]);
-            
+            $role = $request->role;
+            $jabatan = $request->jabatan;
+
+            if ($role === 'dokter_gigi') {
+                $role = 'dokter';
+                $jabatan = 'dokter gigi';
+            } elseif ($role === 'dokter_spesialis') {
+                $role = 'dokter';
+                $jabatan = 'dokter spesialis';
+            }
+
             // 1. Buat user di tabel users
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'role' => $request->role,
+                'role' => $role,
                 'password' => Hash::make($request->password),
             ]);
             
             \Log::info('User berhasil dibuat', ['user_id' => $user->id]);
 
-            // 2. Jika role adalah admin/dokter/pegawai, buat data pegawai menggunakan store procedure
-            if (in_array($request->role, ['admin', 'dokter', 'pegawai'])) {
+            // 2. Jika role adalah admin/dokter, buat data pegawai menggunakan store procedure
+            if (in_array($role, ['admin', 'dokter'])) {
                 \Log::info('Memanggil Sp_InsertPegawai', ['user_id' => $user->id]);
                 
                 // Panggil store procedure Sp_InsertPegawai
                 // Note: Stored procedure ini melakukan COMMIT sendiri
                 DB::statement('CALL Sp_InsertPegawai(?, ?, ?, ?, ?, @new_id)', [
                     $request->name,          // p_Nama
-                    $request->jabatan,       // p_Jabatan
+                    $jabatan,                // p_Jabatan
                     $request->tanggal_masuk, // p_TanggalMasuk
                     $request->no_telp,       // p_NoTelp
                     $user->id,               // p_userid (user_id)
@@ -84,7 +101,7 @@ class AdminController extends Controller
             }
 
             // 3. Jika role adalah pasien, buat data pasien menggunakan store procedure
-            if ($request->role === 'pasien') {
+            if ($role === 'pasien') {
                 \Log::info('Memanggil Sp_InsertPasien', ['user_id' => $user->id]);
                 
                 // Panggil store procedure Sp_InsertPasien
@@ -149,7 +166,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|in:admin,dokter,pegawai,pasien',
+            'role' => 'required|in:admin,dokter,pasien,dokter_gigi,dokter_spesialis',
             'password' => 'nullable|min:6',
         ]);
 
@@ -158,11 +175,22 @@ class AdminController extends Controller
         try {
             $user = User::findOrFail($id);
             
+            $role = $request->role;
+            $jabatan = $request->jabatan;
+
+            if ($role === 'dokter_gigi') {
+                $role = 'dokter';
+                $jabatan = 'dokter gigi';
+            } elseif ($role === 'dokter_spesialis') {
+                $role = 'dokter';
+                $jabatan = 'dokter spesialis';
+            }
+
             // Update data user
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'role' => $request->role,
+                'role' => $role,
             ]);
 
             // Jika password diisi, update password
@@ -172,13 +200,13 @@ class AdminController extends Controller
                 ]);
             }
 
-            // Update data pegawai jika role admin/dokter/pegawai
-            if (in_array($request->role, ['admin', 'dokter', 'pegawai'])) {
+            // Update data pegawai jika role admin/dokter
+            if (in_array($role, ['admin', 'dokter'])) {
                 if ($user->pegawai) {
                     // Update data pegawai langsung ke tabel
                     $user->pegawai->update([
                         'Nama' => $request->name,
-                        'Jabatan' => $request->jabatan ?? $user->pegawai->Jabatan,
+                        'Jabatan' => $jabatan ?? $user->pegawai->Jabatan,
                         'TanggalMasuk' => $request->tanggal_masuk ?? $user->pegawai->TanggalMasuk,
                         'NoTelp' => $request->no_telp ?? $user->pegawai->NoTelp,
                     ]);
@@ -186,7 +214,7 @@ class AdminController extends Controller
                     // Buat data pegawai baru menggunakan store procedure
                     DB::statement('CALL Sp_InsertPegawai(?, ?, ?, ?, ?, @new_id)', [
                         $request->name,
-                        $request->jabatan,
+                        $jabatan,
                         $request->tanggal_masuk,
                         $request->no_telp,
                         $user->id,
@@ -200,7 +228,7 @@ class AdminController extends Controller
             }
 
             // Update data pasien jika role pasien
-            if ($request->role === 'pasien') {
+            if ($role === 'pasien') {
                 if ($user->pasien) {
                     // Update data pasien langsung ke tabel
                     $user->pasien->update([

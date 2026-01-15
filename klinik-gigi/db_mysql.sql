@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2026 at 11:01 AM
+-- Generation Time: Jan 14, 2026 at 05:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -554,7 +554,9 @@ INSERT INTO `booking` (`IdBooking`, `IdJadwal`, `PasienID`, `TanggalBooking`, `S
 ('B-2512-0013', 'J-2512-0011', 'P-2025-00005', '2025-12-28 17:20:38', 'COMPLETED', NULL),
 ('B-2512-0014', 'J-2512-0013', 'P-2025-00001', '2025-12-29 14:20:11', 'CANCELLED', '2026-01-08 09:18:48'),
 ('B-2512-0015', 'J-2512-0012', 'P-2025-00001', '2025-12-29 14:20:29', 'COMPLETED', NULL),
-('B-2601-0001', 'J-2601-0006', 'P-2026-00001', '2026-01-07 15:41:43', 'CANCELLED', '2026-01-08 09:18:48');
+('B-2601-0001', 'J-2601-0006', 'P-2026-00001', '2026-01-07 15:41:43', 'CANCELLED', '2026-01-08 09:18:48'),
+('B-2601-0002', 'J-2601-0007', 'P-2026-00001', '2026-01-13 20:40:16', 'CANCELLED', '2026-01-13 13:42:02'),
+('B-2601-0003', 'J-2601-0007', 'P-2026-00001', '2026-01-13 20:42:10', 'CANCELLED', NULL);
 
 -- --------------------------------------------------------
 
@@ -696,7 +698,8 @@ INSERT INTO `jadwal` (`IdJadwal`, `IdDokter`, `Tanggal`, `JamMulai`, `JamAkhir`,
 ('J-2601-0003', 'D-003', '2026-01-05', '09:00:00', '12:00:00', 'Not Available', 4),
 ('J-2601-0004', 'D-004', '2026-01-06', '17:00:00', '20:00:00', 'Not Available', 4),
 ('J-2601-0005', 'D-001', '2026-01-04', '09:00:00', '12:00:00', 'Not Available', 15),
-('J-2601-0006', 'D-001', '2026-01-07', '17:00:00', '20:00:00', 'Not Available', 15);
+('J-2601-0006', 'D-001', '2026-01-07', '17:00:00', '20:00:00', 'Not Available', 15),
+('J-2601-0007', 'D-001', '2026-01-14', '09:00:00', '12:00:00', 'Cancelled', 15);
 
 -- --------------------------------------------------------
 
@@ -783,7 +786,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (7, '2025_12_29_215338_create_broadcasts_table', 5),
 (8, '2025_12_29_215347_create_notifications_table', 5),
 (9, '2025_12_29_222634_add_prices_to_obat_table', 6),
-(10, '2026_01_08_161327_add_cancelled_at_to_booking_table', 7);
+(10, '2026_01_08_161327_add_cancelled_at_to_booking_table', 7),
+(11, '2026_01_09_214133_create_database_views', 8),
+(15, '2026_01_09_214313_add_more_database_views', 9),
+(16, '2026_01_13_141838_create_obat_log_table', 10),
+(17, '2026_01_13_150706_fix_obat_log_rekam_medis_id', 10);
 
 -- --------------------------------------------------------
 
@@ -846,7 +853,8 @@ INSERT INTO `obat` (`IdObat`, `IdJenisObat`, `NamaObat`, `Satuan`, `HargaBeli`, 
 ('O-00010', 1, 'Ketorolac 10mg', 'Tablet', 2250.00, 4500.00, 55),
 ('O-00011', 6, 'Fluoride Gel 1.23%', 'Tube 50g', 37500.00, 75000.00, 30),
 ('O-00012', 7, 'Wax Orthodonti', 'Pack 10 strips', 12500.00, 25000.00, 50),
-('O-00013', 3, 'Antiseptik Rongga Mulut', 'Botol 200ml', 22500.00, 45000.00, 24);
+('O-00013', 3, 'Antiseptik Rongga Mulut', 'Botol 200ml', 22500.00, 45000.00, 24),
+('O-00014', 4, 'tes', 'Kapsul', 5000.00, 10000.00, 0);
 
 -- --------------------------------------------------------
 
@@ -874,15 +882,15 @@ INSERT INTO `obat_log` (`LogID`, `IdObat`, `Tanggal`, `Aksi`, `Jumlah`, `StokSeb
 (1, 'O-00001', '2025-12-28 16:05:32', 'MASUK', 100.00, 99.00, 199.00, NULL, 'admin'),
 (2, 'O-00008', '2025-12-28 16:05:32', 'MASUK', 50.00, 45.00, 95.00, NULL, 'admin'),
 (3, 'O-00009', '2025-12-28 16:05:32', 'MASUK', 30.00, 34.00, 64.00, NULL, 'admin'),
-(4, 'O-00001', '2025-05-05 13:00:00', 'KELUAR', 9.00, 199.00, 190.00, NULL, 'dokter'),
-(5, 'O-00005', '2025-05-05 13:00:00', 'KELUAR', 1.00, 30.00, 29.00, NULL, 'dokter'),
-(6, 'O-00003', '2025-05-19 11:00:00', 'KELUAR', 14.00, 50.00, 36.00, NULL, 'dokter'),
-(7, 'O-00002', '2025-05-13 14:00:00', 'KELUAR', 6.00, 80.00, 74.00, NULL, 'dokter'),
-(8, 'O-00005', '2025-06-16 10:00:00', 'KELUAR', 1.00, 29.00, 28.00, NULL, 'dokter'),
-(9, 'O-00007', '2025-07-07 12:30:00', 'KELUAR', 10.00, 60.00, 50.00, NULL, 'dokter'),
-(10, 'O-00013', '2025-07-07 12:30:00', 'KELUAR', 1.00, 25.00, 24.00, NULL, 'dokter'),
-(11, 'O-00003', '2025-07-08 16:00:00', 'KELUAR', 15.00, 36.00, 21.00, NULL, 'dokter'),
-(12, 'O-00008', '2025-07-08 16:00:00', 'KELUAR', 2.00, 95.00, 93.00, NULL, 'dokter');
+(4, 'O-00001', '2025-05-05 13:00:00', 'KELUAR', 9.00, 199.00, 190.00, 'RM-2025-0004', 'dokter'),
+(5, 'O-00005', '2025-05-05 13:00:00', 'KELUAR', 1.00, 30.00, 29.00, 'RM-2025-0004', 'dokter'),
+(6, 'O-00003', '2025-05-19 11:00:00', 'KELUAR', 14.00, 50.00, 36.00, 'RM-2025-0005', 'dokter'),
+(7, 'O-00002', '2025-05-13 14:00:00', 'KELUAR', 6.00, 80.00, 74.00, 'RM-2025-0006', 'dokter'),
+(8, 'O-00005', '2025-06-16 10:00:00', 'KELUAR', 1.00, 29.00, 28.00, 'RM-2025-0008', 'dokter'),
+(9, 'O-00007', '2025-07-07 12:30:00', 'KELUAR', 10.00, 60.00, 50.00, 'RM-2025-0010', 'dokter'),
+(10, 'O-00013', '2025-07-07 12:30:00', 'KELUAR', 1.00, 25.00, 24.00, 'RM-2025-0010', 'dokter'),
+(11, 'O-00003', '2025-07-08 16:00:00', 'KELUAR', 15.00, 36.00, 21.00, 'RM-2025-0011', 'dokter'),
+(12, 'O-00008', '2025-07-08 16:00:00', 'KELUAR', 2.00, 95.00, 93.00, 'RM-2025-0011', 'dokter');
 
 -- --------------------------------------------------------
 
@@ -910,7 +918,9 @@ INSERT INTO `pasien` (`PasienID`, `user_id`, `Nama`, `TanggalLahir`, `Alamat`, `
 ('P-2025-00003', 11, 'Anita Rahma', '2018-05-15', 'Jl. Merdeka No. 12, Bandung', '08111222333', 'P'),
 ('P-2025-00004', 12, 'Rudi Hartono', '1985-08-20', 'Jl. Sudirman No. 45, Jakarta', '08222333444', 'L'),
 ('P-2025-00005', 13, 'Siti Nurhaliza', '1990-11-30', 'Jl. Gatot Subroto No. 78, Surabaya', '08333444555', 'P'),
-('P-2026-00001', 20, 'Rafael', '2026-01-07', 'Bakjer', '085325553535', 'L');
+('P-2026-00001', 20, 'Rafael', '2026-01-07', 'Bakjer', '085325553535', 'L'),
+('P-2026-00002', 21, 'Danyella', '2005-03-22', 'Jl Bakjer utama  banget', '085269916226', 'P'),
+('P-2026-00003', 22, 'Rafael', '2005-12-15', 'bakjer', '085325553535', 'L');
 
 -- --------------------------------------------------------
 
@@ -986,6 +996,39 @@ INSERT INTO `pembayaran` (`IdPembayaran`, `IdRekamMedis`, `PasienID`, `TanggalPe
 ('PAY-2512-0012', 'RM-2025-0012', 'P-2025-00005', '2025-12-28 17:23:22', 'Tunai', 50000.00, 'PAID'),
 ('PAY-2512-0013', 'RM-2025-0013', 'P-2025-00005', '2025-12-29 14:03:17', 'Asuransi', 357000.00, 'PAID'),
 ('PAY-2512-0014', 'RM-2025-0014', 'P-2025-00001', '2025-12-29 14:34:12', 'Tunai', 303000.00, 'PAID');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pembelian`
+--
+
+CREATE TABLE `pembelian` (
+  `IdPembelian` bigint(20) UNSIGNED NOT NULL,
+  `TanggalPembelian` date NOT NULL,
+  `Supplier` varchar(255) NOT NULL,
+  `TotalPembelian` decimal(15,2) NOT NULL,
+  `IdAdmin` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pembelian_detail`
+--
+
+CREATE TABLE `pembelian_detail` (
+  `IdDetailPembelian` bigint(20) UNSIGNED NOT NULL,
+  `IdPembelian` bigint(20) UNSIGNED NOT NULL,
+  `IdObat` varchar(7) NOT NULL,
+  `Jumlah` int(11) NOT NULL,
+  `HargaBeli` decimal(15,2) NOT NULL,
+  `Subtotal` decimal(15,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1127,7 +1170,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('3bYOaIlfeSRp907e4CSKLKHP4rljS5sidKCUwLBo', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRDlJVncyVVp2SkJ6MDlweGRKZVdyTm1DWWs2b1BHSm9CbkVUWHkwTCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9fQ==', 1767022368);
+('dvTtS242rGjdyFZXzZRZus3zjIFsEOgor94EaQNK', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicW40amFwaGhOTVBvTUtIVnBLQWNheEFRdWpJREhPOUpVTEhqb2VsVSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NjU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9qYWR3YWw/ZG9rdGVyPUQtMDAxJm1vbnRoPTEmeWVhcj0yMDI2IjtzOjU6InJvdXRlIjtzOjEyOiJhZG1pbi5qYWR3YWwiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1768315325);
 
 -- --------------------------------------------------------
 
@@ -1205,7 +1248,9 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 (11, 'Anita Rahma', 'anita@klinik.pasien', NULL, '$2y$12$clat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien'),
 (12, 'Rudi Hartono', 'rudi@klinik.pasien', NULL, '$2y$12$dlat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien'),
 (13, 'Siti Nurhaliza', 'siti@klinik.pasien', NULL, '$2y$12$elat5ZCLUNglZput8oogPehI5/O7SfH5Mc7Nji41I4IBKONGhKWbq', NULL, '2025-12-28 15:53:29', '2025-12-28 15:53:29', 'pasien'),
-(20, 'Rafael', '2472025@maranatha.ac.id', '2026-01-07 15:27:21', '$2y$12$d5q9vU.XLSke3DNL6h5QOORgC9TBuwQttGII1yYHdG7WG27tUkFge', NULL, '2026-01-07 15:25:21', '2026-01-07 15:27:21', 'pasien');
+(20, 'Rafael', '2472025@maranatha.ac.id', '2026-01-07 15:27:21', '$2y$12$d5q9vU.XLSke3DNL6h5QOORgC9TBuwQttGII1yYHdG7WG27tUkFge', NULL, '2026-01-07 15:25:21', '2026-01-07 15:27:21', 'pasien'),
+(21, 'Danyella', 'parkdanyellariezca@gmail.com', '2026-01-13 12:29:11', '$2y$12$kZ6LjzoZmLTKbp11ZCV1xe.1OyPAxL6rp7Tpw5JXVEswnaFlWjcn6', NULL, '2026-01-13 12:28:38', '2026-01-13 12:29:11', 'pasien'),
+(22, 'Rafael', 'rafaeldptr@gmail.com', '2026-01-13 20:13:33', '$2y$12$6GCqUUInWAAyzZzpygzosOZLYLcIghaNcbUlcdtlNWM5RTnBOIEx2', NULL, '2026-01-13 20:12:20', '2026-01-13 20:13:33', 'pasien');
 
 -- --------------------------------------------------------
 
@@ -1245,11 +1290,138 @@ CREATE TABLE `view_jadwalpasien` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `v_booking_lengkap`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_booking_lengkap` (
+`IdBooking` varchar(11)
+,`IdJadwal` varchar(11)
+,`PasienID` varchar(12)
+,`TanggalBooking` datetime
+,`Status` varchar(20)
+,`CancelledAt` timestamp
+,`nama_pasien` varchar(100)
+,`tanggal_jadwal` date
+,`JamMulai` time
+,`JamAkhir` time
+,`nama_dokter` varchar(100)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_jadwal_lengkap`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_jadwal_lengkap` (
+`IdJadwal` varchar(11)
+,`IdDokter` varchar(5)
+,`Tanggal` date
+,`JamMulai` time
+,`JamAkhir` time
+,`Status` varchar(20)
+,`Kapasitas` int(11)
+,`nama_dokter` varchar(100)
+,`jabatan_dokter` varchar(20)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_obat_lengkap`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_obat_lengkap` (
+`IdObat` varchar(7)
+,`IdJenisObat` int(11)
+,`NamaObat` varchar(100)
+,`Satuan` varchar(20)
+,`HargaBeli` decimal(15,2)
+,`Harga` decimal(12,2)
+,`Stok` int(11)
+,`nama_jenis` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_pasien_user`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_pasien_user` (
+`PasienID` varchar(12)
+,`user_id` bigint(20)
+,`Nama` varchar(100)
+,`TanggalLahir` date
+,`Alamat` varchar(100)
+,`NoTelp` varchar(20)
+,`JenisKelamin` char(1)
+,`email` varchar(255)
+,`display_name` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_pegawai_user`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_pegawai_user` (
+`PegawaiID` varchar(5)
+,`user_id` bigint(20)
+,`Nama` varchar(100)
+,`Jabatan` varchar(20)
+,`TanggalMasuk` date
+,`NoTelp` varchar(20)
+,`email` varchar(255)
+,`display_name` varchar(255)
+,`role` varchar(20)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_pembayaran_lengkap`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_pembayaran_lengkap` (
+`IdPembayaran` varchar(15)
+,`IdRekamMedis` varchar(15)
+,`PasienID` varchar(12)
+,`TanggalPembayaran` datetime
+,`Metode` varchar(20)
+,`TotalBayar` decimal(12,2)
+,`Status` varchar(20)
+,`tanggal_periksa` date
+,`nama_pasien` varchar(100)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_rekam_medis_lengkap`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_rekam_medis_lengkap` (
+`IdRekamMedis` varchar(15)
+,`IdBooking` varchar(11)
+,`PasienID` varchar(12)
+,`DokterID` varchar(5)
+,`Tanggal` date
+,`Diagnosa` varchar(200)
+,`Catatan` varchar(500)
+,`nama_pasien` varchar(100)
+,`nama_dokter` varchar(100)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `view_jadwaldokter`
 --
 DROP TABLE IF EXISTS `view_jadwaldokter`;
 
-CREATE VIEW `view_jadwaldokter`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `b`.`IdBooking` AS `IdBooking`, `p`.`Nama` AS `Nama Pasien`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `pg`.`Nama` AS `Nama Dokter`, `b`.`Status` AS `Status` FROM (((`jadwal` `j` join `booking` `b` on(`j`.`IdJadwal` = `b`.`IdJadwal`)) join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) join `pegawai` `pg` on(`j`.`IdDokter` = `pg`.`PegawaiID`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_jadwaldokter`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `b`.`IdBooking` AS `IdBooking`, `p`.`Nama` AS `Nama Pasien`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `pg`.`Nama` AS `Nama Dokter`, `b`.`Status` AS `Status` FROM (((`jadwal` `j` join `booking` `b` on(`j`.`IdJadwal` = `b`.`IdJadwal`)) join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) join `pegawai` `pg` on(`j`.`IdDokter` = `pg`.`PegawaiID`)) ;
 
 -- --------------------------------------------------------
 
@@ -1258,7 +1430,70 @@ CREATE VIEW `view_jadwaldokter`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`Id
 --
 DROP TABLE IF EXISTS `view_jadwalpasien`;
 
-CREATE VIEW `view_jadwalpasien`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `p`.`Nama` AS `NamaDokter`, `p`.`Jabatan` AS `Jabatan` FROM (`jadwal` `j` join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_jadwalpasien`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `p`.`Nama` AS `NamaDokter`, `p`.`Jabatan` AS `Jabatan` FROM (`jadwal` `j` join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_booking_lengkap`
+--
+DROP TABLE IF EXISTS `v_booking_lengkap`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_booking_lengkap`  AS SELECT `b`.`IdBooking` AS `IdBooking`, `b`.`IdJadwal` AS `IdJadwal`, `b`.`PasienID` AS `PasienID`, `b`.`TanggalBooking` AS `TanggalBooking`, `b`.`Status` AS `Status`, `b`.`CancelledAt` AS `CancelledAt`, `p`.`Nama` AS `nama_pasien`, `j`.`Tanggal` AS `tanggal_jadwal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `d`.`Nama` AS `nama_dokter` FROM (((`booking` `b` left join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) left join `jadwal` `j` on(`b`.`IdJadwal` = `j`.`IdJadwal`)) left join `pegawai` `d` on(`j`.`IdDokter` = `d`.`PegawaiID`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_jadwal_lengkap`
+--
+DROP TABLE IF EXISTS `v_jadwal_lengkap`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_jadwal_lengkap`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `j`.`Kapasitas` AS `Kapasitas`, `p`.`Nama` AS `nama_dokter`, `p`.`Jabatan` AS `jabatan_dokter` FROM (`jadwal` `j` left join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_obat_lengkap`
+--
+DROP TABLE IF EXISTS `v_obat_lengkap`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_obat_lengkap`  AS SELECT `o`.`IdObat` AS `IdObat`, `o`.`IdJenisObat` AS `IdJenisObat`, `o`.`NamaObat` AS `NamaObat`, `o`.`Satuan` AS `Satuan`, `o`.`HargaBeli` AS `HargaBeli`, `o`.`Harga` AS `Harga`, `o`.`Stok` AS `Stok`, `jo`.`NamaJenis` AS `nama_jenis` FROM (`obat` `o` left join `jenisobat` `jo` on(`o`.`IdJenisObat` = `jo`.`JenisObatID`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_pasien_user`
+--
+DROP TABLE IF EXISTS `v_pasien_user`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pasien_user`  AS SELECT `p`.`PasienID` AS `PasienID`, `p`.`user_id` AS `user_id`, `p`.`Nama` AS `Nama`, `p`.`TanggalLahir` AS `TanggalLahir`, `p`.`Alamat` AS `Alamat`, `p`.`NoTelp` AS `NoTelp`, `p`.`JenisKelamin` AS `JenisKelamin`, `u`.`email` AS `email`, `u`.`name` AS `display_name` FROM (`pasien` `p` left join `users` `u` on(`p`.`user_id` = `u`.`id`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_pegawai_user`
+--
+DROP TABLE IF EXISTS `v_pegawai_user`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pegawai_user`  AS SELECT `p`.`PegawaiID` AS `PegawaiID`, `p`.`user_id` AS `user_id`, `p`.`Nama` AS `Nama`, `p`.`Jabatan` AS `Jabatan`, `p`.`TanggalMasuk` AS `TanggalMasuk`, `p`.`NoTelp` AS `NoTelp`, `u`.`email` AS `email`, `u`.`name` AS `display_name`, `u`.`role` AS `role` FROM (`pegawai` `p` left join `users` `u` on(`p`.`user_id` = `u`.`id`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_pembayaran_lengkap`
+--
+DROP TABLE IF EXISTS `v_pembayaran_lengkap`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pembayaran_lengkap`  AS SELECT `p`.`IdPembayaran` AS `IdPembayaran`, `p`.`IdRekamMedis` AS `IdRekamMedis`, `p`.`PasienID` AS `PasienID`, `p`.`TanggalPembayaran` AS `TanggalPembayaran`, `p`.`Metode` AS `Metode`, `p`.`TotalBayar` AS `TotalBayar`, `p`.`Status` AS `Status`, `rm`.`Tanggal` AS `tanggal_periksa`, `ps`.`Nama` AS `nama_pasien` FROM ((`pembayaran` `p` left join `rekammedis` `rm` on(`p`.`IdRekamMedis` = `rm`.`IdRekamMedis`)) left join `pasien` `ps` on(`rm`.`PasienID` = `ps`.`PasienID`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_rekam_medis_lengkap`
+--
+DROP TABLE IF EXISTS `v_rekam_medis_lengkap`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_rekam_medis_lengkap`  AS SELECT `rm`.`IdRekamMedis` AS `IdRekamMedis`, `rm`.`IdBooking` AS `IdBooking`, `rm`.`PasienID` AS `PasienID`, `rm`.`DokterID` AS `DokterID`, `rm`.`Tanggal` AS `Tanggal`, `rm`.`Diagnosa` AS `Diagnosa`, `rm`.`Catatan` AS `Catatan`, `p`.`Nama` AS `nama_pasien`, `d`.`Nama` AS `nama_dokter` FROM ((`rekammedis` `rm` left join `pasien` `p` on(`rm`.`PasienID` = `p`.`PasienID`)) left join `pegawai` `d` on(`rm`.`DokterID` = `d`.`PegawaiID`)) ;
 
 --
 -- Indexes for dumped tables
@@ -1379,6 +1614,19 @@ ALTER TABLE `pembayaran`
   ADD KEY `PasienID` (`PasienID`);
 
 --
+-- Indexes for table `pembelian`
+--
+ALTER TABLE `pembelian`
+  ADD PRIMARY KEY (`IdPembelian`);
+
+--
+-- Indexes for table `pembelian_detail`
+--
+ALTER TABLE `pembelian_detail`
+  ADD PRIMARY KEY (`IdDetailPembelian`),
+  ADD KEY `pembelian_detail_idpembelian_foreign` (`IdPembelian`);
+
+--
 -- Indexes for table `rekammedis`
 --
 ALTER TABLE `rekammedis`
@@ -1453,7 +1701,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `obat_log`
@@ -1462,10 +1710,22 @@ ALTER TABLE `obat_log`
   MODIFY `LogID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `pembelian`
+--
+ALTER TABLE `pembelian`
+  MODIFY `IdPembelian` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `pembelian_detail`
+--
+ALTER TABLE `pembelian_detail`
+  MODIFY `IdDetailPembelian` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
@@ -1508,6 +1768,12 @@ ALTER TABLE `pegawai`
 ALTER TABLE `pembayaran`
   ADD CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`IdRekamMedis`) REFERENCES `rekammedis` (`IdRekamMedis`),
   ADD CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`PasienID`) REFERENCES `pasien` (`PasienID`);
+
+--
+-- Constraints for table `pembelian_detail`
+--
+ALTER TABLE `pembelian_detail`
+  ADD CONSTRAINT `pembelian_detail_idpembelian_foreign` FOREIGN KEY (`IdPembelian`) REFERENCES `pembelian` (`IdPembelian`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `rekammedis`

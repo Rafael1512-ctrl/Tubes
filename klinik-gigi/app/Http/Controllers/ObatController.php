@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Obat;
 use App\Models\JenisObat;
+use App\Models\ObatLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ObatController extends Controller
 {
@@ -67,7 +69,7 @@ class ObatController extends Controller
             
             $newId = $prefix . str_pad($newNum, 5, '0', STR_PAD_LEFT);
 
-            Obat::create([
+            $obat = Obat::create([
                 'IdObat' => $newId,
                 'IdJenisObat' => $request->IdJenisObat,
                 'NamaObat' => $request->NamaObat,
@@ -76,6 +78,19 @@ class ObatController extends Controller
                 'Harga' => $request->HargaJual,
                 'Stok' => $request->Stok,
             ]);
+
+            // Catat log jika ada stok awal
+            if ($request->Stok > 0) {
+                ObatLog::create([
+                    'IdObat' => $newId,
+                    'Tanggal' => now(),
+                    'Aksi' => 'MASUK',
+                    'Jumlah' => $request->Stok,
+                    'StokSebelum' => 0,
+                    'StokSesudah' => $request->Stok,
+                    'CreatedBy' => Auth::user()->name ?? 'admin'
+                ]);
+            }
 
             DB::commit();
             return redirect()->route('admin.obat')->with('success', 'Obat berhasil ditambahkan');
@@ -104,7 +119,10 @@ class ObatController extends Controller
         ]);
 
         try {
+            DB::beginTransaction();
             $obat = Obat::findOrFail($id);
+            $stokSebelum = $obat->Stok;
+            
             $obat->update([
                 'IdJenisObat' => $request->IdJenisObat,
                 'NamaObat' => $request->NamaObat,
@@ -114,8 +132,23 @@ class ObatController extends Controller
                 'Stok' => $request->Stok,
             ]);
 
+            // Log jika stok diubah secara manual
+            if ($stokSebelum != $request->Stok) {
+                ObatLog::create([
+                    'IdObat' => $obat->IdObat,
+                    'Tanggal' => now(),
+                    'Aksi' => $request->Stok > $stokSebelum ? 'MASUK' : 'KELUAR',
+                    'Jumlah' => abs($request->Stok - $stokSebelum),
+                    'StokSebelum' => $stokSebelum,
+                    'StokSesudah' => $request->Stok,
+                    'CreatedBy' => Auth::user()->name ?? 'admin'
+                ]);
+            }
+
+            DB::commit();
             return redirect()->route('admin.obat')->with('success', 'Obat berhasil diperbarui');
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Gagal memperbarui obat: ' . $e->getMessage());
         }
     }
@@ -138,11 +171,27 @@ class ObatController extends Controller
         ]);
 
         try {
+            DB::beginTransaction();
             $obat = Obat::findOrFail($id);
+            $stokSebelum = $obat->Stok;
+            
             $obat->increment('Stok', $request->tambah_stok);
 
+            // Penting: Catat di obat_log agar muncul di Laporan Pembelian & Pengeluaran
+            ObatLog::create([
+                'IdObat' => $obat->IdObat,
+                'Tanggal' => now(),
+                'Aksi' => 'MASUK',
+                'Jumlah' => $request->tambah_stok,
+                'StokSebelum' => $stokSebelum,
+                'StokSesudah' => $stokSebelum + $request->tambah_stok,
+                'CreatedBy' => Auth::user()->name ?? 'admin'
+            ]);
+
+            DB::commit();
             return redirect()->route('admin.obat')->with('success', "Stok {$obat->NamaObat} berhasil ditambah {$request->tambah_stok} {$obat->Satuan}");
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->back()->with('error', 'Gagal menambah stok: ' . $e->getMessage());
         }
     }

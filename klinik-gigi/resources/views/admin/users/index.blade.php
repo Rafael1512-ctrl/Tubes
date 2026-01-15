@@ -122,9 +122,11 @@
                 <select name="role" class="form-select border-start-0" onchange="this.form.submit()">
                     <option value="">Semua Role</option>
                     <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="dokter" {{ request('role') == 'dokter' ? 'selected' : '' }}>Dokter</option>
+                    <option value="dokter" {{ request('role') == 'dokter' ? 'selected' : '' }}>Semua Dokter</option>
+                    <option value="dokter_gigi" {{ request('role') == 'dokter_gigi' ? 'selected' : '' }}>Dokter Gigi</option>
+                    <option value="dokter_spesialis" {{ request('role') == 'dokter_spesialis' ? 'selected' : '' }}>Dokter Spesialis</option>
+                    <option value="staf" {{ request('role') == 'staf' ? 'selected' : '' }}>Semua Staf (Admin & Dokter)</option>
                     <option value="pasien" {{ request('role') == 'pasien' ? 'selected' : '' }}>Pasien</option>
-                    <option value="pegawai" {{ request('role') == 'pegawai' ? 'selected' : '' }}>Pegawai</option>
                 </select>
             </div>
         </div>
@@ -184,12 +186,16 @@
                                 'admin' => ['class' => 'dark', 'icon' => 'fa-user-shield'],
                                 'dokter' => ['class' => 'info', 'icon' => 'fa-user-md'],
                                 'pasien' => ['class' => 'success', 'icon' => 'fa-hospital-user'],
-                                'pegawai' => ['class' => 'warning', 'icon' => 'fa-id-badge'],
                                 default => ['class' => 'secondary', 'icon' => 'fa-user']
                             };
+                            $roleLabel = ucfirst($user->role);
+                            if($user->role == 'dokter' && $user->pegawai) {
+                                if($user->pegawai->Jabatan == 'dokter gigi') $roleLabel = 'Dokter Gigi';
+                                elseif($user->pegawai->Jabatan == 'dokter spesialis') $roleLabel = 'Dokter Spesialis';
+                            }
                         @endphp
                         <span class="badge-role bg-{{ $roleData['class'] }} bg-opacity-10 text-{{ $roleData['class'] }} border border-{{ $roleData['class'] }} border-opacity-25">
-                            <i class="fa-solid {{ $roleData['icon'] }} me-1"></i>{{ ucfirst($user->role) }}
+                            <i class="fa-solid {{ $roleData['icon'] }} me-1"></i>{{ $roleLabel }}
                         </span>
                     </td>
                     <td class="text-center">

@@ -16,6 +16,7 @@
 <a href="{{ route('admin.laporan') }}" class="nav-link {{ request()->routeIs('admin.laporan*') ? 'active' : '' }}"><i class="fa-solid fa-chart-line"></i> Laporan</a>
 @endsection
 
+@section('content')
 <div class="row mb-4">
     <div class="col-12">
         <div class="bg-primary text-white p-4 rounded-4 shadow-sm mb-4 d-flex justify-content-between align-items-center">
@@ -148,6 +149,8 @@
     </div>
 </div>
 
+@endsection
+
 @push('scripts')
 <script>
     function confirmCancelJadwal() {
@@ -182,5 +185,3 @@
     }
 </script>
 @endpush
-
-@endsection

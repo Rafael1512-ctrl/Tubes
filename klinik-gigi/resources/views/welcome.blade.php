@@ -794,11 +794,11 @@
                 <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="doctor-card">
                         <div class="doctor-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dr. Adrian" class="doctor-img">
+                            <img src="{{ asset('images/Rafael.png') }}" alt="Rafael" class="doctor-img">
                         </div>
                         <div class="doctor-info">
-                            <h5 class="doctor-name fw-bold">Dr. Adrian Pratama</h5>
-                            <span class="doctor-specialty">Spesialis Ortodonti</span>
+                            <h5 class="doctor-name fw-bold">Rafael</h5>
+                            <span class="doctor-specialty">Dokter Gigi</span>
                             <div class="doctor-social">
                                 <a href="#" class="doctor-social-link"><i class="fab fa-instagram"></i></a>
                                 <a href="#" class="doctor-social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -810,11 +810,11 @@
                 <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="doctor-card">
                         <div class="doctor-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dr. Sarah" class="doctor-img">
+                            <img src="{{ asset('images/Budi_Santoso.png') }}" alt="Budi Santoso" class="doctor-img">
                         </div>
                         <div class="doctor-info">
-                            <h5 class="doctor-name fw-bold">Dr. Sarah Anindita</h5>
-                            <span class="doctor-specialty">Dokter Gigi Umum</span>
+                            <h5 class="doctor-name fw-bold">Budi Santoso</h5>
+                            <span class="doctor-specialty">Dokter Spesialis</span>
                             <div class="doctor-social">
                                 <a href="#" class="doctor-social-link"><i class="fab fa-instagram"></i></a>
                                 <a href="#" class="doctor-social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -826,11 +826,11 @@
                 <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
                     <div class="doctor-card">
                         <div class="doctor-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6027a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dr. Michael" class="doctor-img">
+                            <img src="{{ asset('images/Sari_Mawar.png') }}" alt="Sari Mawar" class="doctor-img">
                         </div>
                         <div class="doctor-info">
-                            <h5 class="doctor-name fw-bold">Dr. Michael Gunawan</h5>
-                            <span class="doctor-specialty">Spesialis Bedah Mulut</span>
+                            <h5 class="doctor-name fw-bold">Sari Mawar</h5>
+                            <span class="doctor-specialty">Dokter Spesialis</span>
                             <div class="doctor-social">
                                 <a href="#" class="doctor-social-link"><i class="fab fa-instagram"></i></a>
                                 <a href="#" class="doctor-social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -842,11 +842,11 @@
                 <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
                     <div class="doctor-card">
                         <div class="doctor-img-wrapper">
-                            <img src="https://images.unsplash.com/photo-1559839734-2b71ef157923?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dr. Elena" class="doctor-img">
+                            <img src="{{ asset('images/Andi_Wijaya.png') }}" alt="Andi Wijaya" class="doctor-img">
                         </div>
                         <div class="doctor-info">
-                            <h5 class="doctor-name fw-bold">Dr. Elena Putri</h5>
-                            <span class="doctor-specialty">Spesialis Gigi Anak</span>
+                            <h5 class="doctor-name fw-bold">Andi Wijaya</h5>
+                            <span class="doctor-specialty">Dokter Spesialis</span>
                             <div class="doctor-social">
                                 <a href="#" class="doctor-social-link"><i class="fab fa-instagram"></i></a>
                                 <a href="#" class="doctor-social-link"><i class="fab fa-linkedin-in"></i></a>
