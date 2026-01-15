@@ -44,6 +44,14 @@ class Booking extends Model
     }
 
     /**
+     * Relationship: Booking has one Rekam Medis
+     */
+    public function rekamMedis()
+    {
+        return $this->hasOne(RekamMedis::class, 'IdBooking', 'IdBooking');
+    }
+
+    /**
      * Accessor: Get formatted tanggal booking
      */
     public function getFormattedTanggalBookingAttribute()

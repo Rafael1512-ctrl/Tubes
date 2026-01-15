@@ -48,13 +48,27 @@ class PasienController extends Controller
         return view('pasien.rekammedis.index', compact('histories'));
     }
 
+    public function rekamMedisDetail($id)
+    {
+        $pasien = Auth::user()->pasien;
+        if (!$pasien)
+            return back()->with('error', 'Data pasien tidak ditemukan.');
+
+        $history = RekamMedis::with(['dokter', 'tindakan', 'obat', 'pembayaran'])
+            ->where('PasienID', $pasien->PasienID)
+            ->where('IdRekamMedis', $id)
+            ->firstOrFail();
+
+        return view('pasien.rekammedis.show', compact('history'));
+    }
+
     public function jadwal()
     {
         $pasien = Auth::user()->pasien;
         if (!$pasien)
             return back()->with('error', 'Data pasien tidak ditemukan.');
 
-        $bookings = Booking::with(['jadwal.dokter'])
+        $bookings = Booking::with(['jadwal.dokter', 'rekamMedis'])
             ->where('PasienID', $pasien->PasienID)
             ->orderBy('TanggalBooking', 'desc')
             ->paginate(10);

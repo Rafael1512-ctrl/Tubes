@@ -7,21 +7,30 @@
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         :root {
-            /* Default Theme (Pasien - Blue/Purple) */
-            --primary: #2563eb;
-            --primary-soft: #dbeafe;
-            --secondary: #64748b;
+            /* Default Theme (Pasien - Sky Blue/Teal) */
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-soft: #e0f2fe;
+            --secondary: #2dd4bf;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
             --bg-body: #f1f5f9;
             --glass: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(255, 255, 255, 0.5);
+            --gradient-primary: linear-gradient(135deg, #0ea5e9 0%, #2dd4bf 100%);
             --sidebar-width: 280px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
         /* Admin Theme (Professional Dark/Slate) */
@@ -29,6 +38,7 @@
             --primary: #0f172a;
             --primary-soft: #e2e8f0;
             --bg-body: #f8fafc;
+            --gradient-primary: linear-gradient(135deg, #0f172a 0%, #334155 100%);
         }
 
         /* Dokter Theme (Medical Teal/Green) */
@@ -36,6 +46,7 @@
             --primary: #0d9488;
             --primary-soft: #ccfbf1;
             --bg-body: #f0fdfa;
+            --gradient-primary: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
         }
 
         body {

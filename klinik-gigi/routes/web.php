@@ -116,6 +116,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Fitur khusus Pasien
     Route::prefix('pasien')->group(function () {
         Route::get('/rekam-medis', [App\Http\Controllers\PasienController::class, 'rekamMedis'])->name('pasien.rekam-medis');
+        Route::get('/rekam-medis/{id}', [App\Http\Controllers\PasienController::class, 'rekamMedisDetail'])->name('pasien.rekam-medis.show');
         Route::get('/jadwal', [App\Http\Controllers\PasienController::class, 'jadwal'])->name('pasien.jadwal');
         Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('pasien.notifications');
         Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('pasien.notifications.read');
