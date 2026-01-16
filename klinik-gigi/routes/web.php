@@ -16,7 +16,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', function () {
-    return redirect('/'); });
+    return redirect('/');
+});
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -127,12 +128,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/booking/{id}/cancel', [App\Http\Controllers\PasienController::class, 'bookingCancel'])->name('pasien.booking.cancel');
     });
 
-    // Tambahan fitur broadcast untuk admin
+    // Admin Features
     Route::prefix('admin')->group(function () {
+        // Broadcast Management
         Route::get('/broadcast', [App\Http\Controllers\Admin\BroadcastController::class, 'index'])->name('admin.broadcast.index');
         Route::get('/broadcast/create', [App\Http\Controllers\Admin\BroadcastController::class, 'create'])->name('admin.broadcast.create');
         Route::post('/broadcast', [App\Http\Controllers\Admin\BroadcastController::class, 'store'])->name('admin.broadcast.store');
 
+        // Tindakan Management (New Feature)
+        Route::get('/tindakan', [App\Http\Controllers\Admin\TindakanController::class, 'index'])->name('admin.tindakan.index');
+        Route::get('/tindakan/create', [App\Http\Controllers\Admin\TindakanController::class, 'create'])->name('admin.tindakan.create');
+        Route::post('/tindakan', [App\Http\Controllers\Admin\TindakanController::class, 'store'])->name('admin.tindakan.store');
+        Route::get('/tindakan/{id}/edit', [App\Http\Controllers\Admin\TindakanController::class, 'edit'])->name('admin.tindakan.edit');
+        Route::put('/tindakan/{id}', [App\Http\Controllers\Admin\TindakanController::class, 'update'])->name('admin.tindakan.update');
+        Route::delete('/tindakan/{id}', [App\Http\Controllers\Admin\TindakanController::class, 'destroy'])->name('admin.tindakan.destroy');
     });
 
     // Fitur khusus Dokter
