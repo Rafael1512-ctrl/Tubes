@@ -10,6 +10,9 @@
 <a href="{{ route('admin.booking') }}" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Booking & Jadwal</a>
 <a href="{{ route('admin.pasien') }}" class="nav-link active"><i class="fa-solid fa-hospital-user"></i> Data Pasien</a>
 <a href="{{ route('admin.obat') }}" class="nav-link"><i class="fa-solid fa-pills"></i> Data Obat</a>
+<a href="{{ route('admin.tindakan.index') }}"
+        class="nav-link {{ request()->routeIs('admin.tindakan*') ? 'active' : '' }}"><i
+            class="fa-solid fa-hand-holding-medical"></i> Manajemen Tindakan</a>
 <a href="{{ route('admin.users') }}" class="nav-link"><i class="fa-solid fa-users"></i> Manajemen User</a>
 <a href="{{ route('admin.broadcast.index') }}" class="nav-link {{ request()->routeIs('admin.broadcast*') ? 'active' : '' }}"><i class="fa-solid fa-bullhorn"></i> Broadcast</a>
 <a href="{{ route('admin.pembayaran') }}" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Pembayaran</a>

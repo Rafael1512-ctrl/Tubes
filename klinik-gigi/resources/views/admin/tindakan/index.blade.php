@@ -54,15 +54,15 @@
                         placeholder="Cari nama tindakan..." value="{{ request('search') }}">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <select name="role" class="form-select rounded-pill px-3 shadow-none border-1">
-                    <option value="">Semua Pelaksana</option>
+                    <option value="">Semua Dokter</option>
                     <option value="dokter_gigi" {{ request('role') == 'dokter_gigi' ? 'selected' : '' }}>Dokter Gigi</option>
                     <option value="dokter_spesialis" {{ request('role') == 'dokter_spesialis' ? 'selected' : '' }}>Dokter
                         Spesialis</option>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <select name="kategori" class="form-select rounded-pill px-3 shadow-none border-1">
                     <option value="">Semua Kategori</option>
                     @foreach($kategoris as $k)
