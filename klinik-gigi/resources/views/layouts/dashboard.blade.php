@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +10,13 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <style>
         :root {
             /* Default Theme (Pasien - Sky Blue/Teal) */
@@ -52,8 +55,8 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-body);
-            background-image: radial-gradient(at 0% 0%, var(--primary-soft) 0, transparent 50%), 
-                            radial-gradient(at 100% 0%, var(--primary-soft) 0, transparent 50%);
+            background-image: radial-gradient(at 0% 0%, var(--primary-soft) 0, transparent 50%),
+                radial-gradient(at 100% 0%, var(--primary-soft) 0, transparent 50%);
             background-attachment: fixed;
             min-height: 100vh;
         }
@@ -120,7 +123,8 @@
             margin-bottom: 4px;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover,
+        .nav-link.active {
             background: var(--primary-soft);
             color: var(--primary);
         }
@@ -166,7 +170,7 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s;
         }
-        
+
         .card-custom:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
@@ -185,9 +189,11 @@
             .sidebar {
                 transform: translateX(-100%);
             }
+
             .sidebar.show {
                 transform: translateX(0);
             }
+
             .main-content {
                 margin-left: 0;
             }
@@ -196,175 +202,206 @@
     @yield('styles')
     @stack('styles')
 </head>
+
 <body data-theme="@yield('theme', 'pasien')">
 
     <!-- Navbar (For No-Sidebar Layout) -->
     @if(trim($__env->yieldContent('no-sidebar')) === 'true')
-    <nav class="navbar-top">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="{{ route('home') }}" class="navbar-brand-custom">
+        <nav class="navbar-top">
+            <div class="container d-flex justify-content-between align-items-center">
+                <a href="{{ route('home') }}" class="navbar-brand-custom">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" width="40" height="40" class="rounded-circle">
+                    Zenith Dental
+                </a>
+
+                <div class="d-none d-lg-flex align-items-center gap-4">
+                    @yield('navbar-menu')
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    @if (Auth::user()->role !== 'admin')
+                        <div class="dropdown">
+                            <button class="bg-white p-2 rounded-circle shadow-sm border-0 position-relative" type="button"
+                                data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-bell text-primary"></i>
+                                @if (Auth::user()->unreadNotifications->count() > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                        style="font-size: 0.6rem;">
+                                        {{ Auth::user()->unreadNotifications->count() }}
+                                    </span>
+                                @endif
+                            </button>
+                            <!-- Notifications Dropdown Content (Same as Topbar) -->
+                            <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0"
+                                style="width: 320px; border-radius: 15px; overflow: hidden; z-index: 1050;">
+                                <div class="p-3 bg-primary text-white">
+                                    <h6 class="m-0">Notifikasi</h6>
+                                </div>
+                                <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                                    @forelse(Auth::user()->notifications()->limit(5)->get() as $notification)
+                                        <a href="{{ $notification->data['link'] ?? '#' }}"
+                                            class="list-group-item list-group-item-action p-3 @if (!$notification->read_at) bg-light @endif">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <h6 class="mb-1 fw-bold small">{{ $notification->data['title'] ?? 'Notifikasi' }}
+                                                </h6>
+                                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                            </div>
+                                            <p class="mb-0 small text-muted">
+                                                {{ Str::limit($notification->data['message'] ?? '', 80) }}
+                                            </p>
+                                        </a>
+                                    @empty
+                                        <div class="p-4 text-center">
+                                            <i class="fa-solid fa-bell-slash text-muted mb-2"></i>
+                                            <p class="mb-0 small text-muted">Tidak ada notifikasi</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                                <a href="{{ route(Auth::user()->role . '.notifications') }}"
+                                    class="p-2 text-center d-block small text-primary text-decoration-none border-top">
+                                    Lihat Semua
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="dropdown">
+                        <button class="bg-transparent border-0 d-flex align-items-center gap-2 p-0" type="button"
+                            data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random"
+                                class="rounded-circle shadow-sm" width="35">
+                            <i class="fa-solid fa-chevron-down small text-muted"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2">
+                            <li>
+                                <div class="dropdown-header fw-bold text-dark">{{ Auth::user()->name }}</div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <button type="button" onclick="confirmLogout()"
+                                    class="dropdown-item text-danger d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    @else
+        <!-- Sidebar (Original) -->
+        <nav class="sidebar" id="sidebar">
+            <a href="{{ route('home') }}" class="brand">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" width="40" height="40" class="rounded-circle">
                 Zenith Dental
             </a>
-            
-            <div class="d-none d-lg-flex align-items-center gap-4">
-                @yield('navbar-menu')
+
+            <div class="nav flex-column">
+                @yield('sidebar-menu')
             </div>
 
-            <div class="d-flex align-items-center gap-3">
-                <div class="dropdown">
-                    <button class="bg-white p-2 rounded-circle shadow-sm border-0 position-relative" type="button" data-bs-toggle="dropdown">
-                        <i class="fa-solid fa-bell text-primary"></i>
-                        @if(Auth::user()->unreadNotifications->count() > 0)
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
-                                {{ Auth::user()->unreadNotifications->count() }}
-                            </span>
-                        @endif
-                    </button>
-                    <!-- Notifications Dropdown Content (Same as Topbar) -->
-                    <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width: 320px; border-radius: 15px; overflow: hidden; z-index: 1050;">
-                        <div class="p-3 bg-primary text-white">
-                            <h6 class="m-0">Notifikasi</h6>
-                        </div>
-                        <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
-                            @forelse(Auth::user()->notifications()->limit(5)->get() as $notification)
-                                <a href="{{ $notification->data['link'] ?? '#' }}" class="list-group-item list-group-item-action p-3 @if(!$notification->read_at) bg-light @endif">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <h6 class="mb-1 fw-bold small">{{ $notification->data['title'] ?? 'Notifikasi' }}</h6>
-                                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                                    </div>
-                                    <p class="mb-0 small text-muted">{{ Str::limit($notification->data['message'] ?? '', 80) }}</p>
-                                </a>
-                            @empty
-                                <div class="p-4 text-center">
-                                    <i class="fa-solid fa-bell-slash text-muted mb-2"></i>
-                                    <p class="mb-0 small text-muted">Tidak ada notifikasi</p>
-                                </div>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <button class="bg-transparent border-0 d-flex align-items-center gap-2 p-0" type="button" data-bs-toggle="dropdown">
-                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random" class="rounded-circle shadow-sm" width="35">
-                        <i class="fa-solid fa-chevron-down small text-muted"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2">
-                        <li><div class="dropdown-header fw-bold text-dark">{{ Auth::user()->name }}</div></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <button type="button" onclick="confirmLogout()" class="dropdown-item text-danger d-flex align-items-center gap-2">
-                                <i class="fa-solid fa-right-from-bracket"></i> Logout
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+            <div class="mt-auto">
+                <button type="button" onclick="confirmLogout()"
+                    class="nav-link w-100 text-start text-danger border-0 bg-transparent">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
             </div>
-        </div>
-    </nav>
-    @else
-    <!-- Sidebar (Original) -->
-    <nav class="sidebar" id="sidebar">
-        <a href="{{ route('home') }}" class="brand">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" width="40" height="40" class="rounded-circle">
-            Zenith Dental
-        </a>
-        
-        <div class="nav flex-column">
-            @yield('sidebar-menu')
-        </div>
-
-        <div class="mt-auto">
-            <button type="button" onclick="confirmLogout()" class="nav-link w-100 text-start text-danger border-0 bg-transparent">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout
-            </button>
-        </div>
-    </nav>
+        </nav>
     @endif
 
     <!-- Main Content -->
     <main class="main-content {{ trim($__env->yieldContent('no-sidebar')) === 'true' ? 'no-sidebar container' : '' }}">
         <!-- Header Mobile (Original, hidden if no-sidebar is true) -->
         @if(trim($__env->yieldContent('no-sidebar')) !== 'true')
-        <div class="d-lg-none mb-3">
-            <button class="btn btn-primary" onclick="document.getElementById('sidebar').classList.toggle('show')">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </div>
+            <div class="d-lg-none mb-3">
+                <button class="btn btn-primary" onclick="document.getElementById('sidebar').classList.toggle('show')">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
         @endif
 
         <!-- Topbar (Only if Sidebar layout) -->
         @if(trim($__env->yieldContent('no-sidebar')) !== 'true')
-        <div class="topbar">
-            <div>
-                <h5 class="m-0 fw-bold">@yield('header-title', 'Dashboard')</h5>
-                <small class="text-muted">@yield('header-subtitle', 'Welcome back!')</small>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <!-- Notifications Dropdown (Hidden for Dokter & Admin) -->
-                @if(Auth::user()->role !== 'dokter' && Auth::user()->role !== 'admin')
-                <div class="dropdown">
-                    <button class="bg-white p-2 rounded-circle shadow-sm border-0 position-relative" type="button" data-bs-toggle="dropdown">
-                        <i class="fa-solid fa-bell text-primary"></i>
-                        @if(Auth::user()->unreadNotifications->count() > 0)
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
-                                {{ Auth::user()->unreadNotifications->count() }}
-                            </span>
-                        @endif
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width: 320px; border-radius: 15px; overflow: hidden; z-index: 1050;">
-                        <div class="p-3 bg-primary text-white">
-                            <h6 class="m-0">Notifikasi</h6>
-                        </div>
-                        <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
-                            @forelse(Auth::user()->notifications()->limit(5)->get() as $notification)
-                                <a href="{{ $notification->data['link'] ?? '#' }}" class="list-group-item list-group-item-action p-3 @if(!$notification->read_at) bg-light @endif">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <h6 class="mb-1 fw-bold small">{{ $notification->data['title'] ?? 'Notifikasi' }}</h6>
-                                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                                    </div>
-                                    <p class="mb-0 small text-muted">{{ Str::limit($notification->data['message'] ?? '', 80) }}</p>
-                                </a>
-                            @empty
-                                <div class="p-4 text-center">
-                                    <i class="fa-solid fa-bell-slash text-muted mb-2"></i>
-                                    <p class="mb-0 small text-muted">Tidak ada notifikasi</p>
+            <div class="topbar">
+                <div>
+                    <h5 class="m-0 fw-bold">@yield('header-title', 'Dashboard')</h5>
+                    <small class="text-muted">@yield('header-subtitle', 'Welcome back!')</small>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Notifications Dropdown -->
+                    @if (Auth::user()->role !== 'admin')
+                        <div class="dropdown">
+                            <button class="bg-white p-2 rounded-circle shadow-sm border-0 position-relative" type="button"
+                                data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-bell text-primary"></i>
+                                @if (Auth::user()->unreadNotifications->count() > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                        style="font-size: 0.6rem;">
+                                        {{ Auth::user()->unreadNotifications->count() }}
+                                    </span>
+                                @endif
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0"
+                                style="width: 320px; border-radius: 15px; overflow: hidden; z-index: 1050;">
+                                <div class="p-3 bg-primary text-white">
+                                    <h6 class="m-0">Notifikasi</h6>
                                 </div>
-                            @endforelse
+                                <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                                    @forelse(Auth::user()->notifications()->limit(5)->get() as $notification)
+                                        <a href="{{ $notification->data['link'] ?? '#' }}"
+                                            class="list-group-item list-group-item-action p-3 @if (!$notification->read_at) bg-light @endif">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <h6 class="mb-1 fw-bold small">{{ $notification->data['title'] ?? 'Notifikasi' }}
+                                                </h6>
+                                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                            </div>
+                                            <p class="mb-0 small text-muted">
+                                                {{ Str::limit($notification->data['message'] ?? '', 80) }}
+                                            </p>
+                                        </a>
+                                    @empty
+                                        <div class="p-4 text-center">
+                                            <i class="fa-solid fa-bell-slash text-muted mb-2"></i>
+                                            <p class="mb-0 small text-muted">Tidak ada notifikasi</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                                <a href="{{ route(Auth::user()->role . '.notifications') }}"
+                                    class="p-2 text-center d-block small text-primary text-decoration-none border-top">
+                                    Lihat Semua
+                                </a>
+                            </div>
                         </div>
-                        <a href="{{ route(Auth::user()->role . '.notifications' ?? 'home') }}" class="p-2 text-center d-block small text-primary text-decoration-none border-top">
-                            Lihat Semua
-                        </a>
-                    </div>
-                </div>
-                @endif
-                <div class="d-flex align-items-center gap-2">
-                    <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random" class="rounded-circle" width="40">
-                    <div class="d-none d-md-block">
-                        <small class="d-block fw-bold">{{ Auth::user()->name ?? 'Guest' }}</small>
-                        <small class="text-muted">{{ ucfirst(Auth::user()->role ?? 'Visitor') }}</small>
+                    @endif
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random"
+                            class="rounded-circle" width="40">
+                        <div class="d-none d-md-block">
+                            <small class="d-block fw-bold">{{ Auth::user()->name ?? 'Guest' }}</small>
+                            <small class="text-muted">{{ ucfirst(Auth::user()->role ?? 'Visitor') }}</small>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         @endif
 
         <!-- Content -->
         @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
-            <i class="fa-solid fa-circle-check me-2"></i>
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
+                <i class="fa-solid fa-circle-check me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
 
         @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
-            <i class="fa-solid fa-circle-xmark me-2"></i>
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
+                <i class="fa-solid fa-circle-xmark me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
 
         @yield('content')
@@ -373,7 +410,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Hidden Logout Form -->
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
@@ -402,4 +439,5 @@
     @yield('scripts')
     @stack('scripts')
 </body>
+
 </html>

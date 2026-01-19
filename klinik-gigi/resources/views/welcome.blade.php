@@ -619,8 +619,8 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link active" href="#beranda">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
                     <li class="nav-item"><a class="nav-link" href="#dokter">Dokter</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
                 </ul>
                 <div class="d-flex gap-3">
                     <button type="button" class="btn btn-outline-primary rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="showTab('login-tab')">Masuk</button>

@@ -159,6 +159,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Riwayat Praktek
         Route::get('/riwayat', [App\Http\Controllers\DokterController::class, 'riwayat'])->name('dokter.riwayat');
+
+        // Notifikasi
+        Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('dokter.notifications');
+        Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('dokter.notifications.read');
     });
 });
 
