@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2026 at 05:20 AM
+-- Generation Time: Jan 19, 2026 at 05:33 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -556,7 +556,10 @@ INSERT INTO `booking` (`IdBooking`, `IdJadwal`, `PasienID`, `TanggalBooking`, `S
 ('B-2512-0015', 'J-2512-0012', 'P-2025-00001', '2025-12-29 14:20:29', 'COMPLETED', NULL),
 ('B-2601-0001', 'J-2601-0006', 'P-2026-00001', '2026-01-07 15:41:43', 'CANCELLED', '2026-01-08 09:18:48'),
 ('B-2601-0002', 'J-2601-0007', 'P-2026-00001', '2026-01-13 20:40:16', 'CANCELLED', '2026-01-13 13:42:02'),
-('B-2601-0003', 'J-2601-0007', 'P-2026-00001', '2026-01-13 20:42:10', 'CANCELLED', NULL);
+('B-2601-0003', 'J-2601-0007', 'P-2026-00001', '2026-01-13 20:42:10', 'CANCELLED', NULL),
+('B-2601-0004', 'J-2601-0010', 'P-2025-00001', '2026-01-19 11:23:16', 'PRESENT', NULL),
+('B-2601-0005', 'J-2601-0008', 'P-2025-00001', '2026-01-19 11:23:56', 'PRESENT', NULL),
+('B-2601-0006', 'J-2601-0011', 'P-2025-00001', '2026-01-19 11:24:34', 'COMPLETED', NULL);
 
 -- --------------------------------------------------------
 
@@ -579,7 +582,10 @@ CREATE TABLE `broadcasts` (
 --
 
 INSERT INTO `broadcasts` (`id`, `Title`, `Message`, `AuthorID`, `TargetRole`, `created_at`, `updated_at`) VALUES
-(1, 'Pengumuman Klinik', 'test', 1, 'pasien', '2025-12-29 15:23:56', '2025-12-29 15:23:56');
+(1, 'Pengumuman Klinik', 'test', 1, 'pasien', '2025-12-29 15:23:56', '2025-12-29 15:23:56'),
+(2, 'Test Final', 'Hai dokter', 1, 'dokter', '2026-01-19 04:17:52', '2026-01-19 04:17:52'),
+(3, 'test', 'hai pasien', 1, 'pasien', '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
+(4, 'Test All', 'halo semua', 1, 'all', '2026-01-19 04:18:23', '2026-01-19 04:18:23');
 
 -- --------------------------------------------------------
 
@@ -699,7 +705,11 @@ INSERT INTO `jadwal` (`IdJadwal`, `IdDokter`, `Tanggal`, `JamMulai`, `JamAkhir`,
 ('J-2601-0004', 'D-004', '2026-01-06', '17:00:00', '20:00:00', 'Not Available', 4),
 ('J-2601-0005', 'D-001', '2026-01-04', '09:00:00', '12:00:00', 'Not Available', 15),
 ('J-2601-0006', 'D-001', '2026-01-07', '17:00:00', '20:00:00', 'Not Available', 15),
-('J-2601-0007', 'D-001', '2026-01-14', '09:00:00', '12:00:00', 'Cancelled', 15);
+('J-2601-0007', 'D-001', '2026-01-14', '09:00:00', '12:00:00', 'Cancelled', 15),
+('J-2601-0008', 'D-001', '2026-01-20', '09:00:00', '12:00:00', 'Available', 15),
+('J-2601-0009', 'D-001', '2026-01-20', '17:00:00', '20:00:00', 'Available', 15),
+('J-2601-0010', 'D-002', '2026-01-20', '17:00:00', '20:00:00', 'Available', 4),
+('J-2601-0011', 'D-001', '2026-01-19', '17:00:00', '20:00:00', 'Available', 15);
 
 -- --------------------------------------------------------
 
@@ -814,11 +824,37 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
+('08b10f04-c0df-4232-84de-23ef1f645b9c', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 3, '{\"title\":\"Pengumuman: test\",\"message\":\"hai pasien\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
+('08dc53c8-18cf-47a3-96b6-c261330f3c66', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 7, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
 ('15b0e492-0677-4acd-984b-77b024596440', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 13, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
+('15d80c93-c889-4bc3-a9e0-2283048a3bea', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 9, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('18767223-e6f6-4582-986a-cf1360ce1355', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 22, '{\"title\":\"Pengumuman: test\",\"message\":\"hai pasien\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
 ('355fbb8d-e7ae-48c0-b347-b0dc55af5ee3', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 6, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
+('35cf8d0d-fb8c-4958-ade0-ecd4a5d4d91b', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 13, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('38a81b94-f502-4f44-9332-dbb0d638c571', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 9, '{\"title\":\"Pengumuman: Test Final\",\"message\":\"Hai dokter\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:17:53', '2026-01-19 04:17:53'),
+('4147178d-79b8-4482-9e05-96a5ccbf07a7', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 10, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('4441db42-1155-4369-9630-e8143ea469e1', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 13, '{\"title\":\"Pengumuman: test\",\"message\":\"hai pasien\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
+('4b01951a-8ef5-4629-87a3-eaf8c5e62049', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 21, '{\"title\":\"Pengumuman: test\",\"message\":\"hai pasien\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
+('55b5bf54-7df3-421f-bb29-1304ca5841da', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 12, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('58cd5d6a-2589-4418-abf5-8a0a664994f9', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 2, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
 ('5cd11d9c-3cda-460e-baf9-8fa6c648cc2b', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 3, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
+('5d719f59-2c49-4ff5-9213-4b97d10c2a5f', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 11, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('5f1849c0-2b10-4895-b376-6a3174825273', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 20, '{\"title\":\"Pengumuman: test\",\"message\":\"hai pasien\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
+('6b5d8690-17bc-4546-86cd-8d317727c8b8', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 2, '{\"title\":\"Pengumuman: Test Final\",\"message\":\"Hai dokter\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:17:53', '2026-01-19 04:17:53'),
+('72f9187e-9595-459c-8bfb-763cf4384149', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 12, '{\"title\":\"Pengumuman: test\",\"message\":\"hai pasien\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
+('7e352282-de10-4487-9e6f-5e519c451a2e', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 10, '{\"title\":\"Pengumuman: Test Final\",\"message\":\"Hai dokter\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:17:53', '2026-01-19 04:17:53'),
 ('8a88b18d-f118-4332-9bfb-9f3ca5c7cb7f', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 12, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
-('ccc6ab96-b3e8-46e7-8a79-56c9be3a7f71', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 11, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57');
+('937e708a-a220-4b33-81f5-bf34bd962515', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 11, '{\"title\":\"Pengumuman: test\",\"message\":\"hai pasien\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
+('96e4648b-0668-4291-8c7a-dd37f990893b', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 3, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('9e2b6d92-89dd-4f41-8087-a399826de30a', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 6, '{\"title\":\"Pengumuman: test\",\"message\":\"hai pasien\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:09', '2026-01-19 04:18:09'),
+('a5928609-46fc-445b-a6cd-46888280b506', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 1, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('a748bcc8-18a6-4d8e-be4d-819764236270', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 6, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('ac906cf6-cb0a-44c2-bf84-77ac8142a948', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 7, '{\"title\":\"Pengumuman: Test Final\",\"message\":\"Hai dokter\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:17:53', '2026-01-19 04:17:53'),
+('c43b02fb-a859-42c1-89de-80e28cfc37cf', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 22, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('ccc6ab96-b3e8-46e7-8a79-56c9be3a7f71', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 11, '{\"title\":\"Pengumuman: Pengumuman Klinik\",\"message\":\"test\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2025-12-29 15:23:57', '2025-12-29 15:23:57'),
+('d1cffe27-3ddb-4bc7-8bb6-eb1157a64378', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 20, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('d2d52813-b358-406c-8e92-4085f39196b2', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 21, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23'),
+('d5f0b053-2e90-46fe-aa58-a068f7cefc71', 'App\\Notifications\\GeneralNotification', 'App\\Models\\User', 5, '{\"title\":\"Pengumuman: Test All\",\"message\":\"halo semua\",\"type\":\"broadcast\",\"link\":\"http:\\/\\/127.0.0.1:8000\\/pasien\\/dashboard\"}', NULL, '2026-01-19 04:18:23', '2026-01-19 04:18:23');
 
 -- --------------------------------------------------------
 
@@ -841,7 +877,7 @@ CREATE TABLE `obat` (
 --
 
 INSERT INTO `obat` (`IdObat`, `IdJenisObat`, `NamaObat`, `Satuan`, `HargaBeli`, `Harga`, `Stok`) VALUES
-('O-00001', 1, 'Paracetamol 500mg', 'Tablet', 1000.00, 2000.00, 188),
+('O-00001', 1, 'Paracetamol 500mg', 'Tablet', 1000.00, 2000.00, 187),
 ('O-00002', 1, 'Ibuprofen 400mg', 'Tablet', 1500.00, 3000.00, 72),
 ('O-00003', 2, 'Amoxicillin 500mg', 'Kapsul', 2500.00, 5000.00, 21),
 ('O-00004', 2, 'Clindamycin 300mg', 'Kapsul', 4000.00, 8000.00, 40),
@@ -853,8 +889,7 @@ INSERT INTO `obat` (`IdObat`, `IdJenisObat`, `NamaObat`, `Satuan`, `HargaBeli`, 
 ('O-00010', 1, 'Ketorolac 10mg', 'Tablet', 2250.00, 4500.00, 55),
 ('O-00011', 6, 'Fluoride Gel 1.23%', 'Tube 50g', 37500.00, 75000.00, 30),
 ('O-00012', 7, 'Wax Orthodonti', 'Pack 10 strips', 12500.00, 25000.00, 50),
-('O-00013', 3, 'Antiseptik Rongga Mulut', 'Botol 200ml', 22500.00, 45000.00, 24),
-('O-00014', 4, 'tes', 'Kapsul', 5000.00, 10000.00, 0);
+('O-00013', 3, 'Antiseptik Rongga Mulut', 'Botol 200ml', 22500.00, 45000.00, 24);
 
 -- --------------------------------------------------------
 
@@ -890,7 +925,12 @@ INSERT INTO `obat_log` (`LogID`, `IdObat`, `Tanggal`, `Aksi`, `Jumlah`, `StokSeb
 (9, 'O-00007', '2025-07-07 12:30:00', 'KELUAR', 10.00, 60.00, 50.00, 'RM-2025-0010', 'dokter'),
 (10, 'O-00013', '2025-07-07 12:30:00', 'KELUAR', 1.00, 25.00, 24.00, 'RM-2025-0010', 'dokter'),
 (11, 'O-00003', '2025-07-08 16:00:00', 'KELUAR', 15.00, 36.00, 21.00, 'RM-2025-0011', 'dokter'),
-(12, 'O-00008', '2025-07-08 16:00:00', 'KELUAR', 2.00, 95.00, 93.00, 'RM-2025-0011', 'dokter');
+(12, 'O-00008', '2025-07-08 16:00:00', 'KELUAR', 2.00, 95.00, 93.00, 'RM-2025-0011', 'dokter'),
+(13, 'O-00015', '2026-01-16 15:58:55', 'MASUK', 30.00, 0.00, 30.00, NULL, 'Hans Maulana Budiputra'),
+(14, 'O-00015', '2026-01-16 16:05:13', 'MASUK', 1.00, 30.00, 31.00, NULL, 'Hans Maulana Budiputra'),
+(15, 'O-00015', '2026-01-19 11:21:47', 'MASUK', 1.00, 0.00, 1.00, NULL, 'Hans Maulana Budiputra'),
+(16, 'O-00015', '2026-01-19 11:22:20', 'MASUK', 10.00, 1.00, 11.00, NULL, 'Hans Maulana Budiputra'),
+(17, 'O-00001', '2026-01-19 11:25:42', 'KELUAR', 1.00, 188.00, 187.00, 'RM-2026-0001', 'Rafael');
 
 -- --------------------------------------------------------
 
@@ -995,7 +1035,8 @@ INSERT INTO `pembayaran` (`IdPembayaran`, `IdRekamMedis`, `PasienID`, `TanggalPe
 ('PAY-2512-0003', 'RM-2025-0003', 'P-2025-00001', '2025-12-28 09:19:21', 'Transfer', 5616000.00, 'PAID'),
 ('PAY-2512-0012', 'RM-2025-0012', 'P-2025-00005', '2025-12-28 17:23:22', 'Tunai', 50000.00, 'PAID'),
 ('PAY-2512-0013', 'RM-2025-0013', 'P-2025-00005', '2025-12-29 14:03:17', 'Asuransi', 357000.00, 'PAID'),
-('PAY-2512-0014', 'RM-2025-0014', 'P-2025-00001', '2025-12-29 14:34:12', 'Tunai', 303000.00, 'PAID');
+('PAY-2512-0014', 'RM-2025-0014', 'P-2025-00001', '2025-12-29 14:34:12', 'Tunai', 303000.00, 'PAID'),
+('PAY-2601-0015', 'RM-2026-0001', 'P-2025-00001', '2026-01-19 11:26:16', 'Tunai', 52000.00, 'PAID');
 
 -- --------------------------------------------------------
 
@@ -1064,7 +1105,8 @@ INSERT INTO `rekammedis` (`IdRekamMedis`, `IdBooking`, `PasienID`, `DokterID`, `
 ('RM-2025-0011', 'B-2507-0003', 'P-2025-00001', 'D-003', '2025-07-08', 'Gigi molar ketiga impaksi mesioangular', 'Konsultasi bedah pencabutan, rencana operasi'),
 ('RM-2025-0012', 'B-2512-0013', 'P-2025-00005', 'D-002', '2025-12-28', 'konsultasi pemasangan behel', 'Minta ronthen gigi keseluruhan'),
 ('RM-2025-0013', 'B-2512-0008', 'P-2025-00005', 'D-003', '2025-12-29', 'sakit gigi berlubang', 'pencabutan gigi biasa'),
-('RM-2025-0014', 'B-2512-0015', 'P-2025-00001', 'D-001', '2025-12-29', 'gigi berlubang pada gigi geraham', 'sakit gigi saat makan makanan manis');
+('RM-2025-0014', 'B-2512-0015', 'P-2025-00001', 'D-001', '2025-12-29', 'gigi berlubang pada gigi geraham', 'sakit gigi saat makan makanan manis'),
+('RM-2026-0001', 'B-2601-0006', 'P-2025-00001', 'D-001', '2026-01-19', 'sakit gigi', NULL);
 
 -- --------------------------------------------------------
 
@@ -1107,7 +1149,8 @@ INSERT INTO `rekammedis_obat` (`IdRekamMedis`, `IdObat`, `Dosis`, `Frekuensi`, `
 ('RM-2025-0011', 'O-00008', '1.8ml', 'suntik lokal', 1, 2.00, 12000.00),
 ('RM-2025-0013', 'O-00001', '-', '-', 1, 2.00, 2000.00),
 ('RM-2025-0013', 'O-00002', '-', '-', 1, 1.00, 3000.00),
-('RM-2025-0014', 'O-00002', '3x1', '-', 1, 1.00, 3000.00);
+('RM-2025-0014', 'O-00002', '3x1', '-', 1, 1.00, 3000.00),
+('RM-2026-0001', 'O-00001', '3x1', '-', 1, 1.00, 2000.00);
 
 -- --------------------------------------------------------
 
@@ -1148,7 +1191,8 @@ INSERT INTO `rekammedis_tindakan` (`IdRekamMedis`, `IdTindakan`, `Jumlah`, `Harg
 ('RM-2025-0011', 'T-019', 1, 300000.00),
 ('RM-2025-0012', 'T-001', 1, 50000.00),
 ('RM-2025-0013', 'T-005', 1, 350000.00),
-('RM-2025-0014', 'T-003', 1, 300000.00);
+('RM-2025-0014', 'T-003', 1, 300000.00),
+('RM-2026-0001', 'T-001', 1, 50000.00);
 
 -- --------------------------------------------------------
 
@@ -1191,7 +1235,7 @@ CREATE TABLE `tindakan` (
 --
 
 INSERT INTO `tindakan` (`IdTindakan`, `NamaTindakan`, `Kategori`, `Harga`, `Durasi`) VALUES
-('T-001', 'Konsultasi Gigi', 'Gigi Umum', 50000.00, '00:30:00'),
+('T-001', 'Konsultasi Gigi', 'Gigi Umum', 60000.00, '00:30:00'),
 ('T-002', 'Pembersihan Karang Gigi (Scaling)', 'Gigi Umum', 250000.00, '01:00:00'),
 ('T-003', 'Tambal Gigi (Amalgam)', 'Gigi Umum', 300000.00, '01:00:00'),
 ('T-004', 'Tambal Gigi (Komposit)', 'Gigi Umum', 400000.00, '01:15:00'),
@@ -1421,7 +1465,7 @@ CREATE TABLE `v_rekam_medis_lengkap` (
 --
 DROP TABLE IF EXISTS `view_jadwaldokter`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_jadwaldokter`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `b`.`IdBooking` AS `IdBooking`, `p`.`Nama` AS `Nama Pasien`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `pg`.`Nama` AS `Nama Dokter`, `b`.`Status` AS `Status` FROM (((`jadwal` `j` join `booking` `b` on(`j`.`IdJadwal` = `b`.`IdJadwal`)) join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) join `pegawai` `pg` on(`j`.`IdDokter` = `pg`.`PegawaiID`)) ;
+CREATE VIEW `view_jadwaldokter`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `b`.`IdBooking` AS `IdBooking`, `p`.`Nama` AS `Nama Pasien`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `pg`.`Nama` AS `Nama Dokter`, `b`.`Status` AS `Status` FROM (((`jadwal` `j` join `booking` `b` on(`j`.`IdJadwal` = `b`.`IdJadwal`)) join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) join `pegawai` `pg` on(`j`.`IdDokter` = `pg`.`PegawaiID`)) ;
 
 -- --------------------------------------------------------
 
@@ -1430,7 +1474,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `view_jadwalpasien`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_jadwalpasien`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `p`.`Nama` AS `NamaDokter`, `p`.`Jabatan` AS `Jabatan` FROM (`jadwal` `j` join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
+CREATE VIEW `view_jadwalpasien`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `p`.`Nama` AS `NamaDokter`, `p`.`Jabatan` AS `Jabatan` FROM (`jadwal` `j` join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
 
 -- --------------------------------------------------------
 
@@ -1439,7 +1483,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_booking_lengkap`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_booking_lengkap`  AS SELECT `b`.`IdBooking` AS `IdBooking`, `b`.`IdJadwal` AS `IdJadwal`, `b`.`PasienID` AS `PasienID`, `b`.`TanggalBooking` AS `TanggalBooking`, `b`.`Status` AS `Status`, `b`.`CancelledAt` AS `CancelledAt`, `p`.`Nama` AS `nama_pasien`, `j`.`Tanggal` AS `tanggal_jadwal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `d`.`Nama` AS `nama_dokter` FROM (((`booking` `b` left join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) left join `jadwal` `j` on(`b`.`IdJadwal` = `j`.`IdJadwal`)) left join `pegawai` `d` on(`j`.`IdDokter` = `d`.`PegawaiID`)) ;
+CREATE VIEW `v_booking_lengkap`  AS SELECT `b`.`IdBooking` AS `IdBooking`, `b`.`IdJadwal` AS `IdJadwal`, `b`.`PasienID` AS `PasienID`, `b`.`TanggalBooking` AS `TanggalBooking`, `b`.`Status` AS `Status`, `b`.`CancelledAt` AS `CancelledAt`, `p`.`Nama` AS `nama_pasien`, `j`.`Tanggal` AS `tanggal_jadwal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `d`.`Nama` AS `nama_dokter` FROM (((`booking` `b` left join `pasien` `p` on(`b`.`PasienID` = `p`.`PasienID`)) left join `jadwal` `j` on(`b`.`IdJadwal` = `j`.`IdJadwal`)) left join `pegawai` `d` on(`j`.`IdDokter` = `d`.`PegawaiID`)) ;
 
 -- --------------------------------------------------------
 
@@ -1448,7 +1492,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_jadwal_lengkap`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_jadwal_lengkap`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `j`.`Kapasitas` AS `Kapasitas`, `p`.`Nama` AS `nama_dokter`, `p`.`Jabatan` AS `jabatan_dokter` FROM (`jadwal` `j` left join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
+CREATE VIEW `v_jadwal_lengkap`  AS SELECT `j`.`IdJadwal` AS `IdJadwal`, `j`.`IdDokter` AS `IdDokter`, `j`.`Tanggal` AS `Tanggal`, `j`.`JamMulai` AS `JamMulai`, `j`.`JamAkhir` AS `JamAkhir`, `j`.`Status` AS `Status`, `j`.`Kapasitas` AS `Kapasitas`, `p`.`Nama` AS `nama_dokter`, `p`.`Jabatan` AS `jabatan_dokter` FROM (`jadwal` `j` left join `pegawai` `p` on(`j`.`IdDokter` = `p`.`PegawaiID`)) ;
 
 -- --------------------------------------------------------
 
@@ -1457,7 +1501,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_obat_lengkap`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_obat_lengkap`  AS SELECT `o`.`IdObat` AS `IdObat`, `o`.`IdJenisObat` AS `IdJenisObat`, `o`.`NamaObat` AS `NamaObat`, `o`.`Satuan` AS `Satuan`, `o`.`HargaBeli` AS `HargaBeli`, `o`.`Harga` AS `Harga`, `o`.`Stok` AS `Stok`, `jo`.`NamaJenis` AS `nama_jenis` FROM (`obat` `o` left join `jenisobat` `jo` on(`o`.`IdJenisObat` = `jo`.`JenisObatID`)) ;
+CREATE VIEW `v_obat_lengkap`  AS SELECT `o`.`IdObat` AS `IdObat`, `o`.`IdJenisObat` AS `IdJenisObat`, `o`.`NamaObat` AS `NamaObat`, `o`.`Satuan` AS `Satuan`, `o`.`HargaBeli` AS `HargaBeli`, `o`.`Harga` AS `Harga`, `o`.`Stok` AS `Stok`, `jo`.`NamaJenis` AS `nama_jenis` FROM (`obat` `o` left join `jenisobat` `jo` on(`o`.`IdJenisObat` = `jo`.`JenisObatID`)) ;
 
 -- --------------------------------------------------------
 
@@ -1466,7 +1510,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pasien_user`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pasien_user`  AS SELECT `p`.`PasienID` AS `PasienID`, `p`.`user_id` AS `user_id`, `p`.`Nama` AS `Nama`, `p`.`TanggalLahir` AS `TanggalLahir`, `p`.`Alamat` AS `Alamat`, `p`.`NoTelp` AS `NoTelp`, `p`.`JenisKelamin` AS `JenisKelamin`, `u`.`email` AS `email`, `u`.`name` AS `display_name` FROM (`pasien` `p` left join `users` `u` on(`p`.`user_id` = `u`.`id`)) ;
+CREATE VIEW `v_pasien_user`  AS SELECT `p`.`PasienID` AS `PasienID`, `p`.`user_id` AS `user_id`, `p`.`Nama` AS `Nama`, `p`.`TanggalLahir` AS `TanggalLahir`, `p`.`Alamat` AS `Alamat`, `p`.`NoTelp` AS `NoTelp`, `p`.`JenisKelamin` AS `JenisKelamin`, `u`.`email` AS `email`, `u`.`name` AS `display_name` FROM (`pasien` `p` left join `users` `u` on(`p`.`user_id` = `u`.`id`)) ;
 
 -- --------------------------------------------------------
 
@@ -1475,7 +1519,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pegawai_user`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pegawai_user`  AS SELECT `p`.`PegawaiID` AS `PegawaiID`, `p`.`user_id` AS `user_id`, `p`.`Nama` AS `Nama`, `p`.`Jabatan` AS `Jabatan`, `p`.`TanggalMasuk` AS `TanggalMasuk`, `p`.`NoTelp` AS `NoTelp`, `u`.`email` AS `email`, `u`.`name` AS `display_name`, `u`.`role` AS `role` FROM (`pegawai` `p` left join `users` `u` on(`p`.`user_id` = `u`.`id`)) ;
+CREATE VIEW `v_pegawai_user`  AS SELECT `p`.`PegawaiID` AS `PegawaiID`, `p`.`user_id` AS `user_id`, `p`.`Nama` AS `Nama`, `p`.`Jabatan` AS `Jabatan`, `p`.`TanggalMasuk` AS `TanggalMasuk`, `p`.`NoTelp` AS `NoTelp`, `u`.`email` AS `email`, `u`.`name` AS `display_name`, `u`.`role` AS `role` FROM (`pegawai` `p` left join `users` `u` on(`p`.`user_id` = `u`.`id`)) ;
 
 -- --------------------------------------------------------
 
@@ -1484,7 +1528,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pembayaran_lengkap`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pembayaran_lengkap`  AS SELECT `p`.`IdPembayaran` AS `IdPembayaran`, `p`.`IdRekamMedis` AS `IdRekamMedis`, `p`.`PasienID` AS `PasienID`, `p`.`TanggalPembayaran` AS `TanggalPembayaran`, `p`.`Metode` AS `Metode`, `p`.`TotalBayar` AS `TotalBayar`, `p`.`Status` AS `Status`, `rm`.`Tanggal` AS `tanggal_periksa`, `ps`.`Nama` AS `nama_pasien` FROM ((`pembayaran` `p` left join `rekammedis` `rm` on(`p`.`IdRekamMedis` = `rm`.`IdRekamMedis`)) left join `pasien` `ps` on(`rm`.`PasienID` = `ps`.`PasienID`)) ;
+CREATE VIEW `v_pembayaran_lengkap`  AS SELECT `p`.`IdPembayaran` AS `IdPembayaran`, `p`.`IdRekamMedis` AS `IdRekamMedis`, `p`.`PasienID` AS `PasienID`, `p`.`TanggalPembayaran` AS `TanggalPembayaran`, `p`.`Metode` AS `Metode`, `p`.`TotalBayar` AS `TotalBayar`, `p`.`Status` AS `Status`, `rm`.`Tanggal` AS `tanggal_periksa`, `ps`.`Nama` AS `nama_pasien` FROM ((`pembayaran` `p` left join `rekammedis` `rm` on(`p`.`IdRekamMedis` = `rm`.`IdRekamMedis`)) left join `pasien` `ps` on(`rm`.`PasienID` = `ps`.`PasienID`)) ;
 
 -- --------------------------------------------------------
 
@@ -1493,7 +1537,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_rekam_medis_lengkap`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_rekam_medis_lengkap`  AS SELECT `rm`.`IdRekamMedis` AS `IdRekamMedis`, `rm`.`IdBooking` AS `IdBooking`, `rm`.`PasienID` AS `PasienID`, `rm`.`DokterID` AS `DokterID`, `rm`.`Tanggal` AS `Tanggal`, `rm`.`Diagnosa` AS `Diagnosa`, `rm`.`Catatan` AS `Catatan`, `p`.`Nama` AS `nama_pasien`, `d`.`Nama` AS `nama_dokter` FROM ((`rekammedis` `rm` left join `pasien` `p` on(`rm`.`PasienID` = `p`.`PasienID`)) left join `pegawai` `d` on(`rm`.`DokterID` = `d`.`PegawaiID`)) ;
+CREATE VIEW `v_rekam_medis_lengkap`  AS SELECT `rm`.`IdRekamMedis` AS `IdRekamMedis`, `rm`.`IdBooking` AS `IdBooking`, `rm`.`PasienID` AS `PasienID`, `rm`.`DokterID` AS `DokterID`, `rm`.`Tanggal` AS `Tanggal`, `rm`.`Diagnosa` AS `Diagnosa`, `rm`.`Catatan` AS `Catatan`, `p`.`Nama` AS `nama_pasien`, `d`.`Nama` AS `nama_dokter` FROM ((`rekammedis` `rm` left join `pasien` `p` on(`rm`.`PasienID` = `p`.`PasienID`)) left join `pegawai` `d` on(`rm`.`DokterID` = `d`.`PegawaiID`)) ;
 
 --
 -- Indexes for dumped tables
@@ -1677,7 +1721,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `broadcasts`
 --
 ALTER TABLE `broadcasts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `failedjobs`
@@ -1707,7 +1751,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `obat_log`
 --
 ALTER TABLE `obat_log`
-  MODIFY `LogID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `LogID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `pembelian`
@@ -1725,7 +1769,7 @@ ALTER TABLE `pembelian_detail`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
