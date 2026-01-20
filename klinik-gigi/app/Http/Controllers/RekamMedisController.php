@@ -96,23 +96,50 @@ class RekamMedisController extends Controller
             // 3. Insert Obat
             if ($request->has('obat')) {
                 // Expecting structure: obat[index][id], obat[index][qty], obat[index][dosis]
+                
+                // VALIDASI STOK: Cek semua obat terlebih dahulu sebelum proses
+                $obatErrors = [];
+                foreach ($request->obat as $index => $obatItem) {
+                    if (!empty($obatItem['id'])) {
+                        $obatData = Obat::find($obatItem['id']);
+                        $jumlahDiminta = intval($obatItem['qty'] ?? 1);
+                        
+                        if ($obatData) {
+                            if ($jumlahDiminta > $obatData->Stok) {
+                                $obatErrors[] = "Obat '{$obatData->NamaObat}' memiliki stok {$obatData->Stok}, tetapi Anda meminta {$jumlahDiminta}.";
+                            }
+                            if ($jumlahDiminta <= 0) {
+                                $obatErrors[] = "Jumlah obat '{$obatData->NamaObat}' harus lebih dari 0.";
+                            }
+                        }
+                    }
+                }
+                
+                // Jika ada error stok, hentikan proses
+                if (!empty($obatErrors)) {
+                    throw new \Exception("Stok obat tidak mencukupi:\n" . implode("\n", $obatErrors));
+                }
+                
+                // Proses insert obat setelah validasi berhasil
                 foreach ($request->obat as $obatItem) {
                     if (!empty($obatItem['id'])) {
                         $obatData = Obat::find($obatItem['id']);
                         if ($obatData) {
+                            $jumlahDiminta = intval($obatItem['qty'] ?? 1);
+                            
                             DB::table('rekammedis_obat')->insert([
                                 'IdRekamMedis' => $idRekamMedis,
                                 'IdObat' => $obatItem['id'],
                                 'Dosis' => $obatItem['dosis'] ?? '-',
                                 'Frekuensi' => $obatItem['frekuensi'] ?? '-',
                                 'LamaHari' => $obatItem['days'] ?? 1,
-                                'Jumlah' => $obatItem['qty'] ?? 1,
+                                'Jumlah' => $jumlahDiminta,
                                 'HargaSatuan' => $obatData->Harga
                             ]);
 
-                            // Kurangi Stok (Simple)
+                            // Kurangi Stok (sudah divalidasi sebelumnya)
                             $stokSebelum = $obatData->Stok;
-                            $obatData->decrement('Stok', $obatItem['qty'] ?? 1);
+                            $obatData->decrement('Stok', $jumlahDiminta);
                             $stokSesudah = $obatData->fresh()->Stok;
 
                             // Log Pemakaian Obat
@@ -120,7 +147,7 @@ class RekamMedisController extends Controller
                                 'IdObat' => $obatItem['id'],
                                 'Tanggal' => now(),
                                 'Aksi' => 'KELUAR',
-                                'Jumlah' => $obatItem['qty'] ?? 1,
+                                'Jumlah' => $jumlahDiminta,
                                 'StokSebelum' => $stokSebelum,
                                 'StokSesudah' => $stokSesudah,
                                 'IdRekamMedis' => $idRekamMedis,

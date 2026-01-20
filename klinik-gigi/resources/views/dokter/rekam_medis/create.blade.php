@@ -222,6 +222,13 @@
 
 <script>
     let obatIndex = 0;
+    
+    // Data stok obat dari server
+    const obatStokData = {
+        @foreach($obats as $o)
+            '{{ $o->IdObat }}': {{ $o->Stok }},
+        @endforeach
+    };
 
     function addTindakan() {
         document.getElementById('emptyTindakan').style.display = 'none';
@@ -239,6 +246,12 @@
         const row = document.createElement('tr');
         row.innerHTML = html;
         container.appendChild(row);
+        
+        // Tambahkan event listener untuk validasi qty
+        const qtyInput = row.querySelector('input[type="number"]');
+        qtyInput.addEventListener('input', function() {
+            validateQty(this);
+        });
     }
 
     function removeRow(btn) {
@@ -266,6 +279,130 @@
             priceInput.value = 'Rp 0';
         }
     }
+    
+    // Fungsi untuk mengecek stok saat memilih obat
+    function checkStock(select) {
+        const row = select.closest('tr');
+        const qtyInput = row.querySelector('input[type="number"]');
+        const selectedOption = select.options[select.selectedIndex];
+        const stok = parseInt(selectedOption.getAttribute('data-stok')) || 0;
+        
+        if (select.value) {
+            // Set max qty sesuai stok
+            qtyInput.max = stok;
+            
+            // Jika qty saat ini melebihi stok, reset ke 1
+            if (parseInt(qtyInput.value) > stok) {
+                qtyInput.value = Math.min(1, stok);
+            }
+            
+            // Jika stok 0, tampilkan warning
+            if (stok === 0) {
+                showStockWarning(select, 'Stok obat ini habis!');
+                select.value = '';
+                return;
+            }
+            
+            // Hapus warning jika ada
+            clearStockWarning(row);
+        }
+    }
+    
+    // Fungsi untuk validasi qty saat input
+    function validateQty(input) {
+        const row = input.closest('tr');
+        const select = row.querySelector('select');
+        const selectedOption = select.options[select.selectedIndex];
+        
+        if (!select.value) return;
+        
+        const stok = parseInt(selectedOption.getAttribute('data-stok')) || 0;
+        const qty = parseInt(input.value) || 0;
+        
+        if (qty > stok) {
+            showStockWarning(input, `Jumlah melebihi stok tersedia (${stok})`);
+            input.classList.add('is-invalid');
+        } else if (qty <= 0) {
+            showStockWarning(input, 'Jumlah harus lebih dari 0');
+            input.classList.add('is-invalid');
+        } else {
+            clearStockWarning(row);
+            input.classList.remove('is-invalid');
+        }
+    }
+    
+    // Fungsi untuk menampilkan warning stok
+    function showStockWarning(element, message) {
+        const row = element.closest('tr');
+        let warning = row.querySelector('.stock-warning');
+        
+        if (!warning) {
+            warning = document.createElement('div');
+            warning.className = 'stock-warning text-danger small mt-1';
+            element.parentElement.appendChild(warning);
+        }
+        
+        warning.innerHTML = '<i class="fa-solid fa-exclamation-triangle me-1"></i>' + message;
+    }
+    
+    // Fungsi untuk menghapus warning stok
+    function clearStockWarning(row) {
+        const warning = row.querySelector('.stock-warning');
+        if (warning) {
+            warning.remove();
+        }
+    }
+    
+    // Validasi form sebelum submit
+    document.getElementById('rmForm').addEventListener('submit', function(e) {
+        let hasError = false;
+        const errorMessages = [];
+        
+        // Validasi semua obat
+        const obatRows = document.querySelectorAll('#obatContainer tr');
+        obatRows.forEach(function(row, index) {
+            const select = row.querySelector('select');
+            const qtyInput = row.querySelector('input[type="number"]');
+            
+            if (select.value) {
+                const selectedOption = select.options[select.selectedIndex];
+                const stok = parseInt(selectedOption.getAttribute('data-stok')) || 0;
+                const qty = parseInt(qtyInput.value) || 0;
+                const namaObat = selectedOption.text.split(' (Stok:')[0];
+                
+                if (qty > stok) {
+                    hasError = true;
+                    errorMessages.push(`${namaObat}: meminta ${qty}, stok tersedia ${stok}`);
+                    qtyInput.classList.add('is-invalid');
+                }
+                
+                if (qty <= 0) {
+                    hasError = true;
+                    errorMessages.push(`${namaObat}: jumlah harus lebih dari 0`);
+                    qtyInput.classList.add('is-invalid');
+                }
+            }
+        });
+        
+        if (hasError) {
+            e.preventDefault();
+            
+            // Tampilkan pesan error dengan SweetAlert jika tersedia, atau alert biasa
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Stok Obat Tidak Mencukupi!',
+                    html: errorMessages.map(msg => `<div class="text-start">• ${msg}</div>`).join(''),
+                    confirmButtonText: 'Perbaiki',
+                    customClass: {
+                        popup: 'swal-dark-mode'
+                    }
+                });
+            } else {
+                alert('Stok Obat Tidak Mencukupi!\n\n' + errorMessages.join('\n'));
+            }
+        }
+    });
 </script>
 
 @endsection
