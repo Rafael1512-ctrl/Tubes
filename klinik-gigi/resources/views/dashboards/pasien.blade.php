@@ -92,7 +92,7 @@
                             <p class="text-muted small mb-0">
                                 <i class="fa-solid fa-clock me-1"></i>
                                 {{ \Carbon\Carbon::parse($booking->jadwal->JamMulai)->format('H:i') }} -
-                                {{ \Carbon\Carbon::parse($booking->jadwal->JamSelesai)->format('H:i') }}
+                                {{ \Carbon\Carbon::parse($booking->jadwal->JamAkhir)->format('H:i') }}
                             </p>
                         </div>
                         <div class="ms-auto text-end">

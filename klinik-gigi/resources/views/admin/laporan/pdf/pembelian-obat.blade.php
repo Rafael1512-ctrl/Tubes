@@ -98,7 +98,7 @@
         <h1>LAPORAN PEMBELIAN OBAT</h1>
         <p>Zenith Dental Clinic</p>
         <p>Periode:
-            {{ $month ? Carbon\Carbon::create()->month($month)->translatedFormat('F') . ' ' : 'Tahun ' }}{{ $year }}
+            {{ $month ? Carbon\Carbon::create()->month((int)$month)->translatedFormat('F') . ' ' : 'Tahun ' }}{{ $year }}
         </p>
     </div>
 

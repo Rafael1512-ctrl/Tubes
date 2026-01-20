@@ -3,7 +3,7 @@
 @section('theme', 'admin')
 @section('title', 'Laporan Penjualan Obat')
 @section('header-title', 'Laporan Penjualan Obat')
-@section('header-subtitle', 'Data penjualan obat via pembayaran periode ' . ($month ? \Carbon\Carbon::create()->month($month)->translatedFormat('F') . ' ' : '') . $year)
+@section('header-subtitle', 'Data penjualan obat via pembayaran periode ' . ($month ? \Carbon\Carbon::create()->month((int)$month)->translatedFormat('F') . ' ' : '') . $year)
 
 @section('sidebar-menu')
     <a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>

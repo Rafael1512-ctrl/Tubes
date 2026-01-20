@@ -3,7 +3,7 @@
 @section('theme', 'admin')
 @section('title', 'Laporan Penjualan Tindakan')
 @section('header-title', 'Laporan Penjualan Tindakan')
-@section('header-subtitle', 'Data pendapatan dari layanan tindakan periode ' . ($month ? \Carbon\Carbon::create()->month($month)->translatedFormat('F') . ' ' : '') . $year)
+@section('header-subtitle', 'Data pendapatan dari layanan tindakan periode ' . ($month ? \Carbon\Carbon::create()->month((int)$month)->translatedFormat('F') . ' ' : '') . $year)
 
 @section('sidebar-menu')
     <a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
@@ -128,7 +128,7 @@
                     <option value="">Semua Bulan</option>
                     @for($m = 1; $m <= 12; $m++)
                         <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
-                            {{ Carbon\Carbon::create()->month($m)->translatedFormat('F') }}</option>
+                            {{ Carbon\Carbon::create()->month((int)$m)->translatedFormat('F') }}</option>
                     @endfor
                 </select>
             </div>

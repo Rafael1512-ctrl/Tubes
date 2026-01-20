@@ -109,7 +109,7 @@
         <h1>LAPORAN KEUANGAN</h1>
         <p>Zenith Dental Clinic</p>
         <p>Periode:
-            {{ $month ? Carbon\Carbon::create()->month($month)->translatedFormat('F') . ' ' : 'Tahun ' }}{{ $year }}</p>
+            {{ $month ? Carbon\Carbon::create()->month((int)$month)->translatedFormat('F') . ' ' : 'Tahun ' }}{{ $year }}</p>
     </div>
 
     <div class="section-title">Ringkasan Keuangan</div>

@@ -3,7 +3,7 @@
 @section('theme', 'admin')
 @section('title', 'Laporan Keuangan')
 @section('header-title', 'Laporan Keuangan')
-@section('header-subtitle', 'Pendapatan & Pengeluaran Periode ' . ($month ? \Carbon\Carbon::create()->month($month)->translatedFormat('F') . ' ' : '') . $year)
+@section('header-subtitle', 'Pendapatan & Pengeluaran Periode ' . ($month ? \Carbon\Carbon::create()->month((int)$month)->translatedFormat('F') . ' ' : '') . $year)
 
 @section('sidebar-menu')
     <a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="fa-solid fa-home"></i> Dashboard</a>
